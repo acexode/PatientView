@@ -1,25 +1,51 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import css from './App.css'
 
+import { withRouter, Switch, BrowserRouter, Route} from 'react-router-dom';
+import Login from './components/Auth/login';
+import Signup from './components/Auth/signup';
+import Sidebar from './Sidebar/sidebar';
+import Encounter from './components/Content/encounter';
+import Prescription from './components/Content/prescription';
+import Verify from './components/Content/verify';
+import AuthGuard from './components/Auth/AuthGuard';
+import EncounterHistory from './components/Content/history';
+import Home from './components/Home/Home';
+
+const Main = withRouter(({ location }) => {
+    return (
+      <>  
+       {(location.pathname != '/login' && location.pathname != '/signup' && location.pathname != '/') && (	
+        <>	
+          <Sidebar/>	
+        </>	
+      )}
+      <Switch>       
+          <AuthGuard path="/" exact component={Home} />    
+          <AuthGuard path="/encounter"  component={Encounter} />    
+          <AuthGuard exact path="/history"  component={EncounterHistory} />    
+          <AuthGuard exact path="/prescription"  component={Prescription} />    
+          <AuthGuard path="/verify-code" component={Verify} />    
+          <Route path="/login" component={Login} />    
+          <Route path="/signup" component={Signup} />
+         
+       
+      </Switch>
+      </>
+    )
+      
+     
+   
+})
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+  
+  return (  
+    <div>
+      <BrowserRouter>
+      <Main />
+    </BrowserRouter>
+  </div>
+
   );
 }
 
