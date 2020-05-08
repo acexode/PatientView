@@ -1,5 +1,6 @@
 import React from 'react'
 import css from './home.css'
+import { Link } from 'react-router-dom'
 const Home = () => {
     return (
         <div>
@@ -21,7 +22,7 @@ const Home = () => {
             <a class="nav-link" href="#">Blog</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link signup" href="#">Sign up</a>
+            <Link class="nav-link signup" to="/signup">Sign up</Link>
           </li>
         </ul>
       </div>
