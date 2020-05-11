@@ -4,28 +4,33 @@ import axios from "axios";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+
 
 
 
 const Signup  = () =>{
-
- 
+  let history = useHistory()
   const [message,setMessage] = useState('')
   const [show,setShow] = useState(false)
   return (
   <Formik
-    initialValues={{firstname: "", lastname: "", phone: "", email: "", password: "", confirmPassword:"" }}
+    initialValues={{firstname: "", lastname: "", phoneNumber: "", email: "", password: "", confirmPassword:"" }}
     onSubmit={(values, { setSubmitting }) => {
       setTimeout(() => {
         console.log("Logging in", values);
-        axios.post(``,  values )
+        axios.post(`https://stagingapi.healthinabox.ng/api/Account/create`,  values )
         .then(res => {
           console.log(res.data);
+          let user = {email : res.data.email , id: res.data.id }
+          localStorage.setItem("token", res.data.authToken)
+          localStorage.setItem('user', JSON.stringify(user))
+          history.push('/login',{user: res.data.user})
         })
         .catch(err =>{         
-          
+          console.log(err.response.data);
           setShow(true)
-          setMessage(err.response.data.message)
+          setMessage(err.response.data)
         })	
         setSubmitting(false);
       }, 500);
@@ -37,7 +42,7 @@ const Signup  = () =>{
         .required("Lastname is required"),
       email: Yup.string() 
         .required("Email is required"),
-      phone: Yup.string() 
+      phoneNumber: Yup.string() 
         .required("Phone number is required"),
       password: Yup.string()
         .required("No password provided."),       
@@ -59,14 +64,6 @@ const Signup  = () =>{
         <div class="login-wrapper">
         <div class="page-wrapper">
               <div class="form-wrapper">
-              { show ? ( 
-                      <div className="alert alert-danger alert-dismissible fade show" role="alert">
-                      {message}
-                      <button type="button" className="close" data-dismiss="alert" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                      </button>
-                      </div>): (<div></div>)
-                  }
                   <form onSubmit={handleSubmit} class="form">
                       <div class="form-row ">
                           <div class="col-md-12 logo-box">
@@ -132,16 +129,16 @@ const Signup  = () =>{
             <div className="form-group login-input col-md-6">
               <label>Phone </label>
               <input 
-              name="phone"
+              name="phoneNumber"
               type="text"
               placeholder="08058697008"
-              value={values.phone}
+              value={values.phoneNumber}
               onChange={handleChange}
               onBlur={handleBlur}
-              className={errors.phone && touched.phone && "error"}
+              className={errors.phoneNumber && touched.phoneNumber && "error"}
                />
-              {errors.phone && touched.phone && (
-                <div className="input-feedback float-left">{errors.phone}</div>
+              {errors.phoneNumber && touched.phoneNumber && (
+                <div className="input-feedback float-left">{errors.phoneNumber}</div>
               )}
             </div>
             
@@ -176,8 +173,19 @@ const Signup  = () =>{
                 <div className="input-feedback float-left">{errors.confirmPassword}</div>
               )}
             </div>
-                      <button type="submit" class="mt-3 btn btn-primary submit">Sign In</button>
-
+                      
+                      {isSubmitting ? <div class="spinner-border text-success" role="status">
+                        <span class="sr-only">Loading...</span>
+                      </div>: <button type="submit" class="mt-3 btn btn-primary submit">Sign In</button>}
+                      <div>&nbsp;</div>
+                      { show && ( 
+                      <div className="alert alert-danger alert-dismissible fade show" role="alert">
+                      {`${message}, Please re-enter your details`}
+                      <button type="button" className="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                      </div>)
+                  }
                       <div class="form-row mt-4">
                           <div class="form-group col-md-4 border-top mt-3"></div>
                           <div class="form-group col-md-4">
@@ -211,6 +219,7 @@ const Signup  = () =>{
                   <div class="right-bg">
 
                   </div>
+                  
               </div>
         </div>
 
