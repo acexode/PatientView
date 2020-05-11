@@ -11,6 +11,10 @@ const Login  = () =>{
   let history = useHistory()
   const [message,setMessage] = useState('')
   const [show,setShow] = useState(false)
+  const [recoverMessage,setRecoverMessage] = useState('')
+  const [recoverShow,setRecoverShow] = useState(false)
+  const [recovertrueShow,setRecoverTrueShow] = useState(false)
+  const [loading,setLoading] = useState(false)
   const [email, setEmail] = useState('')
   return (
   <Formik
@@ -50,24 +54,30 @@ const Login  = () =>{
         handleChange,
         handleBlur,
         handleSubmit,
-        userEmail
       } = props;
 
       const getEmail = async e =>{
         e.preventDefault();	
-        const mail = {
-          email : email 
-        }
+        setLoading(true)
         try{
-          let email = await axios.get('https://stagingapi.healthinabox.ng/api/Auth/password/reset', {
+          let emailResponse = await axios.get('https://stagingapi.healthinabox.ng/api/Auth/password/reset', {
             params: {
-              email: mail.email
+              email: email
             }
           })
-          console.log(email);
+          console.log(emailResponse);
+          setRecoverTrueShow(true);
+          setRecoverMessage(emailResponse.data)
+          setLoading(false)
         }catch(error){
-          console.log(error.response)
+          console.log(error.response.data);
+          setRecoverShow(true)
+          setRecoverMessage(error.response.data)
+          setLoading(false)
         }
+      }
+      const handleEmail = (e) => {
+        setEmail(e.target.value)
       }
       return (
         <div class="login-wrapper">
@@ -117,7 +127,7 @@ const Login  = () =>{
               className={errors.password && touched.password && "error"}
               type="password" />
               <div className="col-auto">
-                  <a className="text-muted float-right" id="showAssign" data-toggle="modal" data-target="#AssignDevice">
+                  <a className="text-muted float-right" id="showAssign" data-toggle="modal" data-target="#passowrdRecover">
                     Forgot password?
                   </a>
                 </div>
@@ -173,7 +183,7 @@ const Login  = () =>{
                   </div>
                   
             <div className="row">                
-            <div className="modal fade" id="AssignDevice" tabindex="-1" role="dialog" aria-labelledby="AssignDeviceLabel" aria-hidden="true">
+            <div className="modal fade" id="passowrdRecover" tabindex="-1" role="dialog" aria-labelledby="AssignDeviceLabel" aria-hidden="true">
             <div className="modal-dialog" role="document">
             {/* {success && <div className="alert  alert-success" style={{width:'100%'}}>Device Successfully assigned</div> }
 				{error &&  <div className="alert  alert-danger" style={{width:'100%'}}>Unable to assign device</div> } */}
@@ -190,9 +200,9 @@ const Login  = () =>{
 											<div className="row">
 												<div className="col-md-12">
 													<div className="form-group">
-														<label>Email</label>
-                                                        <input type="text" className="form-control" value={email}
-                                                         placeholder="Please enter your email address"/>
+														<label>Please enter your email address</label>
+                                                        <input type="text" className="form-control" 
+                                                        onChange={handleEmail} placeholder="Please enter your email address"/>
 													</div>
 												</div>
 																						
@@ -200,10 +210,31 @@ const Login  = () =>{
 											</div>
 										</div>
 									</div>
-									
-									<div className="submit-section">
+
+                  {loading ? <div class="spinner-border text-success" role="status">
+                        <span class="sr-only">Loading...</span>
+                      </div>: <div className="submit-section">
 										<button className="btn btn-primary submit-btn">Submit</button>
-									</div>
+									</div>}
+									
+									
+                  <div>&nbsp;</div>
+                  { recoverShow && ( 
+                      <div className="alert alert-danger alert-dismissible fade show" role="alert">
+                      {`${recoverMessage}, Please re-enter your details`}
+                      <button type="button" className="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                      </div>)
+                  }
+                  { recovertrueShow  && ( 
+                      <div className="alert alert-success alert-dismissible fade show" role="alert">
+                      {recoverMessage}
+                      <button type="button" className="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                      </div>)
+                  }
 								</form>
                 </div>               
                 </div>

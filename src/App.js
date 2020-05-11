@@ -4,6 +4,7 @@ import css from './App.css'
 import { withRouter, Switch, BrowserRouter, Route} from 'react-router-dom';
 import Login from './components/Auth/login';
 import Signup from './components/Auth/signup';
+import PasswordReset from './components/Auth/reset-password';
 import Sidebar from './Sidebar/sidebar';
 import Encounter from './components/Content/encounter';
 import Prescription from './components/Content/prescription';
@@ -28,6 +29,7 @@ const Main = withRouter(({ location }) => {
           <AuthGuard path="/verify-code" component={Verify} />    
           <Route path="/login" component={Login} />    
           <Route path="/signup" component={Signup} />
+          <Route path="/reset-password" component={PasswordReset} />
          
        
       </Switch>
