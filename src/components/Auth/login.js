@@ -4,7 +4,7 @@ import axios from "axios";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { Link } from 'react-router-dom';
-
+import logo from '../../assets/logo.jpeg'
 
 
 const Login  = () =>{
@@ -62,7 +62,7 @@ const Login  = () =>{
                   <form onSubmit={handleSubmit} class="form">
                       <div class="form-row ">
                           <div class="col-md-12 logo-box">
-                              <img class="logo text-center" src="https://image.winudf.com/v2/image1/dGhlbWVkaWNhbGwuY29tX2ljb25fMTU1MTYxODk2Ml8wMTA/icon.png?w=170&fakeurl=1" alt="" />
+                              <img class="logo text-center" src={logo} alt="" />
                               <h2 class="text-center">MEDICALL</h2>
                           </div>                            
                       </div>

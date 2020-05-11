@@ -69,8 +69,8 @@
   justify-self: center;
 }
 .logo{
-    width: 30px;
-    height: 30px;
+    width: 100px;
+    height: 100px;
     margin: 0 auto;
 }
 .submit{
@@ -142,8 +142,16 @@
  border: 1px solid #f2f2f2;
  margin-right: 2em;
 }
-.social-login a i{
+.social-login  .fa{
   font-size: 20px;
+  margin-left: 13px;
+}
+.fa-facebook-f{
+  color: #3B5999;
+}
+.fa-twitter{
+  color: #1AB2E8;
+  margin-left: 7px !important;
 }
 .social-login img{
     width: 20px;

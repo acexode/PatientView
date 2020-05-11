@@ -1,3 +1,11 @@
+html{
+    width:100%;
+    height:100%;
+    /* overflow: hidden; */
+}
+html::-webkit-scrollbar{
+    width: 0;
+}
 body{
     background: #f9fbfd;
     overflow-x: hidden;
@@ -177,18 +185,6 @@ i {
    font-weight: 500;
 }
 
-.btn-file{
-    background-color: #fff;
-    background-clip: border-box;
-    border: 0 solid #e9ecef;
-    border-radius: .25rem;
-    color: #7c8798;
-    outline: none;
-}
-.btn-file-active, .btn-file:hover {
-    background-color: #4986FC;
-    color: white;
-  }
 
 .components .sidebar-link:hover, .sidebar-active{
     background: rgba(23, 218, 121, 0.288);
@@ -357,7 +353,7 @@ table{
     margin: 20px;
     margin-bottom: -1.6em !important;
 }
-tr{
+tr, .feedback-card{
     background-color: #fff;
     background-clip: border-box;
     border: 0 solid #e9ecef;
@@ -409,14 +405,16 @@ tr.none {
     width: 100%;
 }
 
-.nested-table{
+.nested-table, .feedback-card{
     border: 2px solid #f6f6f6;
    
     margin-left: -6px;
     margin-top: -2px;
     margin-bottom: 10px;
 }
-
+.feedback-card{
+    padding: 12px;
+}
 .comment{       
     border-radius: .25rem;   
     border-right: 1px solid #edf2f9!important;
@@ -452,3 +450,102 @@ tr.none {
       padding-top: 4px;
       padding-left: 15px;
   }
+  .dropzone{
+    height: 200px;
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    justify-content: center;
+    text-align: center;
+    background: #F5F7FB;
+    border-width: 2px;
+    border-radius: 2px;
+    border-color: #eeeeee;
+    border-style: dashed;
+  }
+  .file-upload i{
+    font-size: 3rem;
+    color: #999;
+  }
+
+  .send, .send:hover{
+      background: #00C55C;
+      color: #fff;
+  }
+.outlet-container{
+    margin-top: -2.5em;
+    margin-left: 0;    
+    padding: 0;
+    overflow: hidden !important;  
+    /* background: rgb(189, 188, 188) !important; */
+}
+.outlet-map{
+    margin-left: -13px;
+    margin-right: 13px;
+}
+.search-controls{
+    font-size: 8px;
+    margin-left: 3px;
+    border: 1px solid #edf2f9;;
+    text-align: center;
+    cursor: pointer;
+    margin-bottom: 5px;
+    margin-right: 5px;
+}
+.search-controls span{
+    display: block;
+    color: #878787;
+    padding:4px 3px 0px 3px;
+}
+.search-controls i{
+    margin-right: 0 !important;
+    padding-top: -2px;
+    color: #8D8D8D;;
+}
+.checked {
+    color: orange;
+  }
+
+  .pharma strong{
+      font-size: 12px;
+  }
+  .pharma small{
+      font-size: 9px;
+  }
+  .fa-star{
+      margin-right: 3px;
+  }
+  .pharma-info span{
+      font-size: 8px;
+      margin-right: 15px;
+  }
+  
+  .pharma-info span i{
+      margin-right: 3px !important;
+      font-size: 12px;
+      width: 8px;
+      line-height: -1 !important;
+  }
+.pharmacies{
+    padding-bottom: 8px !important;
+    border-bottom: .5px solid #d9dbdd;
+}
+.sidebar-right{
+    height: 100vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    background: #fff;
+}
+
+.sidebar-right::-webkit-scrollbar{
+    width: 8px;
+}
+.sidebar-right::-webkit-scrollbar-track{
+    box-shadow: inset 0 0 5px  #d9dbdd;
+    /* border-radius: 10px; */
+}
+.sidebar-right::-webkit-scrollbar-thumb{
+    background-color: #BDF4D9;
+    width: 8px;
+    border-radius: 5px;
+}

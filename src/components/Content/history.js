@@ -27,7 +27,7 @@ let sampleData = [
 const EncounterHistory = () => {
     return (
         <div id="content">
-        <TopNav />
+        <TopNav title="Encounter Listing" />
        
         <div class="container"> 
                
@@ -44,7 +44,7 @@ const EncounterHistory = () => {
                         
                  
              <div class="row">
-               <table class="table table-condensed mb-5" style={{borderCollapse:'collapse'}}>
+               <table class="table table-condensed mb-5 pb-5" style={{borderCollapse:'collapse'}}>
                    <thead>
                        <tr>
                            <th scope="col">Encounter ID</th>
@@ -174,7 +174,7 @@ const EncounterHistory = () => {
                                                    <i class="lar la-clock"></i> 01/02/2021
                                                </a>
                                            </div>                                                                                               
-                                               <div class="row-card ">
+                                               <div class="row-card mb-3">
                                                    <table class="nested-table">
                                                        <thead>
                                                            <tr>

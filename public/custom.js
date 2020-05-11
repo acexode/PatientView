@@ -7,15 +7,17 @@ $(document).ready(function () {
       dropdown[i].addEventListener("click", function() {
         this.classList.toggle("active");
         console.log(this.lastChild)
-        var dropdownContent = this.nextElementSibling;
+        console.log(this.firstChild.lastChild)
+        var dropdownContent = this.lastChild;
+        console.log(this.lastChild)
         if (dropdownContent.style.display === "block") {
-          this.lastChild.classList.toggle("la-angle-right")
-          this.lastChild.classList.toggle("la-angle-down")
           dropdownContent.style.display = "none";
+          this.firstChild.lastChild.classList.toggle("la-angle-right")
+          this.firstChild.lastChild.classList.toggle("la-angle-down")
         } else {
           dropdownContent.style.display = "block";
-          this.lastChild.classList.toggle("la-angle-right")
-          this.lastChild.classList.toggle("la-angle-down")
+          this.firstChild.lastChild.classList.toggle("la-angle-right")
+          this.firstChild.lastChild.classList.toggle("la-angle-down")
         }
       });
     }

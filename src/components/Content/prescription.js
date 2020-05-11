@@ -4,7 +4,7 @@ import TopNav from '../../Sidebar/TopNav'
 const Prescription = () => {
     return (
         <div id="content">
-            <TopNav />
+            <TopNav title="Prescription" />
             <div class="container">
 
                 <div class="row">

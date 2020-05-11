@@ -1,11 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-
+import logo from '../assets/logo.jpeg'
 const Sidebar = () => {
     return (
         <nav id="sidebar">
         <div class="sidebar-header">
-            <img class="logo text-center" src="https://image.winudf.com/v2/image1/dGhlbWVkaWNhbGwuY29tX2ljb25fMTU1MTYxODk2Ml8wMTA/icon.png?w=170&fakeurl=1" alt=""/>
+            <img class=" text-center" src={logo} style={{width:"80px", marginLeft:"35%"}} alt=""/>
            <Link to="/" class="text-center">MEDICALL</Link>
         </div>           
 
@@ -35,20 +35,22 @@ const Sidebar = () => {
                Prescription
             </Link>
             </li>
-            <li class="sidebar-dropdown">
-                <Link to className="dropdown-btn" >                
+            <li class="sidebar-dropdown dropdown-btn">
+               <span>
                Laboratory
                <i class="las la-angle-right small-caret"></i>
-            </Link>
+                   
+                   </span>           
+            
             <div class="list-unstyled components dropdown-container">
                     <li class="sidebar-link">
-                        <Link to="/prescription" >
+                        <Link to="/lab-requests" >
                         <i class="las la-stethoscope"></i>
                     Requests
                     </Link>
                     </li>
                     <li class="sidebar-link">
-                    <Link to="/results" >
+                    <Link to="/lab-results" >
                         <i class="lar la-newspaper"></i>
                         Results
                     </Link>
@@ -56,20 +58,20 @@ const Sidebar = () => {
                 </li>
             </div>
             </li>
-            <li class="sidebar-dropdown">
-                <Link to className="dropdown-btn" >                
+            <li class="sidebar-dropdown dropdown-btn">
+                <Link to className="" >                
                Radiology
                <i class="las la-angle-right small-caret"></i>
             </Link>
             <div class="list-unstyled components dropdown-container">
                     <li class="sidebar-link">
-                        <Link to="/prescription" >
+                        <Link to="/radiology-requests" >
                         <i class="las la-stethoscope"></i>
                     Requests
                     </Link>
                     </li>
                     <li class="sidebar-link">
-                    <Link to="/results" >
+                    <Link to="/radiology-results" >
                         <i class="lar la-newspaper"></i>
                         Results
                     </Link>
@@ -77,7 +79,12 @@ const Sidebar = () => {
                 </li>
             </div>
             </li>
-                 
+            <li class="sidebar-link">
+                <Link to="/outlets" >
+                <i class="las la-map-marked"></i>
+               Outlets
+            </Link>
+            </li> 
            
           
         </ul>
