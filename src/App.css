@@ -27,6 +27,7 @@ a:focus {
     color: inherit;
     text-decoration: none;
     transition: all 0.3s;
+    cursor: pointer;
 }
 
 .navbar {
@@ -239,6 +240,7 @@ i {
     position: absolute;
     top: 1em;
     right: 12px;
+    margin-left: 8px;
 }
 .dropdown-menu{
     width: 100%;
@@ -319,10 +321,27 @@ i {
     color: #15CA6A;
 }
 
-.v-code{
+.v-code input{
+    display: block;   
+    height: calc(1.5em + .75rem + 2px);
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
     width: 40px;
     text-align: center;
     margin-right: 8px;
+}
+.v-code input:focus{
+    outline: none;
+    border: 2px solid #15CA6A;
+    box-shadow: 0px 0px 2px #15CA6A;
 }
 .v-code::placeholder{
     font-size: 100%;

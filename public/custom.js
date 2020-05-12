@@ -36,12 +36,12 @@ $(document).ready(function () {
       $(this).toggleClass('sidebar-active');
       
   });
-    $(".v-code").keyup(function () {
+    $(".v-code input").keyup(function () {
       console.log(this.value.length)
       console.log(this.maxLength)
         if (this.value.length == this.maxLength) {
-            console.log( $(this).next('.v-code'))
-          $(this).next('.v-code').focus();
+            console.log( $(this).next('.v-code input'))
+          $(this).next('.v-code input').focus();
         }
     });
 });

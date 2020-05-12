@@ -1,8 +1,90 @@
-import React from 'react'
+import React,{useState,useContext,useEffect} from 'react'
 import TopNav from '../../Sidebar/TopNav'
-
+import { AppContext } from '../AppContext/AppContext'
+import { useHistory } from 'react-router-dom'
+const $ = window.$
 const Verify = () => {
-    console.log('verify')
+    let history = useHistory()  
+    const initialState = {
+        vcode1: "",
+        vcode2: "",
+        vcode3: "",
+        vcode4: "",
+        vcode5: "",
+        vcode6: "",
+      
+      } 
+    const {verifyOTP, resendOTP} = useContext(AppContext)
+    const [errMsg, seterrMsg] = useState()
+    const [showError, setshowError] = useState(false)
+    const [showSuccessOTP, setshowSuccessOTP] = useState(false)
+    const [state, setState] = useState(initialState)
+
+      useEffect(() => {
+        console.log(showError)
+     }, [showError])
+
+    const handleChange = (evt) =>{
+        const value = evt.target.value;
+        setState({
+          ...state,
+          [evt.target.name]: value
+        });
+    }
+    const handleResendOTP = () =>{
+        resendOTP().then(data =>{
+            setshowSuccessOTP(true)
+        }).catch(err => {
+            seterrMsg('Unable to send otp')
+               setshowError(true)
+               setTimeout(() =>{
+                seterrMsg('')
+                setState(initialState)
+                setshowError(false)
+            },2500)
+        })
+    }
+    const handleSubmit = (evt) =>{
+       evt.preventDefault();
+       //data-toggle="modal" data-target=".bd-example-modal-sm
+       let  otp = Object.values(state).join('')
+       if(otp.length == 6){
+           let hData = JSON.parse(localStorage.getItem('hData'))
+           let obj = {
+               ...hData,
+               code: otp
+           }
+           console.log(obj)
+           verifyOTP(obj).then(data =>{
+               localStorage.removeItem('hData')
+               $('.bd-example-modal-sm').modal('toggle')
+                setTimeout(() =>{
+                    $('.bd-example-modal-sm').modal('toggle')
+                    history.push('/history')
+    
+                },1500)
+            }).catch(err =>{    
+                console.log(err.response)                
+               seterrMsg(err.response.data)
+               setshowError(true)
+               setTimeout(() =>{
+                seterrMsg('')
+                setState(initialState)
+                setshowError(false)
+    
+            },3500)
+               
+           })       
+       }else{
+           seterrMsg('Insert all 6 OTP codes')
+           setshowError(true)
+           setTimeout(() =>{
+            seterrMsg('')
+            setState(initialState)
+            setshowError(false)
+            },3500)
+       }
+    }
     return (
         <div id="content">
         <TopNav />
@@ -13,22 +95,25 @@ const Verify = () => {
                    <h3 class="text-center"><i class="las la-mobile-alt phone"></i></h3>
                    <h3 class="text-center">Verification Code</h3>
                    <small class="text-dark pt-2 text-center">The verfication code has been sent <br/> to the patient's phone  number</small>
-                   <strong class="text-dark pt-3 text-small text-center">Please enter the code below</strong>
+                   {showError ? <span className="text-danger text-center my-3">{errMsg}</span> : <strong class="text-dark pt-3 text-small text-center">Please enter the code below</strong> }
                    
                        <div class="container">                           
                              <div class="row">
-                               <div class="form-row justify-content-center mr-5 ml-5 mt-3">                                   
-                                        <input maxlength="1" type="text" class="form-control v-code" placeholder="0" />
-                                        <input maxlength="1" type="text" class="form-control v-code" placeholder="0" />
-                                        <input maxlength="1" type="text" class="form-control v-code" placeholder="0" />
-                                       <input maxlength="1" type="text" class="form-control v-code" placeholder="0" />
-                                       <input maxlength="1" type="text" class="form-control v-code" placeholder="0" />
-                                       <input maxlength="1" type="text" class="form-control v-code" placeholder="0" />                                    
+                               <form onSubmit={handleSubmit} class="form-row justify-content-center mr-5 ml-5 mt-3 v-code">                                   
+                                        <input name="vcode1" value={state.vcode1}  onChange={handleChange}  maxlength="1" type="text" className={showError && "error"}  placeholder="0" />
+                                        <input name="vcode2" value={state.vcode2}  onChange={handleChange} maxlength="1" type="text" className={showError && "error"}  placeholder="0" />
+                                        <input name="vcode3" value={state.vcode3}  onChange={handleChange} maxlength="1" type="text" className={showError && "error"}  placeholder="0" />
+                                       <input name="vcode4" value={state.vcode4}  onChange={handleChange} maxlength="1" type="text" className={showError && "error"}  placeholder="0" />
+                                       <input name="vcode5" value={state.vcode5}  onChange={handleChange} maxlength="1" type="text" className={showError && "error"}  placeholder="0" />
+                                       <input name="vcode6" value={state.vcode6}  onChange={handleChange} maxlength="1" type="text" className={showError && "error"}  placeholder="0" />                                    
                                    
-                               </div>
+                                <button class="mt-3 btn btn-block btn-primary verify">Retrieve </button>
+                               </form>
                              </div>
-                             <button class="mt-3 btn btn-block btn-primary verify" data-toggle="modal" data-target=".bd-example-modal-sm">Retrieve </button>
+                             <div class="row mt-3 justify-content-end">
+                               {showSuccessOTP ? <strong className="mr-5 text-success">OTP resent</strong> : <a onClick={handleResendOTP} className="mr-5 text-info">Resend OTP</a>}      
 
+                             </div>
 
                        </div>
                    </div>
@@ -49,7 +134,7 @@ const Verify = () => {
                            </div>
                            <div class="row justify-content-center align-item-center mt-5 mb-3">
                                <button type="button" class="btn verify text-center text-light" data-dismiss="modal">Continue</button>
-                                                     
+                                               
                            </div>
                         </div>
                         

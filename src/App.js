@@ -4,6 +4,7 @@ import css from './App.css'
 import { withRouter, Switch, BrowserRouter, Route} from 'react-router-dom';
 import Login from './components/Auth/login';
 import Signup from './components/Auth/signup';
+import PasswordReset from './components/Auth/reset-password';
 import Sidebar from './Sidebar/sidebar';
 import Encounter from './components/Content/encounter';
 import Prescription from './components/Content/prescription';
@@ -16,11 +17,12 @@ import LaboratoryResult from './components/Content/Laboratory/LaboratoryResult';
 import RadiologyRequest from './components/Content/Radiology/RadiologyRequest';
 import RadiologyResult from './components/Content/Radiology/RadiologyResult';
 import Outlets from './components/Content/outlets';
+import { AppProvider } from './components/AppContext/AppContext';
 
 const Main = withRouter(({ location }) => {
     return (
       <>  
-       {(location.pathname != '/login' && location.pathname != '/signup' && location.pathname != '/') && (	
+       {(location.pathname != '/login' && location.pathname != '/signup' && location.pathname != '/' && location.pathname != '/reset-password') && (	
         <>	
           <Sidebar/>	
         </>	
@@ -38,6 +40,7 @@ const Main = withRouter(({ location }) => {
           <AuthGuard path="/verify-code" component={Verify} />    
           <Route path="/login" component={Login} />    
           <Route path="/signup" component={Signup} />
+          <Route path="/reset-password" component={PasswordReset} />
          
        
       </Switch>
@@ -50,11 +53,11 @@ const Main = withRouter(({ location }) => {
 function App() {
   
   return (  
-    <div>
+    <AppProvider>
       <BrowserRouter>
       <Main />
     </BrowserRouter>
-  </div>
+  </AppProvider>
 
   );
 }

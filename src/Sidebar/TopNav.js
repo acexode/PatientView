@@ -1,6 +1,14 @@
-import React from 'react'
+import React, {useState} from 'react'
+import { useHistory, Link, Redirect } from 'react-router-dom'
 
 const TopNav = ({title}) => {
+    const [navigate, setnavigate] = useState(false)
+    const Logout = () =>{
+        localStorage.removeItem('token')
+        localStorage.removeItem('user')
+        setnavigate(true)
+        
+    }
     return (
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
@@ -25,10 +33,15 @@ const TopNav = ({title}) => {
                 <ul class="nav navbar-nav ml-auto">
                     
                     <li class="nav-item dropdown">
-                        <a class="nav-link" href="#" id="navbarDropdown" role="button" >
+                        {navigate ? 
+                            <Redirect to="/login" push={true} /> :
+                        <Link onClick={Logout} class="nav-link" to="/login" id="navbarDropdown" role="button" >
                             <i class="las la-sign-out-alt"></i>
                             Logout
-                        </a>
+                        </Link> 
+                        
+                    
+                    }
                        
                       </li>                          
                 </ul>
