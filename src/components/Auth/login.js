@@ -6,6 +6,8 @@ import * as Yup from "yup";
 import { Link } from 'react-router-dom';
 import logo from '../../assets/logo.jpeg'
 import {useHistory} from 'react-router-dom';
+import FacebookLogin from 'react-facebook-login';
+import GoogleLogin from 'react-google-login';
 
 
 const Login  = () =>{
@@ -17,6 +19,7 @@ const Login  = () =>{
   const [recovertrueShow,setRecoverTrueShow] = useState(false)
   const [loading,setLoading] = useState(false)
   const [email, setEmail] = useState('')
+  const [accessToken, setAccessToken] = useState('')
   return (
   <Formik
     initialValues={{ email: "", password: "" }}
@@ -79,6 +82,43 @@ const Login  = () =>{
       }
       const handleEmail = (e) => {
         setEmail(e.target.value)
+      }
+      const responseFacebook =  response => {
+        console.log(response.accessToken);
+        setAccessToken(response.accessToken)
+        console.log(accessToken);
+        let fbResponse =  axios.post(`https://stagingapi.healthinabox.ng/api/Auth/facebook`, {accessToken : response.accessToken})
+        .then(res => {
+          console.log(res.data);
+          let user = {email : res.data.email , id: res.data.id }
+          localStorage.setItem("token", res.data.authToken)
+          localStorage.setItem('user', JSON.stringify(user))
+          history.push('/history',{user: res.data.user})
+        })
+        .catch(err =>{         
+          console.log(err.response);
+          setShow(true)
+          setMessage(err.response.data)
+        })	
+      }
+      const responseGoogle = (response) => {
+        console.log(response);
+        let googleResponse =  axios.post(`https://stagingapi.healthinabox.ng/api/Auth/google`, {accessToken : response.code})
+        .then(res => {
+          console.log(res.data);
+          let user = {email : res.data.email , id: res.data.id }
+          localStorage.setItem("token", res.data.authToken)
+          localStorage.setItem('user', JSON.stringify(user))
+          history.push('/history',{user: res.data.user})
+        })
+        .catch(err =>{         
+          console.log(err.response);
+          setShow(true)
+          setMessage(err.response.data)
+        })
+      }
+      const componentClicked = (response) => {
+        console.log('data', response);
       }
       return (
         <div class="login-wrapper">
@@ -159,19 +199,31 @@ const Login  = () =>{
                           
                         </div>
                       <div class="form-row justify-content-md-center">
-                          <a href="#" class="social-login">
-                              <img src="https://colorlib.com/etc/lf/Login_v9/images/icons/icon-google.png" alt="" />
+                      <div class="social-login">
+                          <GoogleLogin
+                              clientId="113873161933-1j99gn4fvnm1832i61m3lg8d6gfleb0l.apps.googleusercontent.com"
+                              buttonText="Login"
+                              accessType="offline"
+                              responseType="code"
+                              scope="profile email"
+                              onSuccess={responseGoogle}
+                              onFailure={responseGoogle}
+                              cookiePolicy={'single_host_origin'}
+                            />
                           
-                          </a>
-                         <a href="#" class="social-login">
-                          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/1200px-Instagram_logo_2016.svg.png" alt="" />
-                          </a>
-                         <a href="#" class="social-login">
-                          <i class="fa fa-facebook-f"></i>
-                          </a>
-                         <a href="#" class="social-login">
-                          <i class="fa fa-twitter fa-fw"></i>
-                          </a>
+                          </div>
+                        
+                         <div class="social-login">
+                         <FacebookLogin
+                            appId="531093777583624"
+                            autoLoad={true}
+                            fields="name,email,picture"
+                            onClick={componentClicked}
+                            callback={responseFacebook}
+                            icon="fa-facebook"
+                                                  />
+                          </div>
+                        
 
                           
                         </div>
