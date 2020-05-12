@@ -17,6 +17,24 @@ const Login  = () =>{
   const [recovertrueShow,setRecoverTrueShow] = useState(false)
   const [loading,setLoading] = useState(false)
   const [email, setEmail] = useState('')
+  const googleLogin = () =>{
+    console.log('facebook')
+    axios.post(`https://stagingapi.healthinabox.ng/api/Auth/google` )
+    .then(data =>{
+      console.log(data)
+    }).catch(err =>{
+      console.log(err.response)
+    })
+  }
+  const facebookLogin = () =>{
+    console.log('facebook')
+    axios.post(`https://stagingapi.healthinabox.ng/api/Auth/facebook` )
+    .then(data =>{
+      console.log(data)
+    }).catch(err =>{
+      console.log(err.response)
+    })
+  }
   return (
   <Formik
     initialValues={{ email: "", password: "" }}
@@ -159,14 +177,14 @@ const Login  = () =>{
                           
                         </div>
                       <div class="form-row justify-content-md-center">
-                          <a href="#" class="social-login">
+                          <a onClick={googleLogin} class="social-login">
                               <img src="https://colorlib.com/etc/lf/Login_v9/images/icons/icon-google.png" alt="" />
                           
                           </a>
                          <a href="#" class="social-login">
                           <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/1200px-Instagram_logo_2016.svg.png" alt="" />
                           </a>
-                         <a href="#" class="social-login">
+                         <a  onClick={facebookLogin} class="social-login">
                           <i class="fa fa-facebook-f"></i>
                           </a>
                          <a href="#" class="social-login">
