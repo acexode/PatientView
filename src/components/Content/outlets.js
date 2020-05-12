@@ -1,7 +1,6 @@
 import React from 'react'
 import TopNav from '../../Sidebar/TopNav'
-import OutletMap from '../OutletMap/OutletMap'
-import WrappedMap from '../OutletMap/MarkerWithLabel'
+import WrappedMap from '../OutletMap/GoogleMap'
 import { key } from '../../key'
 const pharmacies = [
     {
