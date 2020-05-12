@@ -69,8 +69,8 @@
   justify-self: center;
 }
 .logo{
-    width: 100px;
-    height: 100px;
+    width: 50px;
+    height: 50px;
     margin: 0 auto;
 }
 .submit{
@@ -131,22 +131,39 @@
   }   
  
 }
-.social-login {
-  
- width: 40px;
- height: 40px;
+.social-login { 
  text-decoration: none;
  border-radius: 50%;
  text-align: center;
  padding-top: 5px;
- border: 1px solid #f2f2f2;
  margin-right: 2em;
+}
+
+.social-login button span{
+  display: none;
+}
+.social-login button{
+  width: 50px;
+  height: 50px;
+  background: #fff;
+  outline: none;
+  text-align: center;
+  box-shadow: none !important;
+  border: 1px solid #f2f2f2 !important;
+  border-radius: 50% !important;
+}
+.social-login button div{
+  margin-right: 0px !important; 
+  background: none !important; 
+  padding-left: 14px !important;
+  border-radius: 0px;
 }
 .social-login  .fa{
   font-size: 20px;
-  margin-left: 13px;
+  margin-left: -6px;
+  margin-top: -12px;
 }
-.fa-facebook-f{
+.fa-facebook{
   color: #3B5999;
 }
 .fa-twitter{
@@ -192,3 +209,16 @@ input.error {
     margin-bottom: 5px;
   }
   
+  .line-text {
+    width: 100%; 
+    text-align: center; 
+    border-bottom: 2px solid #f2f2f2; 
+    line-height: 0.1em;
+    margin: 10px 0 20px; 
+    font-size: 80%;
+ } 
+ 
+ .line-text span { 
+     background:#fff; 
+     padding:0 10px; 
+ }

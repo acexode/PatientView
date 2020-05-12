@@ -2,7 +2,7 @@
 $(document).ready(function () {
     var dropdown = document.getElementsByClassName("dropdown-btn");
     var i;
-    
+    $('.kep-login-facebook metro').html("<i class='fa fa-facebook'></i>")
     for (i = 0; i < dropdown.length; i++) {
       dropdown[i].addEventListener("click", function() {
         this.classList.toggle("active");

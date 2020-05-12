@@ -6,6 +6,8 @@ import * as Yup from "yup";
 import { Link } from 'react-router-dom';
 import logo from '../../assets/logo.jpeg'
 import { useHistory } from 'react-router-dom';
+import FacebookLogin from 'react-facebook-login';
+import GoogleLogin from 'react-google-login';
 
 
 
@@ -14,6 +16,7 @@ const Signup  = () =>{
   let history = useHistory()
   const [message,setMessage] = useState('')
   const [show,setShow] = useState(false)
+
   return (
   <Formik
     initialValues={{firstname: "", lastname: "", phoneNumber: "", email: "", password: "", confirmPassword:"" }}
@@ -61,6 +64,51 @@ const Signup  = () =>{
         handleBlur,
         handleSubmit
       } = props;
+      const responseFacebook =  response => {
+        console.log(response.accessToken);
+        let fbResponse =  axios.post(`https://stagingapi.healthinabox.ng/api/Auth/facebook`, {accessToken : response.accessToken})
+        .then(res => {
+          console.log(res.data);
+          let user = {email : res.data.email , id: res.data.id }
+          localStorage.setItem("token", res.data.authToken)
+          localStorage.setItem('user', JSON.stringify(user))
+          history.push('/history',{user: res.data.user})
+        })
+        .catch(err =>{         
+          console.log(err.response);
+          setShow(true)
+          if(err.response.data.errors){
+            setMessage(err.response.data.errors.AccessToken[0])
+          }else{
+            setMessage(err.response.data)
+
+          }
+        })	
+      }
+      const responseGoogle = (response) => {
+        console.log(response);
+        let googleResponse =  axios.post(`https://stagingapi.healthinabox.ng/api/Auth/google`, {accessToken : response.code})
+        .then(res => {
+          console.log(res.data);
+          let user = {email : res.data.email , id: res.data.id }
+          localStorage.setItem("token", res.data.authToken)
+          localStorage.setItem('user', JSON.stringify(user))
+          history.push('/history',{user: res.data.user})
+        })
+        .catch(err =>{         
+          console.log(err.response);
+          setShow(true)
+          if(err.response.data.errors){
+            setMessage(err.response.data.errors.AccessToken[0])
+          }else{
+            setMessage(err.response.data)
+
+          }
+        })
+      }
+      const componentClicked = (response) => {
+        console.log('data', response);
+      }
       return (
         <div class="login-wrapper">
         <div class="page-wrapper">
@@ -68,8 +116,7 @@ const Signup  = () =>{
                   <form onSubmit={handleSubmit} class="form">
                       <div class="form-row ">
                           <div class="col-md-12 logo-box">
-                              <img class="logo text-center" src={logo} alt="" />
-                              <h2 class="text-center">MEDICALL</h2>
+                              <img class="logo text-center" src={logo} alt="" />                              
                           </div>                            
                       </div>
                       <div class="form-row instruction mb-3">
@@ -181,35 +228,45 @@ const Signup  = () =>{
                       <div>&nbsp;</div>
                       { show && ( 
                       <div className="alert alert-danger alert-dismissible fade show" role="alert">
-                      {`${message}, Please re-enter your details`}
+                        <span style={{fontSize:'80%'}}>{`${message}, Please re-enter your details`}</span>
                       <button type="button" className="close" data-dismiss="alert" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                       </button>
                       </div>)
                   }
                       <div class="form-row mt-4">
-                          <div class="form-group col-md-4 border-top mt-3"></div>
-                          <div class="form-group col-md-4">
-                            <p class="pl-3 text-center or">or</p>
-                          </div>
-                          <div class="form-group col-md-4 border-top mt-3"></div>
+                            <h2 className="line-text"><span>or</span></h2>
 
                           
                         </div>
                       <div class="form-row justify-content-md-center">
-                          <a href="#" class="social-login">
-                              <img src="https://colorlib.com/etc/lf/Login_v9/images/icons/icon-google.png" alt="" />
+                          <div class="social-login">
+                          <GoogleLogin
+                              clientId="113873161933-1j99gn4fvnm1832i61m3lg8d6gfleb0l.apps.googleusercontent.com"
+                              buttonText="Login"
+                              responseType="code"
+                              onSuccess={responseGoogle}
+                              onFailure={responseGoogle}
+                              cookiePolicy={'single_host_origin'}
+                            />
                           
-                          </a>
-                         <a href="#" class="social-login">
-                          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/1200px-Instagram_logo_2016.svg.png" alt="" />
-                          </a>
-                         <a href="#" class="social-login">
-                          <i class="fa fa-facebook-f"></i>
-                          </a>
-                         <a href="#" class="social-login">
-                          <i class="fa fa-twitter fa-fw"></i>
-                          </a>
+                          </div>
+                        
+                         <div class="social-login">
+                          
+                          <FacebookLogin
+                            appId="531093777583624"
+                            autoLoad={true}
+                            fields="name,email,picture"                            
+                            callback={responseFacebook}
+                            icon="fa-facebook"
+                            
+                            
+                                                  />
+                          
+                         
+                          </div>
+                         
 
                           
                         </div>
