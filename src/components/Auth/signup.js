@@ -247,7 +247,7 @@ const Signup  = () =>{
                               responseType="code"
                               onSuccess={responseGoogle}
                               onFailure={responseGoogle}
-                              cookiePolicy={'single_host_origin'}
+                              // cookiePolicy={'single_host_origin'}
                             />
                           
                           </div>
