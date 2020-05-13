@@ -256,7 +256,7 @@ const Signup  = () =>{
                           
                           <FacebookLogin
                             appId="531093777583624"
-                            autoLoad={true}
+                            // autoLoad={true}
                             fields="name,email,picture"                            
                             callback={responseFacebook}
                             icon="fa-facebook"
