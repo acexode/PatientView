@@ -13,7 +13,6 @@
 
 # google api
 /src/key.js
-/src/config.json
 .env.local
 
 # misc
