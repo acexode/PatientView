@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import TopNav from '../../Sidebar/TopNav'
+import { AppContext } from '../AppContext/AppContext'
 
 let sampleData = [
     {
@@ -7,7 +8,7 @@ let sampleData = [
         date: '05/06/2020',
         call_desk:'Nnamdi Azikwe Teaching Hospital',
         doctor: 'Dr. Okafor',
-        email: 'okafor@gmail.com'
+        email: 'okafor@gmail.com' 
     },
     {
         _id: 'EN002',
@@ -25,6 +26,7 @@ let sampleData = [
     },
 ]
 const EncounterHistory = () => {
+    const {hospitals, verifyPatient} = useContext(AppContext)
     return (
         <div id="content">
         <TopNav title="Encounter Listing" />

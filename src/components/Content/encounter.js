@@ -15,12 +15,13 @@ const Encounter = () => {
     useEffect(() => {
        console.log(showError)
     }, [showError])
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        
         let data = {
             "hospitalId": selectedhospital.id,
             "hospitalNumber": hospitalNumber
-          }
-          localStorage.setItem('hData', JSON.stringify(data))
+          }         
           verifyPatient(data).then(res =>{
               console.log(res)
               history.push('/verify-code')

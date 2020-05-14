@@ -1,26 +1,23 @@
-
+const $ = window.$
 $(document).ready(function () {
-    var dropdown = document.getElementsByClassName("dropdown-btn");
-    var i;
-    $('.kep-login-facebook metro').html("<i class='fa fa-facebook'></i>")
-    for (i = 0; i < dropdown.length; i++) {
-      dropdown[i].addEventListener("click", function() {
-        this.classList.toggle("active");
-        console.log(this.lastChild)
-        console.log(this.firstChild.lastChild)
-        var dropdownContent = this.lastChild;
-        console.log(this.lastChild)
-        if (dropdownContent.style.display === "block") {
-          dropdownContent.style.display = "none";
-          this.firstChild.lastChild.classList.toggle("la-angle-right")
-          this.firstChild.lastChild.classList.toggle("la-angle-down")
-        } else {
-          dropdownContent.style.display = "block";
-          this.firstChild.lastChild.classList.toggle("la-angle-right")
-          this.firstChild.lastChild.classList.toggle("la-angle-down")
-        }
-      });
-    }
+    
+    $(".submenu-dropdown").click(function(){
+      $('.ul').hide();
+      $(".submenu-dropdown").children("i").removeClass("la-angle-down")
+      $(".submenu-dropdown").children("i").addClass("la-angle-right")
+      $(this).next().slideToggle();
+      if($(this).children("i").hasClass("la-angle-right")){
+        $(this).children("i").removeClass("la-angle-right")
+        $(this).children("i").addClass("la-angle-down")
+      }else{
+        $(this).children("i").removeClass("la-angle-down")
+        $(this).children("i").addClass("la-angle-right")
+      }
+     
+
+    });
+   
+    
 
     $("#sidebar").mCustomScrollbar({
         theme: "minimal"

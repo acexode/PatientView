@@ -1,12 +1,14 @@
 import React, { createContext,useEffect, useState } from "react";
 import axios from "axios"
-
+ 
 export const AppContext = createContext();
 
 export const AppProvider = (props) => {
     const token = localStorage.getItem('token')
     const API = 'https://stagingapi.healthinabox.ng'
     const [hospitals, sethospitals] = useState([])
+    const [encounter, setencounter] = useState()
+    const [patientInfo, setpatientInfo] = useState()
     useEffect(() => {
         fetchHospitals()
     }, [])
@@ -21,10 +23,15 @@ export const AppProvider = (props) => {
     }
     const verifyPatient = (data)=>{
         return axios.post(`${API}/api/Hospitals/verify/patient`, data, {headers: {'Authorization': `Bearer ${token}`}})
-        
+        .then(res =>{
+            setpatientInfo(res.data)
+        })
     }
     const verifyOTP = (data)=>{
         return axios.post(`${API}/api/Hospitals/verify/otp`, data, {headers: {'Authorization': `Bearer ${token}`}})
+        .then(res =>{
+            setencounter(res.data)
+        })
         
     }
     const resendOTP = ()=>{
@@ -36,6 +43,6 @@ export const AppProvider = (props) => {
         
     }
     return <AppContext.Provider
-        value= {{hospitals, verifyPatient, verifyOTP, resendOTP, resetPassword}}
+        value= {{hospitals, verifyPatient, verifyOTP, resendOTP, resetPassword,patientInfo, encounter}}
 >{props.children}</AppContext.Provider>
 }

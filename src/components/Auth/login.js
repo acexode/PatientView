@@ -4,7 +4,7 @@ import axios from "axios";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { Link } from 'react-router-dom';
-import logo from '../../assets/logo.jpeg'
+import logo from '../../assets/MEDICALL.svg'
 import {useHistory} from 'react-router-dom';
 import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
@@ -135,7 +135,7 @@ const Login  = () =>{
         <div class="login-wrapper">
         <div class="page-wrapper">
               <div class="form-wrapper">
-                  <form onSubmit={handleSubmit} class="form">
+                  <form onSubmit={handleSubmit} class="form col-md-6">
                       <div class="form-row ">
                           <div class="col-md-12 logo-box">
                               <img class="logo text-center" src={logo} alt="" />
@@ -205,7 +205,7 @@ const Login  = () =>{
 
                           
                         </div>
-                      <div class="form-row justify-content-md-center">
+                      <div class="form-row justify-content-center">
                       <div class="social-login">
                           <GoogleLogin
                               clientId="113873161933-1j99gn4fvnm1832i61m3lg8d6gfleb0l.apps.googleusercontent.com"
@@ -233,11 +233,11 @@ const Login  = () =>{
 
                           
                         </div>
-                        <div class="form-row mt-4 justify-content-md-center">
+                        <div class="form-row mt-4 justify-content-center">
                             <p>You dont have an account ? </p> <Link class="pl-2" to="/signup">Sign Up</Link>
                         </div>
                     </form>
-                    <div class="right-bg">
+                    <div class="right-bg col-md-6">
 
                   </div>
                   

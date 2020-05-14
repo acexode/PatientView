@@ -1,6 +1,6 @@
 import React from 'react'
 import css from './home.css'
-import logo from '../../assets/logo.jpeg'
+import logo from '../../assets/MEDICALL.svg'
 import { Link } from 'react-router-dom'
 const Home = () => {
     return (
@@ -40,7 +40,7 @@ const Home = () => {
             <h1 class="mb-5 hero-text">Consult a Doctor <br/>Anytime Anywhere</h1>
         </div>
         <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
-            <button type="submit" class="btn get-started">Get Started</button>
+            <Link to="/login" class="btn get-started">Get Started</Link>
         </div>
       </div>
     </div>
