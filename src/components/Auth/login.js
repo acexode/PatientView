@@ -32,8 +32,7 @@ const Login  = () =>{
           console.log(res.data);
           let user = {email : res.data.email , id: res.data.id }
           localStorage.setItem("token", res.data.authToken)
-          localStorage.setItem('user', JSON.stringify(user))
-          localStorage.setItem("noOTP", true)
+          localStorage.setItem('user', JSON.stringify(user))          
           history.push('/encounter',{user: res.data.user})
         })
         .catch(err =>{         
@@ -95,7 +94,7 @@ const Login  = () =>{
           let user = {email : res.data.email , id: res.data.id }
           localStorage.setItem("token", res.data.authToken)
           localStorage.setItem('user', JSON.stringify(user))
-          localStorage.setItem("noOTP", true)
+          
           history.push('/encounter',{user: res.data.user})
         })
         .catch(err =>{         
