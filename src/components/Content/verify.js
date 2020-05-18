@@ -48,19 +48,22 @@ const Verify = () => {
     const handleSubmit = (evt) =>{
        evt.preventDefault();      
        let  otp = Object.values(state).join('')
+       let hdata = JSON.parse(localStorage.getItem('hData'))
+       console.log(hdata)
        if(otp.length == 6){          
            let obj ={
                 "code": otp,
-                "hospitalId": patientInfo.hospitalId,
-                "hospitalNumber": patientInfo.hospitalNumber
+                "hospitalId": patientInfo.hospitalId || hdata.hospitalId,
+                "hospitalNumber": patientInfo.hospitalNumber || hdata.hospitalNumber
               }    
             console.log(obj)
            verifyOTP(obj).then(data =>{
+             console.log(data)
                localStorage.removeItem('hData')
                $('.bd-example-modal-sm').modal('toggle')
                 setTimeout(() =>{
                     $('.bd-example-modal-sm').modal('toggle')
-                    history.push('/history')
+                    // history.push('/history')
     
                 },1500)
             }).catch(err =>{    

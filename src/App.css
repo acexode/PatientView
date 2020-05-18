@@ -562,6 +562,9 @@ tr.none {
     padding-bottom: 8px !important;
     border-bottom: .5px solid #d9dbdd;
 }
+.pharmacies:hover{
+    background: #EFF9F5;
+}
 .sidebar-right{
     height: 100vh;
     overflow-y: scroll;

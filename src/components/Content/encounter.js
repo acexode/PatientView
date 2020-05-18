@@ -14,22 +14,32 @@ const Encounter = () => {
 
     useEffect(() => {
        console.log(showError)
-    }, [showError])
+    }, [showError, hospitals])
     const handleSubmit = (e) => {
-        e.preventDefault();
-        
-        let data = {
-            "hospitalId": selectedhospital.id,
-            "hospitalNumber": hospitalNumber
-          }         
-          verifyPatient(data).then(res =>{
-              console.log(res)
-              history.push('/verify-code')
-          }).catch(err =>{
-              console.log(err.response)
-              seterrMsg(err.response.data)
-              setshowError(true)
-          })
+        e.preventDefault(); 
+        if(selectedhospital){
+            let data = {
+                "hospitalId": selectedhospital.id,
+                "hospitalNumber": hospitalNumber
+              } 
+              localStorage.setItem("hData", JSON.stringify(data))        
+              verifyPatient(data).then(res =>{
+                  console.log(res)
+                  history.push('/verify-code')
+              }).catch(err =>{
+                  console.log(err.response)
+                  seterrMsg(err.response.data)
+                  setshowError(true)
+              })
+        }else{
+            seterrMsg('please select your hospital and fill in your hospital Number')
+            setshowError(true)
+            setTimeout(() =>{
+                seterrMsg('')
+                setshowError(false)
+                
+            },5000)
+        }
     }
     return (
         <div id="content">
