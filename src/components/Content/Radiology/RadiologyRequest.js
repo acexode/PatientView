@@ -1,32 +1,12 @@
 import React, { useContext } from 'react'
 import TopNav from '../../../Sidebar/TopNav'
 import { AppContext } from '../../AppContext/AppContext'
-import allencounters from '../encounters'
+
 import {getDate, getTime} from '../../helpers/helpers'
-let sampleData = [
-    {
-        _id: 'EN001',
-        date: '05/06/2020',
-        lab_req:'RRN001',
-        doctor: 'Dr. Okafor',
-       
-    },
-    {
-        _id: 'EN002',
-        date: '05/06/2020',
-        lab_req:'RRN002',
-        doctor: 'Dr. Mallam',
-       
-    },
-    {
-        _id: 'EN003',
-        date: '05/06/2020',
-        lab_req:'RRN003',
-        doctor: 'Dr. Ogundu',       
-    },
-]
+
 const RadiologyRequest = () => {
     const {encounter} = useContext(AppContext)   
+    const allencounters = encounter.length > 0 ? encounter : JSON.parse(localStorage.getItem('encounter'))  
     return (
         <div id="content">
         <TopNav title="Radiology Request" />
