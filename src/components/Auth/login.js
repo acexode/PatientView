@@ -94,7 +94,7 @@ const Login  = () =>{
           let user = {email : res.data.email , id: res.data.id }
           localStorage.setItem("token", res.data.authToken)
           localStorage.setItem('user', JSON.stringify(user))
-          history.push('/history',{user: res.data.user})
+          history.push('/encounter',{user: res.data.user})
         })
         .catch(err =>{         
           console.log(err.response);
@@ -116,7 +116,7 @@ const Login  = () =>{
           let user = {email : res.data.email , id: res.data.id }
           localStorage.setItem("token", res.data.authToken)
           localStorage.setItem('user', JSON.stringify(user))
-          history.push('/history',{user: res.data.user})
+          history.push('/encounter',{user: res.data.user})
         })
         .catch(err =>{         
           console.log(err.response);
