@@ -8,7 +8,7 @@ import logo from '../../assets/MEDICALL.svg'
 import { useHistory } from 'react-router-dom';
 import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
-
+import config from '../../config.json';
 
 
 
@@ -23,7 +23,7 @@ const Signup  = () =>{
     onSubmit={(values, { setSubmitting }) => {
       setTimeout(() => {
         console.log("Logging in", values);
-        axios.post(`https://stagingapi.healthinabox.ng/api/Account/create`,  values )
+        axios.post(`${config.BASE_URL}Account/create`,  values )
         .then(res => {
           console.log(res.data);
           let user = {email : res.data.email , id: res.data.id }
@@ -66,7 +66,7 @@ const Signup  = () =>{
       } = props;
       const responseFacebook =  response => {
         console.log(response.accessToken);
-        let fbResponse =  axios.post(`https://stagingapi.healthinabox.ng/api/Auth/facebook`, {accessToken : response.accessToken})
+        let fbResponse =  axios.post(`${config.BASE_URL}Auth/facebook`, {accessToken : response.accessToken})
         .then(res => {
           console.log(res.data);
           let user = {email : res.data.email , id: res.data.id }
@@ -87,7 +87,7 @@ const Signup  = () =>{
       }
       const responseGoogle = (response) => {
         console.log(response);
-        let googleResponse =  axios.post(`https://stagingapi.healthinabox.ng/api/Auth/google`, {accessToken : response.code})
+        let googleResponse =  axios.post(`${config.BASE_URL}Auth/google`, {accessToken : response.code})
         .then(res => {
           console.log(res.data);
           let user = {email : res.data.email , id: res.data.id }
@@ -242,27 +242,26 @@ const Signup  = () =>{
                       <div class="form-row justify-content-center">
                           <div class="social-login">
                           <GoogleLogin
-                              clientId="113873161933-1j99gn4fvnm1832i61m3lg8d6gfleb0l.apps.googleusercontent.com"
-                              buttonText="Login"
-                              responseType="code"
-                              onSuccess={responseGoogle}
-                              onFailure={responseGoogle}
-                              // cookiePolicy={'single_host_origin'}
-                            />
+                            clientId={config.GOOGLE_CLIENT_ID}
+                            buttonText=""
+                            accessType="offline"
+                            responseType="code"
+                            redirectUri={config.GOOGLE_AUTH_CALLBACK_URL}
+                            scope="profile email"
+                            onSuccess={responseGoogle}
+                            onFailure={responseGoogle}
+                          />
                           
                           </div>
                         
                          <div class="social-login">
                           
                           <FacebookLogin
-                            appId="531093777583624"
+                            appId={config.FACEBOOK_APP_ID}
                             // autoLoad={true}
                             fields="name,email,picture"                            
                             callback={responseFacebook}
-                            icon="fa-facebook"
-                            
-                            
-                                                  />
+                            icon="fa-facebook"/>
                           
                          
                           </div>

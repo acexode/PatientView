@@ -4,10 +4,11 @@ import axios from "axios";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { Link } from 'react-router-dom';
-import logo from '../../assets/MEDICALL.svg'
+import logo from '../../assets/logo.jpeg'
 import {useHistory} from 'react-router-dom';
 import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
+import config from '../../config.json';
 
 
 const Login  = () =>{
@@ -26,13 +27,13 @@ const Login  = () =>{
     onSubmit={(values, { setSubmitting }) => {
       setTimeout(() => {
         console.log("Logging in", values);
-        axios.post(`https://stagingapi.healthinabox.ng/api/Auth/login`,  values )
+        axios.post(`${config.BASE_URL}Auth/login`,  values )
         .then(res => {
           console.log(res.data);
           let user = {email : res.data.email , id: res.data.id }
           localStorage.setItem("token", res.data.authToken)
           localStorage.setItem('user', JSON.stringify(user))
-          history.push('/encounter',{user: res.data.user})
+          history.push('/history',{user: res.data.user})
         })
         .catch(err =>{         
           console.log(err);
@@ -64,7 +65,7 @@ const Login  = () =>{
         e.preventDefault();	
         setLoading(true)
         try{
-          let emailResponse = await axios.get('https://stagingapi.healthinabox.ng/api/Auth/password/reset', {
+          let emailResponse = await axios.get(`${config.BASE_URL}Auth/password/reset`, {
             params: {
               email: email
             }
@@ -87,7 +88,7 @@ const Login  = () =>{
         console.log(response.accessToken);
         setAccessToken(response.accessToken)
         console.log(accessToken);
-        let fbResponse =  axios.post(`https://stagingapi.healthinabox.ng/api/Auth/facebook`, {accessToken : response.accessToken})
+        let fbResponse =  axios.post(`${config.BASE_URL}Auth/facebook`, {accessToken : response.accessToken})
         .then(res => {
           console.log(res.data);
           let user = {email : res.data.email , id: res.data.id }
@@ -98,7 +99,7 @@ const Login  = () =>{
         .catch(err =>{         
           console.log(err.response);
           setShow(true)
-          console.log(err.response.data.errors.AccessToken[0])
+          //console.log(err.response.data.errors.AccessToken[0])
           if(err.response.data.errors){
             setMessage(err.response.data.errors.AccessToken[0])
           }else{
@@ -109,13 +110,13 @@ const Login  = () =>{
       }
       const responseGoogle = (response) => {
         console.log(response);
-        let googleResponse =  axios.post(`https://stagingapi.healthinabox.ng/api/Auth/google`, {accessToken : response.code})
+        let googleResponse =  axios.post(`${config.BASE_URL}Auth/google`, {accessToken : response.code})
         .then(res => {
           console.log(res.data);
           let user = {email : res.data.email , id: res.data.id }
           localStorage.setItem("token", res.data.authToken)
           localStorage.setItem('user', JSON.stringify(user))
-          history.push('/encounter',{user: res.data.user})
+          history.push('/history',{user: res.data.user})
         })
         .catch(err =>{         
           console.log(err.response);
@@ -135,7 +136,7 @@ const Login  = () =>{
         <div class="login-wrapper">
         <div class="page-wrapper">
               <div class="form-wrapper">
-                  <form onSubmit={handleSubmit} class="form col-md-6">
+                  <form onSubmit={handleSubmit} class="form">
                       <div class="form-row ">
                           <div class="col-md-12 logo-box">
                               <img class="logo text-center" src={logo} alt="" />
@@ -205,39 +206,38 @@ const Login  = () =>{
 
                           
                         </div>
-                      <div class="form-row justify-content-center">
+                      <div class="form-row justify-content-md-center">
                       <div class="social-login">
                           <GoogleLogin
-                              clientId="113873161933-1j99gn4fvnm1832i61m3lg8d6gfleb0l.apps.googleusercontent.com"
-                              buttonText=""
-                              accessType="offline"
-                              responseType="code"
-                              scope="profile email"
-                              onSuccess={responseGoogle}
-                              onFailure={responseGoogle}
-                              cookiePolicy={'single_host_origin'}
-                            />
-                          
-                          </div>
+                            clientId={config.GOOGLE_CLIENT_ID}
+                            buttonText=""
+                            accessType="offline"
+                            responseType="code"
+                            redirectUri={config.GOOGLE_AUTH_CALLBACK_URL}
+                            scope="profile email"
+                            onSuccess={responseGoogle}
+                            onFailure={responseGoogle}
+                          />
+                        </div>
                         
                          <div class="social-login">
                          <FacebookLogin
-                            appId="531093777583624"
+                            appId={config.FACEBOOK_APP_ID}
                             // autoLoad={true}
                             fields="name,email,picture"
                             callback={responseFacebook}
                             icon="fa-facebook"
-                                                  />
+                          />
                           </div>
                         
 
                           
                         </div>
-                        <div class="form-row mt-4 justify-content-center">
+                        <div class="form-row mt-4 justify-content-md-center">
                             <p>You dont have an account ? </p> <Link class="pl-2" to="/signup">Sign Up</Link>
                         </div>
                     </form>
-                    <div class="right-bg col-md-6">
+                    <div class="right-bg">
 
                   </div>
                   
