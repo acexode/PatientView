@@ -78,7 +78,7 @@ const Signup  = () =>{
           console.log(err.response);
           setShow(true)
           if(err.response.data.errors){
-            setMessage(err.response.data.errors.AccessToken[0])
+            //setMessage(err.response.data.errors.AccessToken[0])
           }else{
             setMessage(err.response.data)
 
@@ -99,9 +99,9 @@ const Signup  = () =>{
           console.log(err.response);
           setShow(true)
           if(err.response.data.errors){
-            setMessage(err.response.data.errors.AccessToken[0])
+            //setMessage(err.response.data.errors.AccessToken[0])
           }else{
-            setMessage(err.response.data)
+            setMessage(err.response)
 
           }
         })
