@@ -1,11 +1,11 @@
 import React, { useContext } from 'react'
 import TopNav from '../../../Sidebar/TopNav'
 import { AppContext } from '../../AppContext/AppContext'
-import allencounters from '../encounters'
 import {getDate, getTime} from '../../helpers/helpers'
 
 const LaboratoryRequest = () => {
     const {encounter} = useContext(AppContext)    
+    const allencounters = encounter.length > 0 ? encounter : JSON.parse(localStorage.getItem('encounter'))  
     return (
         <div id="content">
         <TopNav title="Laboratory Request" />
