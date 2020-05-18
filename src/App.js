@@ -1,7 +1,7 @@
 import React from 'react';
 import css from './App.css'
 
-import { withRouter, Switch, BrowserRouter, Route} from 'react-router-dom';
+import { withRouter, Switch, BrowserRouter, Route, useHistory, Redirect} from 'react-router-dom';
 import Login from './components/Auth/login';
 import Signup from './components/Auth/signup';
 import PasswordReset from './components/Auth/reset-password';
@@ -19,7 +19,8 @@ import RadiologyResult from './components/Content/Radiology/RadiologyResult';
 import Outlets from './components/Content/outlets';
 import { AppProvider } from './components/AppContext/AppContext';
 
-const Main = withRouter(({ location }) => {
+  const Main = withRouter(({ location }) => {
+    
     return (
       <>  
        {(location.pathname != '/login' && location.pathname != '/signup' && location.pathname != '/' && location.pathname != '/reset-password') && (	
@@ -30,7 +31,8 @@ const Main = withRouter(({ location }) => {
       <Switch>       
           <AuthGuard path="/" exact component={Home} />    
           <AuthGuard path="/encounter"  component={Encounter} />    
-          <AuthGuard exact path="/history"  component={EncounterHistory} />    
+          <AuthGuard exact path="/history"  component={EncounterHistory} /> 
+         
           <AuthGuard exact path="/prescription"  component={Prescription} />    
           <AuthGuard exact path="/lab-requests"  component={LaboratoryRequest} />    
           <AuthGuard exact path="/lab-results"  component={LaboratoryResult} />    

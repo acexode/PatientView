@@ -1,12 +1,15 @@
 import React, { useContext,useEffect } from 'react'
 import TopNav from '../../Sidebar/TopNav'
 import { AppContext } from '../AppContext/AppContext'
-import { getDate, getTime } from '../helpers/helpers'
+import { getDate, getTime, getOTPState,hospitalInfo } from '../helpers/helpers'
+import { useHistory } from 'react-router-dom'
 
 
 const EncounterHistory = () => {
+    let history = useHistory()
     const {hospitals, verifyPatient,encounter} = useContext(AppContext)
     const allEncounters = encounter.length > 0 ? encounter : JSON.parse(localStorage.getItem('encounter'))
+    console.log(hospitalInfo)
     useEffect(() => {
        
     }, [encounter])
@@ -14,14 +17,14 @@ const EncounterHistory = () => {
    
     return (
         <div id="content">
-        <TopNav title="Encounter Listing" />
+        <TopNav title="Encounter History" />
        
         <div class="container"> 
                
                <div class="row">
                    <div class="col-md-6">
                        <a class="h-id btn border" href="">
-                           <span>Hospital ID</span> <strong>0094567</strong>
+                           <span>Hospital ID</span> <strong>{hospitalInfo().hospitalId}</strong>
                        </a>
                    </div>
                    <div class="col-md-6">

@@ -1,12 +1,17 @@
 import React, { useContext } from 'react'
 import TopNav from '../../../Sidebar/TopNav'
 import { AppContext } from '../../AppContext/AppContext'
-
-import {getDate, getTime} from '../../helpers/helpers'
+import {getDate, getTime, getOTPState, hospitalInfo} from '../../helpers/helpers'
+import { useHistory } from 'react-router-dom'
 
 const RadiologyRequest = () => {
     const {encounter} = useContext(AppContext)  
     console.log(encounter.length) 
+    let history = useHistory()  
+    let otpState = getOTPState() 
+    if(otpState == null){      
+        history.push("/encounter",  { info: "To view your Radiology request, you must select your hospital and input hospital ID" })
+    }
     const allencounters = encounter.length > 0 ? encounter : JSON.parse(localStorage.getItem('encounter'))  
     return (
         <div id="content">
@@ -16,7 +21,7 @@ const RadiologyRequest = () => {
             <div class="row">
                 <div class="col-md-6">
                     <a class="h-id btn border" href="">
-                        <span>Hospital ID</span> <strong>0094567</strong>
+                        <span>Hospital ID</span> <strong>{hospitalInfo().hospitalId}</strong>
                     </a>
                 </div>
                 <div class="col-md-6">

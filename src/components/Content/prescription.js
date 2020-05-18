@@ -1,21 +1,38 @@
-import React,{useState, useContext, createRef} from 'react'
+import React,{useState, useContext, createRef, useEffect} from 'react'
 import TopNav from '../../Sidebar/TopNav'
-import {getDate, getTime} from '../helpers/helpers'
+import {getDate, getTime, getOTPState, hospitalInfo} from '../helpers/helpers'
 import { AppContext } from '../AppContext/AppContext'
+import { useHistory } from 'react-router-dom'
 const $ = window.$
-const Prescription = () => {
+
+const Prescription = ({location}) => {
+    let history = useHistory()
+    console.log(location)
     const {encounter,postFeedBack} = useContext(AppContext)  
-    const ActivityIdRef  = React.createRef();
+    const ActivityIdRef  = createRef();
     const allencounters = encounter.length > 0 ? encounter : JSON.parse(localStorage.getItem('encounter')) 
     const [PatientUsedPrescription, setPatientUsedPrescription] = useState()
     const [PatientUsedPrescriptionComment, setPatientUsedPrescriptionComment] = useState('')
     const [PatientCompletedDosage, setPatientCompletedDosage] = useState()
     const [PatientCompletedDosageComment, setPatientCompletedDosageComment] = useState('')
     const [successmessage,setSuccessMessage] = useState('')
+    
     const [errMessage, seterrMessage] = useState('')
     const [show,setShow] = useState(false)   
     const [loading,setLoading] = useState(false)
     const [ActivityEntryId , setActivityEntryId ] = useState()
+    let otpState = getOTPState()    
+    useEffect(() => {
+        
+        
+    }, [otpState])
+    console.log(otpState)
+    if(otpState == null){   
+        console.log('object')    
+        history.push("/encounter",  { info: "To view your prescription you must select your hospital and input hospital ID" })
+    }else{
+        console.log('objectbnm')    
+    }
     const handleSubmit = (e) =>{
         e.preventDefault();        
         setLoading(true)         
@@ -54,7 +71,7 @@ const Prescription = () => {
                 <div class="row">
                     <div class="col-md-6">
                         <a class="h-id btn border" href="">
-                            <span>Hospital ID</span> <strong>0094567</strong>
+                            <span>Hospital ID</span> <strong>{hospitalInfo().hospitalId}</strong>
                         </a>
                     </div>
                     <div class="col-md-6">

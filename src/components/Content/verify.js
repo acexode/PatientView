@@ -49,6 +49,7 @@ const Verify = () => {
        evt.preventDefault();      
        let  otp = Object.values(state).join('')
        let hdata = JSON.parse(localStorage.getItem('hData'))
+       
        console.log(hdata)
        if(otp.length == 6){          
            let obj ={
@@ -59,11 +60,11 @@ const Verify = () => {
             console.log(obj)
            verifyOTP(obj).then(data =>{
              console.log(data)
-              //  localStorage.removeItem('hData')
+                localStorage.setItem('noOTP', true)
                $('.bd-example-modal-sm').modal('toggle')
                 setTimeout(() =>{
                     $('.bd-example-modal-sm').modal('toggle')
-                    // history.push('/history')
+                    history.push('/history')
     
                 },1500)
             }).catch(err =>{    

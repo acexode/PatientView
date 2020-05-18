@@ -1,6 +1,12 @@
 export const getDate= (date) =>{
     return new Date(date).toLocaleDateString()
 }
+export const getOTPState= (date) =>{
+    return localStorage.getItem("noOTP")
+}
+export const hospitalInfo = () =>{
+    return JSON.parse(localStorage.getItem("hData"))
+}
 export const getTime = (date) =>{
     let time =  new Date(date).toLocaleTimeString().split(":")    
     if(parseInt(time[0]) <= 12){

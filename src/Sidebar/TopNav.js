@@ -4,8 +4,7 @@ import { useHistory, Link, Redirect } from 'react-router-dom'
 const TopNav = ({title}) => {
     const [navigate, setnavigate] = useState(false)
     const Logout = () =>{
-        localStorage.removeItem('token')
-        localStorage.removeItem('user')
+        localStorage.clear()
         setnavigate(true)
         
     }

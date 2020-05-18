@@ -1,19 +1,33 @@
 import React,{useState, useContext, useEffect} from 'react'
 import TopNav from '../../Sidebar/TopNav'
 import { AppContext } from '../AppContext/AppContext'
-import { useHistory } from 'react-router-dom'
-
-const Encounter = () => {
+import { useHistory, Redirect } from 'react-router-dom'
+import {getOTPState} from '../helpers/helpers'
+const Encounter = ({location}) => {
     let history = useHistory()
+    console.log(location)
     const {hospitals, verifyPatient} = useContext(AppContext)
     console.log(hospitals)
     const [selectedhospital, setselectedhospitals] = useState()
     const [hospitalNumber, sethospitalNumber] = useState()
     const [errMsg, seterrMsg] = useState()
     const [showError, setshowError] = useState(false)
-
+    const [info, setinfo] = useState('')
+    let otpState = getOTPState() 
+    console.log(typeof otpState)
+    
+    if(otpState){      
+        history.push("/history")
+    }
     useEffect(() => {
-       console.log(showError)
+      
+       if(location.state != undefined){
+           setinfo(location.state.info)
+           setTimeout(() =>{
+            setinfo(null)
+           },3000)
+
+       }
     }, [showError, hospitals])
     const handleSubmit = (e) => {
         e.preventDefault(); 
@@ -42,6 +56,7 @@ const Encounter = () => {
         }
     }
     return (
+        
         <div id="content">
         <TopNav />
        
@@ -49,6 +64,7 @@ const Encounter = () => {
           
            <div class="row justify-content-center">
             <div class="card ">
+            {info && <span className="text-danger text-center">{info}</span> }
                 <h3 class="text-center">Hospital ID</h3>
                 <small class="text-dark">Please enter your details to retrieve your encounter</small>
     {showError && <span className="text-danger text-center">{errMsg}</span> }
