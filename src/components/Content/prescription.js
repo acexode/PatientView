@@ -75,7 +75,7 @@ const Prescription = () => {
                             </tr>
                         </thead>
                         <tbody>
-                        {allencounters.map((data, i)=>(
+                        {allencounters && allencounters.map((data, i)=>(
                             <>
                                    <tr>
                                 <th scope="row">{data.encounterId}</th>

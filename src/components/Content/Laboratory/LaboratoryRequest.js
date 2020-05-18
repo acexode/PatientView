@@ -35,7 +35,7 @@ const LaboratoryRequest = () => {
                         </tr>
                     </thead>
                     <tbody>
-                    {allencounters.map((data, i)=>(
+                    {allencounters && allencounters.map((data, i)=>(
                            <>
 
                         <tr>

@@ -41,7 +41,7 @@ const EncounterHistory = () => {
                          </tr>
                    </thead>
                    <tbody>
-                       { allEncounters.map((data, i)=>(
+                       {allEncounters && allEncounters.map((data, i)=>(
                            <>
                            
                        <tr>
