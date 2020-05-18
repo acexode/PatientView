@@ -59,7 +59,7 @@ const Verify = () => {
             console.log(obj)
            verifyOTP(obj).then(data =>{
              console.log(data)
-               localStorage.removeItem('hData')
+              //  localStorage.removeItem('hData')
                $('.bd-example-modal-sm').modal('toggle')
                 setTimeout(() =>{
                     $('.bd-example-modal-sm').modal('toggle')

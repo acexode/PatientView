@@ -5,7 +5,8 @@ import { AppContext } from '../../AppContext/AppContext'
 import {getDate, getTime} from '../../helpers/helpers'
 
 const RadiologyRequest = () => {
-    const {encounter} = useContext(AppContext)   
+    const {encounter} = useContext(AppContext)  
+    console.log(encounter.length) 
     const allencounters = encounter.length > 0 ? encounter : JSON.parse(localStorage.getItem('encounter'))  
     return (
         <div id="content">
