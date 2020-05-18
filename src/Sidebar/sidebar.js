@@ -1,12 +1,14 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import logo from '../assets/logo.jpeg'
+import logo from '../assets/MEDICALL.svg'
 const Sidebar = () => {
     return (
         <nav id="sidebar">
         <div class="sidebar-header">
-            <img class=" text-center" src={logo} style={{width:"80px", marginLeft:"35%"}} alt=""/>
-           <Link to="/" class="text-center">MEDICALL</Link>
+           <Link to="/" class="text-center">
+            <img class=" text-center" src={logo} style={{width:"80px", marginLeft:"%"}} alt=""/>
+
+           </Link>
         </div>           
 
         <ul class="list-unstyled components">   
@@ -34,57 +36,58 @@ const Sidebar = () => {
                 <i class="las la-file-medical-alt"></i>
                Prescription
             </Link>
-            </li>
-            <li class="sidebar-dropdown dropdown-btn">
-               <span>
-               Laboratory
+            </li>      
+            <li class="submenu">
+            <Link to className="submenu-dropdown" >                
+               <span>Laboratory</span>
                <i class="las la-angle-right small-caret"></i>
-                   
-                   </span>           
-            
-            <div class="list-unstyled components dropdown-container">
+            </Link>    
+            <ul className="ul submenu-menu" style={{display:'none', background:"white"}}>
                     <li class="sidebar-link">
                         <Link to="/lab-requests" >
-                        <i class="las la-stethoscope"></i>
-                    Requests
-                    </Link>
+                            <i class="las la-stethoscope"></i>
+                            Requests
+                        </Link>
                     </li>
                     <li class="sidebar-link">
-                    <Link to="/lab-results" >
-                        <i class="lar la-newspaper"></i>
-                        Results
-                    </Link>
-
-                </li>
-            </div>
-            </li>
-            <li class="sidebar-dropdown dropdown-btn">
-                <Link to className="" >                
-               Radiology
+                        <Link to="/lab-results" >
+                            <i class="lar la-newspaper"></i>
+                            Results
+                        </Link>
+                    </li>
+            </ul>
+                   
+            
+            </li> 
+            <li class="submenu">
+            <Link to className="submenu-dropdown" >                
+               <span>Radiology</span>
                <i class="las la-angle-right small-caret"></i>
-            </Link>
-            <div class="list-unstyled components dropdown-container">
+            </Link>    
+            <ul className="ul submenu-menu" style={{display:'none', background:"white"}}>
                     <li class="sidebar-link">
                         <Link to="/radiology-requests" >
-                        <i class="las la-stethoscope"></i>
-                    Requests
-                    </Link>
+                            <i class="las la-stethoscope"></i>
+                            Requests
+                        </Link>
                     </li>
                     <li class="sidebar-link">
-                    <Link to="/radiology-results" >
-                        <i class="lar la-newspaper"></i>
-                        Results
-                    </Link>
-
-                </li>
-            </div>
-            </li>
+                        <Link to="/radiology-results" >
+                            <i class="lar la-newspaper"></i>
+                            Results
+                        </Link>
+                    </li>
+            </ul>
+                   
+            
+            </li> 
             <li class="sidebar-link">
                 <Link to="/outlets" >
                 <i class="las la-map-marked"></i>
                Outlets
             </Link>
             </li> 
+            
            
           
         </ul>

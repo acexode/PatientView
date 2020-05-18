@@ -14,12 +14,12 @@ const Verify = () => {
         vcode6: "",
       
       } 
-    const {verifyOTP, resendOTP} = useContext(AppContext)
+    const {verifyOTP, resendOTP, patientInfo} = useContext(AppContext)
     const [errMsg, seterrMsg] = useState()
     const [showError, setshowError] = useState(false)
     const [showSuccessOTP, setshowSuccessOTP] = useState(false)
     const [state, setState] = useState(initialState)
-
+      console.log(patientInfo)
       useEffect(() => {
         console.log(showError)
      }, [showError])
@@ -34,33 +34,36 @@ const Verify = () => {
     const handleResendOTP = () =>{
         resendOTP().then(data =>{
             setshowSuccessOTP(true)
+            
         }).catch(err => {
             seterrMsg('Unable to send otp')
                setshowError(true)
                setTimeout(() =>{
                 seterrMsg('')
                 setState(initialState)
-                setshowError(false)
+                setshowError(false) 
             },2500)
         })
     }
     const handleSubmit = (evt) =>{
-       evt.preventDefault();
-       //data-toggle="modal" data-target=".bd-example-modal-sm
+       evt.preventDefault();      
        let  otp = Object.values(state).join('')
-       if(otp.length == 6){
-           let hData = JSON.parse(localStorage.getItem('hData'))
-           let obj = {
-               ...hData,
-               code: otp
-           }
-           console.log(obj)
+       let hdata = JSON.parse(localStorage.getItem('hData'))
+       console.log(hdata)
+       if(otp.length == 6){          
+           let obj ={
+                "code": otp,
+                "hospitalId": patientInfo.hospitalId || hdata.hospitalId,
+                "hospitalNumber": patientInfo.hospitalNumber || hdata.hospitalNumber
+              }    
+            console.log(obj)
            verifyOTP(obj).then(data =>{
+             console.log(data)
                localStorage.removeItem('hData')
                $('.bd-example-modal-sm').modal('toggle')
                 setTimeout(() =>{
                     $('.bd-example-modal-sm').modal('toggle')
-                    history.push('/history')
+                    // history.push('/history')
     
                 },1500)
             }).catch(err =>{    

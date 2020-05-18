@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect, useContext} from 'react'
 import {
     withGoogleMap,
     withScriptjs,
@@ -7,6 +7,7 @@ import {
     InfoWindow
   } from "react-google-maps";
   import pharmacy from '../../assets/pharmacy.jpg'
+import { AppContext } from '../AppContext/AppContext';
 const places= [
     {
       _id: 1,
@@ -28,6 +29,7 @@ const places= [
     }
   ]
 const Map = () => {
+    const {outlets} = useContext(AppContext)
     const [selectedPlace, setselectedPlace] = useState(null)
     const [state, setstate] = useState({
         currentLocation: {
@@ -50,7 +52,7 @@ const Map = () => {
        
     }, [state.currentLocation])
     const {lat, lng} = state.currentLocation
-    
+    console.log(outlets)
     return (
         <div>
             <GoogleMap

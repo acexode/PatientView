@@ -1,30 +1,17 @@
-import React from 'react'
+import React, { useContext,useEffect } from 'react'
 import TopNav from '../../Sidebar/TopNav'
+import { AppContext } from '../AppContext/AppContext'
+import { getDate, getTime } from '../helpers/helpers'
 
-let sampleData = [
-    {
-        _id: 'EN001',
-        date: '05/06/2020',
-        call_desk:'Nnamdi Azikwe Teaching Hospital',
-        doctor: 'Dr. Okafor',
-        email: 'okafor@gmail.com'
-    },
-    {
-        _id: 'EN002',
-        date: '05/06/2020',
-        call_desk:'Aminu Kano Teaching Hospital',
-        doctor: 'Dr. Mallam',
-        email: 'okafor@gmail.com'
-    },
-    {
-        _id: 'EN003',
-        date: '05/06/2020',
-        call_desk:'UBTH Hospital',
-        doctor: 'Dr. Ogundu',
-        email: 'okafor@gmail.com'
-    },
-]
+
 const EncounterHistory = () => {
+    const {hospitals, verifyPatient,encounter} = useContext(AppContext)
+    const allEncounters = encounter.length > 0 ? encounter : JSON.parse(localStorage.getItem('encounter'))
+    useEffect(() => {
+       
+    }, [encounter])
+    console.log(allEncounters)
+   
     return (
         <div id="content">
         <TopNav title="Encounter Listing" />
@@ -47,24 +34,21 @@ const EncounterHistory = () => {
                <table class="table table-condensed mb-5 pb-5" style={{borderCollapse:'collapse'}}>
                    <thead>
                        <tr>
-                           <th scope="col">Encounter ID</th>
+                           <th scope="col">Encounter Number</th>
                            <th scope="col">Encounter Date</th>
-                           <th scope="col">Call Desk</th>
-                           <th scope="col">Doctor</th>
-                           <th scope="col">Email Address</th>
+                           <th scope="col">Call Desk</th>                           
                            <th scope="col">Action</th>
                          </tr>
                    </thead>
                    <tbody>
-                       {sampleData.map((data, i)=>(
+                       {allEncounters.map((data, i)=>(
                            <>
                            
                        <tr>
-                           <th scope="row">{data._id}</th>
-                       <td>{data.date}</td>
-                       <td>{data.call_desk}</td>
-                       <td>{data.doctor}</td>
-                       <td>{data.email}</td>
+                           <th scope="row">{data.encounterNumber}</th>
+                       <td>{new Date(data.encounterDate).toDateString()}</td>
+                       <td>{data.callDesk}</td>
+                       
                        <td><a  data-toggle="collapse" data-target={`#demo${i}`} class="view accordion-toggle">More</a></td>
                        
                        </tr>
@@ -84,118 +68,135 @@ const EncounterHistory = () => {
                                                
                                            </div>
                                        </div>
+                                       {data.activities.map(activity => (
+                                           <>
+                                            {activity.activity === 'Drug Prescription' ? 
+                                                 <div class="row mt-5">
+                                                 <div class="col-md-6">
+                                                     <p class="text-dark pt-2"><strong>{activity.activity}</strong></p>
+                                                 </div>
+                                                 <div class="col-md-6 align-items-end">
+                                                     <a class="border rounded p-2 float-right ml-3" href="">
+                                                         <i class="las la-calendar-day"></i>  {getDate(activity.activityDate)}
+                                                     </a>
+                                                     <a class="border rounded p-2 float-right ml-3" href="">
+                                                         <i class="lar la-clock"></i> {getTime(activity.activityDate)}
+                                                     </a>
+                                                 </div>
+                                                                                                
+                                                     <div class="row-card ">
+                                                         <table class="nested-table">
+                                                             <thead>
+                                                                 <tr>
+                                                                     <th scope="col">Name</th>
+                                                                     <th scope="col">Dosage</th>
+                                                                     <th scope="col">Day</th>
+                                                                     <th scope="col">Frequency</th>
+                                                                     <th scope="col">Aministration Route</th> 
+                                                                 </tr>
+                                                             </thead>
+                                                             <tbody>
+                                                                 {JSON.parse(activity.activityDetails).map(detail=>(
+                                                                    <tr>
+                                                                        <td>{detail.Name}</td>
+                                                                        <td>{detail.Dosage}</td>
+                                                                        <td>{detail.Day}</td>
+                                                                        <td>{detail.Frequency}</td>
+                                                                        <td>{detail.AdministrationRoute}</td>
+                                                                        
+                                                                    </tr>
+
+                                                                 ))}                                                                
+                                                             </tbody>
+                                                         </table>
+                                                     </div>
+                                                 
+                                             </div>
+                                       : activity.activity === 'Lab Request' ?      
                                        <div class="row mt-5">
-                                           <div class="col-md-6">
-                                               <p class="text-dark pt-2"><strong>Drug Description</strong></p>
-                                           </div>
-                                           <div class="col-md-6 align-items-end">
-                                               <a class="border rounded p-2 float-right ml-3" href="">
-                                                   <i class="las la-calendar-day"></i>  10:00am
-                                               </a>
-                                               <a class="border rounded p-2 float-right ml-3" href="">
-                                                   <i class="lar la-clock"></i> 01/02/2021
-                                               </a>
-                                           </div>
-                                                                                          
-                                               <div class="row-card ">
-                                                   <table class="nested-table">
-                                                       <thead>
-                                                           <tr>
-                                                               <th scope="col">Name</th>
-                                                               <th scope="col">Dosage</th>
-                                                               <th scope="col">Day</th>
-                                                               <th scope="col">Frequency</th>
-                                                               <th scope="col">Aministration Route</th> 
-                                                           </tr>
-                                                       </thead>
-                                                       <tbody>
-                                                           <tr>
-                                                               <td>Paracetamol 20mg</td>
-                                                               <td>2</td>
-                                                               <td>5</td>
-                                                               <td>TD</td>
-                                                               <td>Oral</td>
-                                                           </tr>
-                                                           <tr>
-                                                               <td>Lornat DS-250mg</td>
-                                                               <td>1</td>
-                                                               <td>5</td>
-                                                               <td>OD</td>
-                                                               <td>Oral</td>
-                                                           </tr>
-                                                       </tbody>
-                                                   </table>
-                                               </div>
-                                           
+                                       <div class="col-md-6">
+                                           <p class="text-dark pt-2"><strong>{activity.activity}</strong></p>
                                        </div>
-                                       <div class="row mt-5">
-                                           <div class="col-md-6">
-                                               <p class="text-dark pt-2"><strong>Laboratory Request</strong></p>
+                                       <div class="col-md-6 align-items-end">
+                                           <a class="border rounded p-2 float-right ml-3" href="">
+                                               <i class="las la-calendar-day"></i>  {getDate(activity.activityDate)}
+                                           </a>
+                                           <a class="border rounded p-2 float-right ml-3" href="">
+                                               <i class="lar la-clock"></i> {getTime(activity.activityDate)}
+                                           </a>
+                                       </div>                                                                                               
+                                           <div class="row-card ">
+                                               <table class="nested-table">
+                                                   <thead>
+                                                       <tr>
+                                                           <th scope="col">Name</th>
+                                                           <th scope="col">Specimen</th>
+                                                           <th scope="col">Comment</th>
+                                                           <th scope="col">Raise By</th>                                                                    
+                                                       </tr>
+                                                   </thead>
+                                                   <tbody>
+                                                   {JSON.parse(activity.activityDetails).map(detail=>(
+                                                        <tr>
+                                                            <td>{detail.Name}</td>
+                                                            <td>{detail.Specimen}</td>
+                                                            <td>{detail.Comment}</td>
+                                                            <td>{activity.activityBy}</td>                                                                                                                                   
+                                                        </tr>
+
+                                                                 ))}
+                                                                                                                 
+                                                   </tbody>
+                                               </table>
                                            </div>
-                                           <div class="col-md-6 align-items-end">
-                                               <a class="border rounded p-2 float-right ml-3" href="">
-                                                   <i class="las la-calendar-day"></i>  10:00am
-                                               </a>
-                                               <a class="border rounded p-2 float-right ml-3" href="">
-                                                   <i class="lar la-clock"></i> 01/02/2021
-                                               </a>
-                                           </div>                                                                                               
-                                               <div class="row-card ">
-                                                   <table class="nested-table">
-                                                       <thead>
-                                                           <tr>
-                                                               <th scope="col">Name</th>
-                                                               <th scope="col">Specimen</th>
-                                                               <th scope="col">Comment</th>
-                                                               <th scope="col">Raise By</th>                                                                    
-                                                           </tr>
-                                                       </thead>
-                                                       <tbody>
-                                                           <tr>
-                                                               <td>Liver Function Test-LFT</td>
-                                                               <td>Blood</td>
-                                                               <td class="text-danger">Urgent</td>
-                                                               <td>Dr. Uche</td>                                                                    
-                                                           </tr>                                                             
-                                                       </tbody>
-                                                   </table>
-                                               </div>
-                                           
+                                       
+                                   </div>
+                                   : activity.activity === 'Radiology Request' ?
+                                   <div class="row mt-5">
+                                   <div class="col-md-6">
+                                       <p class="text-dark pt-2"><strong>{activity.activity}</strong></p>
+                                   </div>
+                                   <div class="col-md-6 align-items-end">
+                                       <a class="border rounded p-2 float-right ml-3" href="">
+                                           <i class="las la-calendar-day"></i>  {getDate(activity.activityDate)}
+                                       </a>
+                                       <a class="border rounded p-2 float-right ml-3" href="">
+                                           <i class="lar la-clock"></i> {getTime(activity.activityDate)}
+                                       </a>
+                                   </div>                                                                                               
+                                       <div class="row-card mb-3">
+                                           <table class="nested-table">
+                                               <thead>
+                                                   <tr>
+                                                       <th scope="col">Name</th>
+                                                       <th scope="col">Examination Required</th>
+                                                       <th scope="col">Comment</th>
+                                                       <th scope="col">Raise By</th>                                                                    
+                                                   </tr>
+                                               </thead>
+                                               <tbody>
+                                               {JSON.parse(activity.activityDetails).map(detail=>(
+                                                    <tr>
+                                                        <td>{detail.Name}</td>
+                                                        <td>{detail.ExaminationRequired}</td>
+                                                        <td>{detail.Comment}</td>
+                                                        <td>{activity.activityBy}</td>                                                        
+                                                                        
+                                                    </tr>
+
+                                                                 ))}                                                              
+                                               </tbody>
+                                           </table>
                                        </div>
-                                       <div class="row mt-5">
-                                           <div class="col-md-6">
-                                               <p class="text-dark pt-2"><strong>Radiology Request</strong></p>
-                                           </div>
-                                           <div class="col-md-6 align-items-end">
-                                               <a class="border rounded p-2 float-right ml-3" href="">
-                                                   <i class="las la-calendar-day"></i>  10:00am
-                                               </a>
-                                               <a class="border rounded p-2 float-right ml-3" href="">
-                                                   <i class="lar la-clock"></i> 01/02/2021
-                                               </a>
-                                           </div>                                                                                               
-                                               <div class="row-card mb-3">
-                                                   <table class="nested-table">
-                                                       <thead>
-                                                           <tr>
-                                                               <th scope="col">Name</th>
-                                                               <th scope="col">Examination Required</th>
-                                                               <th scope="col">Comment</th>
-                                                               <th scope="col">Raise By</th>                                                                    
-                                                           </tr>
-                                                       </thead>
-                                                       <tbody>
-                                                           <tr>
-                                                               <td>Chest X-ray (PA)</td>
-                                                               <td></td>
-                                                               <td class="text-danger">Urgent</td>
-                                                               <td>Dr. Uche</td>                                                                    
-                                                           </tr>                                                             
-                                                       </tbody>
-                                                   </table>
-                                               </div>
-                                           
-                                       </div>
+                                   
+                               </div> : null
+                                        }
+                                           </>
+                                       ))}
+                                      
+                                       
+                                       
+                                   
                                    </div>
                                </div>
                            

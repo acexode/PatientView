@@ -1,5 +1,8 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import TopNav from '../../../Sidebar/TopNav'
+import { AppContext } from '../../AppContext/AppContext'
+import allencounters from '../encounters'
+import {getDate, getTime} from '../../helpers/helpers'
 let sampleData = [
     {
         _id: 'EN001',
@@ -23,6 +26,7 @@ let sampleData = [
     },
 ]
 const RadiologyRequest = () => {
+    const {encounter} = useContext(AppContext)   
     return (
         <div id="content">
         <TopNav title="Radiology Request" />
@@ -47,19 +51,18 @@ const RadiologyRequest = () => {
                             <th scope="col">Encounter ID</th>
                             <th scope="col">Encounter Date</th>
                             <th scope="col">Radiology Request No</th>
-                            <th scope="col">Doctor</th>
+                           
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                    {sampleData.map((data, i)=>(
+                    {allencounters.map((data, i)=>(
                            <>
 
                         <tr>
-                            <th scope="row">{data._id}</th>
-                            <td>{data.date}</td>
-                            <td>{data.lab_req}</td>
-                            <td>{data.doctor}</td>
+                            <th scope="row">{data.encounterId}</th>
+                            <td>{getDate(data.encounterDate)}</td>
+                            <td>{data.encounterNumber}</td>   
                             <td><a data-toggle="collapse" data-target={`#demo${i}`}
                                     class="view accordion-toggle">More</a></td>
 
@@ -76,41 +79,52 @@ const RadiologyRequest = () => {
                                                         class="view float-right"> Less <small><i class="las la-angle-up small-caret"></i></small></button>
                                                 </div>
                                             </div>
+                                            {data.activities.map(e =>(
+                                                <>
+                                                    {e.activity === 'Radiology Request' ?
+                                                     <div class="row mt-5">
+                                                     <div class="col-md-6">
+                                                         <p class="text-dark pt-2"><strong>{e.activity}</strong></p>
+                                                     </div>
+                                                     <div class="col-md-6 align-items-end">
+                                                         <a class="border rounded p-2 float-right ml-3" href="">
+                                                             <i class="lar la-clock"></i> {getTime(e.activityDate)}
+                                                         </a>
+                                                         <a class="border rounded p-2 float-right ml-3" href="">
+                                                             <i class="las la-calendar-day"></i> {getDate(e.activityDate)}
+                                                         </a>
+                                                     </div>
+     
+                                                     <div class="row-card py-3">
+                                                         <table class="nested-table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th scope="col">Name</th>                                                              
+                                                                    <th scope="col">Comment</th>                                                                
+                                                                    <th scope="col">Raised by</th>
+                                                                </tr>
+                                                            </thead>    
+                                                             <tbody className="pb-5 mb-5">
+                                                             {JSON.parse(e.activityDetails).map(detail=>(
+                                                                <tr>
+                                                                    <td>{detail.Name}</td>                                                                  
+                                                                    <td>{detail.Comment}</td>
+                                                                    <td>{e.activityBy}</td>                                                                                                                                   
+                                                                </tr>
 
-                                            <div class="row mt-5">
-                                                <div class="col-md-6">
-                                                    <p class="text-dark pt-2"><strong>Laboratory Request</strong></p>
-                                                </div>
-                                                <div class="col-md-6 align-items-end">
-                                                    <a class="border rounded p-2 float-right ml-3" href="">
-                                                        <i class="las la-calendar-day"></i> 10:00am
-                                                    </a>
-                                                    <a class="border rounded p-2 float-right ml-3" href="">
-                                                        <i class="lar la-clock"></i> 01/02/2021
-                                                    </a>
-                                                </div>
-
-                                                <div class="row-card py-3">
-                                                    <table class="nested-table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th scope="col">Name</th>                                                              
-                                                                <th scope="col">Comment</th>                                                                
-                                                                <th scope="col">Raised by</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody className="pb-5 mb-5">
-                                                            <tr>
-                                                                <td>Chest X-ray</td>                                                                
-                                                                <td className="text-danger"><strong>Urgent</strong></td>
-                                                                <td>{data.doctor}</td>                                                                
-                                                            </tr>                                                         
-                                                           
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-
-                                            </div>
+                                                                 ))}
+                                                                
+                                                             </tbody>
+                                                         </table>
+                                                     </div>
+     
+                                                 </div>
+                                                 
+                                                    : null
+                                                }
+                                                </>
+                                            ))}
+                                          
                                             
                                             
                                         </div>

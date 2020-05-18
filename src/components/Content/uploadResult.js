@@ -33,7 +33,8 @@ const thumbsContainer = {
     height: '100%'
   };
 
-const UploadResult = ({selectedFile, id}) => {
+  // ({selectedFile, id})
+const UploadResult = ({setImages, images}) => {
      
     
     const [errorMsg, setErrorMsg] = useState()
@@ -46,13 +47,18 @@ const UploadResult = ({selectedFile, id}) => {
     const {getRootProps, getInputProps} = useDropzone({
         accept: 'image/*',
         onDrop: acceptedFiles => {
+          console.log(acceptedFiles)
+          setImages(acceptedFiles.map(file => Object.assign(file, {
+            preview: URL.createObjectURL(file)
+          })));
           setFiles(acceptedFiles.map(file => Object.assign(file, {
             preview: URL.createObjectURL(file)
           })));
+          console.log(images)
         }
       });
     
-    const thumbs = files.map(file => (
+    const thumbs = images && files.map(file => (
       <div style={thumb} key={file.name}>          
         <div style={thumbInner}>
           <img
@@ -63,11 +69,13 @@ const UploadResult = ({selectedFile, id}) => {
       </div>
     ));
     useEffect(() => () => {       
+        // images.forEach(file => URL.revokeObjectURL(file.preview));        
         files.forEach(file => URL.revokeObjectURL(file.preview));        
-      }, [files]);
+      }, [files,images]);
     
   
     const handleSelectChange =(event) => {
+        setImages(event.target.file[0])
         setmyFiles(event.target.files[0])
     }
     const onsubmit= (e) =>{

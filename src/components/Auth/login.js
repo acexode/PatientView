@@ -8,6 +8,7 @@ import logo from '../../assets/logo.jpeg'
 import {useHistory} from 'react-router-dom';
 import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
+import config from '../../config.json';
 
 
 const Login  = () =>{
@@ -26,7 +27,7 @@ const Login  = () =>{
     onSubmit={(values, { setSubmitting }) => {
       setTimeout(() => {
         console.log("Logging in", values);
-        axios.post(`https://stagingapi.healthinabox.ng/api/Auth/login`,  values )
+        axios.post(`${config.BASE_URL}Auth/login`,  values )
         .then(res => {
           console.log(res.data);
           let user = {email : res.data.email , id: res.data.id }
@@ -64,7 +65,7 @@ const Login  = () =>{
         e.preventDefault();	
         setLoading(true)
         try{
-          let emailResponse = await axios.get('https://stagingapi.healthinabox.ng/api/Auth/password/reset', {
+          let emailResponse = await axios.get(`${config.BASE_URL}Auth/password/reset`, {
             params: {
               email: email
             }
@@ -87,7 +88,7 @@ const Login  = () =>{
         console.log(response.accessToken);
         setAccessToken(response.accessToken)
         console.log(accessToken);
-        let fbResponse =  axios.post(`https://stagingapi.healthinabox.ng/api/Auth/facebook`, {accessToken : response.accessToken})
+        let fbResponse =  axios.post(`${config.BASE_URL}Auth/facebook`, {accessToken : response.accessToken})
         .then(res => {
           console.log(res.data);
           let user = {email : res.data.email , id: res.data.id }
@@ -98,7 +99,7 @@ const Login  = () =>{
         .catch(err =>{         
           console.log(err.response);
           setShow(true)
-          console.log(err.response.data.errors.AccessToken[0])
+          //console.log(err.response.data.errors.AccessToken[0])
           if(err.response.data.errors){
             setMessage(err.response.data.errors.AccessToken[0])
           }else{
@@ -109,7 +110,7 @@ const Login  = () =>{
       }
       const responseGoogle = (response) => {
         console.log(response);
-        let googleResponse =  axios.post(`https://stagingapi.healthinabox.ng/api/Auth/google`, {accessToken : response.code})
+        let googleResponse =  axios.post(`${config.BASE_URL}Auth/google`, {accessToken : response.code})
         .then(res => {
           console.log(res.data);
           let user = {email : res.data.email , id: res.data.id }
@@ -208,26 +209,25 @@ const Login  = () =>{
                       <div class="form-row justify-content-md-center">
                       <div class="social-login">
                           <GoogleLogin
-                              clientId="113873161933-1j99gn4fvnm1832i61m3lg8d6gfleb0l.apps.googleusercontent.com"
-                              buttonText=""
-                              accessType="offline"
-                              responseType="code"
-                              scope="profile email"
-                              onSuccess={responseGoogle}
-                              onFailure={responseGoogle}
-                              cookiePolicy={'single_host_origin'}
-                            />
-                          
-                          </div>
+                            clientId={config.GOOGLE_CLIENT_ID}
+                            buttonText=""
+                            accessType="offline"
+                            responseType="code"
+                            redirectUri={config.GOOGLE_AUTH_CALLBACK_URL}
+                            scope="profile email"
+                            onSuccess={responseGoogle}
+                            onFailure={responseGoogle}
+                          />
+                        </div>
                         
                          <div class="social-login">
                          <FacebookLogin
-                            appId="531093777583624"
+                            appId={config.FACEBOOK_APP_ID}
                             // autoLoad={true}
                             fields="name,email,picture"
                             callback={responseFacebook}
                             icon="fa-facebook"
-                                                  />
+                          />
                           </div>
                         
 

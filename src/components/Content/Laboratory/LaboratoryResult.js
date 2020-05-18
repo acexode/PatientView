@@ -1,31 +1,52 @@
-import React, { useState } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import TopNav from '../../../Sidebar/TopNav'
 import UploadResult from '../uploadResult'
-let sampleData = [
-    {
-        _id: 'EN001',
-        date: '05/06/2020',
-        lab_req:'LRN001',
-        doctor: 'Dr. Okafor',
-       
-    },
-    {
-        _id: 'EN002',
-        date: '05/06/2020',
-        lab_req:'LRN002',
-        doctor: 'Dr. Mallam',
-       
-    },
-    {
-        _id: 'EN003',
-        date: '05/06/2020',
-        lab_req:'LRN003',
-        doctor: 'Dr. Ogundu',       
-    },
-]
+import { AppContext } from '../../AppContext/AppContext'
+import {getDate, getTime} from '../../helpers/helpers'
+const $ = window.$
 const LaboratoryResult = () => {
-    
-    const [testConducted, settestConducted] = useState(true)
+    const {encounter, postFeedBack} = useContext(AppContext)  
+    const allencounters = encounter.length > 0 ? encounter : JSON.parse(localStorage.getItem('encounter')) 
+    const [PatientDidLabTest, setPatientDidLabTest] = useState(true) 
+    const [PatientLabTestComment, setPatientLabTestComment] = useState('') 
+    const [LabImages, setLabImages] = useState([])
+    const [loading,setLoading] = useState(false)
+    const [showThumbnails,setshowThumbnails] = useState(false)
+    useEffect(() => {
+       
+    }, [LabImages])
+    const ActivityIdRef  = React.createRef();
+    const handleSubmit = (e) =>{
+        e.preventDefault();        
+        setLoading(true)
+        const formData = new FormData(); 
+        formData.append('LabImages',LabImages[0])  
+        formData.append('PatientDidLabTest',PatientDidLabTest)  
+        formData.append('PatientLabTestComment',PatientLabTestComment)  
+        formData.append('ActivityId',ActivityIdRef.current.value)  
+        console.log(formData.get('LabImages'))
+        console.log(formData.get('PatientDidLabTest'))
+        console.log(formData.get('PatientLabTestComment'))        
+        console.log(formData.get('ActivityId'))    
+        postFeedBack(formData).then(res =>{
+            console.log(res.data)
+            setLoading(false)
+            $('.bd-example-modal-sm').modal('toggle')
+                    setTimeout(() =>{
+                        $('.bd-example-modal-sm').modal('toggle')
+                       setLabImages(null)
+                       setPatientDidLabTest(true)
+                       setPatientLabTestComment('')
+                    },1500)
+                    console.log(LabImages)
+        }).catch(err =>{
+            setLoading(false)
+            setLabImages(null)
+            console.log(err.response)
+            alert("unable to send fedback")
+        })
+    }
+   
 
     return (
         <div id="content">
@@ -51,19 +72,18 @@ const LaboratoryResult = () => {
                             <th scope="col">Encounter ID</th>
                             <th scope="col">Encounter Date</th>
                             <th scope="col">Laboratory Request No</th>
-                            <th scope="col">Doctor</th>
+                         
                             <th scope="col">Action</th>
                         </tr>
-                    </thead>
+                        </thead>
                     <tbody>
-                    {sampleData.map((data, i)=>(
+                    {allencounters.map((data, i)=>(
                            <>
 
                         <tr>
-                            <th scope="row">{data._id}</th>
-                            <td>{data.date}</td>
-                            <td>{data.lab_req}</td>
-                            <td>{data.doctor}</td>
+                            <th scope="row">{data.encounterId}</th>
+                            <td>{getDate(data.encounterDate)}</td>
+                            <td>{data.encounterNumber}</td>                            
                             <td><a data-toggle="collapse" data-target={`#demo${i}`}
                                     class="view accordion-toggle">More</a></td>
 
@@ -80,19 +100,23 @@ const LaboratoryResult = () => {
                                                         class="view float-right"> Less <small><i class="las la-angle-up small-caret"></i></small></button>
                                                 </div>
                                             </div>
-
-                                            <div class="row mt-5">
+                                            {data.activities.map(e =>(
+                                                <>
+                                                    {e.activity === 'Lab Request' ?
+                                                     <>
+                                                          <div class="row mt-5">
                                                 <div class="col-md-6">
                                                     <p class="text-dark pt-2"><strong>Laboratory Request</strong></p>
                                                 </div>
                                                 <div class="col-md-6 align-items-end">
-                                                    <a class="border rounded p-2 float-right ml-3" href="">
-                                                        <i class="las la-calendar-day"></i> 10:00am
-                                                    </a>
-                                                    <a class="border rounded p-2 float-right ml-3" href="">
-                                                        <i class="lar la-clock"></i> 01/02/2021
-                                                    </a>
-                                                </div>
+                                                         <a class="border rounded p-2 float-right ml-3" href="">
+                                                             <i class="lar la-clock"></i> {getTime(e.activityDate)}
+                                                         </a>
+                                                         <a class="border rounded p-2 float-right ml-3" href="">
+                                                             <i class="las la-calendar-day"></i> {getDate(e.activityDate)}
+                                                         </a>
+                                                     </div>
+     
 
                                                 <div class="row-card py-3">
                                                     <table class="nested-table">
@@ -105,66 +129,85 @@ const LaboratoryResult = () => {
                                                             </tr>
                                                         </thead>
                                                         <tbody className="pb-5 mb-5">
-                                                            <tr>
-                                                                <td>Liver Function Test-LFT</td>
-                                                                <td>Blood</td>
-                                                                <td className="text-danger"><strong>Urgent</strong></td>
-                                                                <td>{data.doctor}</td>                                                                
-                                                            </tr>
-                                                            <tr>
-                                                                <td> Full blood count</td>
-                                                                <td>Blood</td>
-                                                                <td className="text-danger"><strong>Urgent</strong></td>
-                                                                <td>{data.doctor}</td>                                                                
-                                                            </tr>
+                                                            {JSON.parse(e.activityDetails).map(detail=>(
+                                                                <tr>
+                                                                    <td>{detail.Name}</td>
+                                                                    <td>{detail.Specimen}</td>
+                                                                    <td>{detail.Comment}</td>
+                                                                    <td>{e.activityBy}</td>                                                                                                                                   
+                                                                </tr>
+
+                                                                 ))}
+                                                            
                                                            
                                                         </tbody>
                                                     </table>
                                                 </div>
 
                                             </div>
-
-                                            <div class="row mt-5">
-                                                <div class="col-md-6">
-                                                    <p class="text-dark pt-2"><strong>Feedback</strong></p>
-                                                </div>                                              
-
-                                                <div class="row-card feedback-card py-3">
-                                                    <form className="">
-                                                        <p className="pl-3 text-dark">Did you carry out the lab test</p>
-                                                        <div class="form-group">
-                                                                
-                                                                <label className="pres-label" for="">
-                                                                    <input value={testConducted} checked={testConducted} type="radio" onChange={() =>settestConducted(true)} name="test-conducted"  />Yes
-                                                                    <span className="checkmark"></span> </label>
-                                                            </div>
+                                            <form onSubmit={handleSubmit} id="feedback" enctype="multipart/form-data">
+                                                <div class="row mt-5">
+                                                    <div class="col-md-6">
+                                                        <p class="text-dark pt-2"><strong>Feedback</strong></p>
+                                                    </div>                                              
+                                                    <div class="row invisible">
+                                                                <div class="form-group">                                                            
+                                                                        <label className="pres-label" for="">
+                                                                        <input ref={ActivityIdRef} defaultValue={e.activityId} type="text"   />
+                                                                                <span className="checkmark"></span> 
+                                                                        </label>
+                                                                        </div>
+                                                                </div>
+                                                    <div class="row-card feedback-card py-3">                                                        
+                                                            <p className="pl-3 text-dark">Did you carry out the lab test</p>
                                                             <div class="form-group">
-                                                                
-                                                                <label className="pres-label" for="">
-                                                                    <input type="radio" value ={testConducted}  onChange={() =>settestConducted(false)} name="test-conducted"  />No
-                                                                    <span className="checkmark"></span> </label>
+                                                                    
+                                                                    <label className="pres-label" for="">
+                                                                        <input value={PatientDidLabTest} checked={PatientDidLabTest} type="radio" onChange={() =>setPatientDidLabTest(true)} name="PatientDidLabTest"  />Yes
+                                                                        <span className="checkmark"></span> </label>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    
+                                                                    <label className="pres-label" for="">
+                                                                        <input type="radio" value ={PatientDidLabTest}  onChange={() =>setPatientDidLabTest(false)} name="PatientDidLabTest"  />No
+                                                                        <span className="checkmark"></span> </label>
+                                                                </div>
+                                                       
+                                                        {PatientDidLabTest ? 
+                                                            <div className="row pl-5">
+                                                                <p className="text-dark">Attach documents</p>
+                                                                <UploadResult setImages={setLabImages} images={LabImages} />
+
                                                             </div>
-                                                    </form>
-                                                    {testConducted ? 
-                                                        <div className="row pl-5">
-                                                            <p className="text-dark">Attach documents</p>
-                                                            <UploadResult />
-
+                                                            : 
+                                                            <div className="row pt-3">
+                                                            
+                                                            <textarea placeholder="comment"
+                                                                class="row-card card bg-gray comment" onChange={() => setPatientLabTestComment} name="PatientLabTestComment"
+                                                                id=""></textarea>
                                                         </div>
-                                                        : 
-                                                        <div className="row pt-3">
+                                                        }
+                                                      {loading ? <div class="spinner-border text-success" role="status">
+                                                                    <span class="sr-only">Loading...</span>
+                                                                </div>: <div className="submit-section">
+                                                                <button type="submit" className="btn verify text-light float-right">Submit Feedback</button>
+                                                                </div>}
                                                         
-                                                        <textarea placeholder="comment"
-                                                            class="row-card card bg-gray comment" name=""
-                                                            id=""></textarea>
-                                                        <button className="btn mt-1 ml-3 send">Send</button>
                                                     </div>
-                                                    }
-                                                    
-                                                </div>
 
-                                            </div>
-                                            
+                                                </div>
+                                                    
+
+                                            </form>
+                                                 
+                                                 </>
+                                                 
+                                                    : null
+                                                }
+                                                </>
+                                               
+
+                                            ))}
                                             
                                         </div>
 
@@ -176,9 +219,31 @@ const LaboratoryResult = () => {
                        
                            </>
                     ))}
+                    
                     </tbody>
                 </table>
             </div>
+            <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-sm" role="document">
+                      <div class="modal-content">
+                        
+                        <div class="modal-body mb-5">
+                           <div class="row justify-content-center align-item-center">
+                               <p class="mt-4 "><i class="las la-check-circle big text-center"></i></p>                               
+                           </div>
+                           <div class="row justify-content-center align-item-center">
+                               <h2 class="mt-1 text-center">Success</h2> <br/>                                                   
+                           </div>
+                           <div class="row justify-content-center align-item-center">
+
+                               <small class="text-dark">Feedback has been sent</small>                             
+                           </div>
+                           
+                        </div>
+                        
+                      </div>
+                    </div>
+                  </div>
 
         </div>
     </div>

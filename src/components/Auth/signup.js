@@ -4,11 +4,11 @@ import axios from "axios";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { Link } from 'react-router-dom';
-import logo from '../../assets/logo.jpeg'
+import logo from '../../assets/MEDICALL.svg'
 import { useHistory } from 'react-router-dom';
 import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
-
+import config from '../../config.json';
 
 
 
@@ -23,7 +23,7 @@ const Signup  = () =>{
     onSubmit={(values, { setSubmitting }) => {
       setTimeout(() => {
         console.log("Logging in", values);
-        axios.post(`https://stagingapi.healthinabox.ng/api/Account/create`,  values )
+        axios.post(`${config.BASE_URL}Account/create`,  values )
         .then(res => {
           console.log(res.data);
           let user = {email : res.data.email , id: res.data.id }
@@ -66,7 +66,7 @@ const Signup  = () =>{
       } = props;
       const responseFacebook =  response => {
         console.log(response.accessToken);
-        let fbResponse =  axios.post(`https://stagingapi.healthinabox.ng/api/Auth/facebook`, {accessToken : response.accessToken})
+        let fbResponse =  axios.post(`${config.BASE_URL}Auth/facebook`, {accessToken : response.accessToken})
         .then(res => {
           console.log(res.data);
           let user = {email : res.data.email , id: res.data.id }
@@ -87,7 +87,7 @@ const Signup  = () =>{
       }
       const responseGoogle = (response) => {
         console.log(response);
-        let googleResponse =  axios.post(`https://stagingapi.healthinabox.ng/api/Auth/google`, {accessToken : response.code})
+        let googleResponse =  axios.post(`${config.BASE_URL}Auth/google`, {accessToken : response.code})
         .then(res => {
           console.log(res.data);
           let user = {email : res.data.email , id: res.data.id }
@@ -224,7 +224,7 @@ const Signup  = () =>{
                       
                       {isSubmitting ? <div class="spinner-border text-success" role="status">
                         <span class="sr-only">Loading...</span>
-                      </div>: <button type="submit" class="mt-3 btn btn-primary submit">Sign In</button>}
+                      </div>: <button type="submit" class="mt-3 btn btn-primary submit">Sign Up</button>}
                       <div>&nbsp;</div>
                       { show && ( 
                       <div className="alert alert-danger alert-dismissible fade show" role="alert">
@@ -239,30 +239,29 @@ const Signup  = () =>{
 
                           
                         </div>
-                      <div class="form-row justify-content-md-center">
+                      <div class="form-row justify-content-center">
                           <div class="social-login">
                           <GoogleLogin
-                              clientId="113873161933-1j99gn4fvnm1832i61m3lg8d6gfleb0l.apps.googleusercontent.com"
-                              buttonText="Login"
-                              responseType="code"
-                              onSuccess={responseGoogle}
-                              onFailure={responseGoogle}
-                              // cookiePolicy={'single_host_origin'}
-                            />
+                            clientId={config.GOOGLE_CLIENT_ID}
+                            buttonText=""
+                            accessType="offline"
+                            responseType="code"
+                            redirectUri={config.GOOGLE_AUTH_CALLBACK_URL}
+                            scope="profile email"
+                            onSuccess={responseGoogle}
+                            onFailure={responseGoogle}
+                          />
                           
                           </div>
                         
                          <div class="social-login">
                           
                           <FacebookLogin
-                            appId="531093777583624"
+                            appId={config.FACEBOOK_APP_ID}
                             // autoLoad={true}
                             fields="name,email,picture"                            
                             callback={responseFacebook}
-                            icon="fa-facebook"
-                            
-                            
-                                                  />
+                            icon="fa-facebook"/>
                           
                          
                           </div>
@@ -270,7 +269,7 @@ const Signup  = () =>{
 
                           
                         </div>
-                        <div class="form-row mt-4 justify-content-md-center">
+                        <div class="form-row mt-4 justify-content-center">
                             <p>You dont have an account ? </p> <Link class="pl-2" to="/login">Login</Link>
                         </div>
                     </form>

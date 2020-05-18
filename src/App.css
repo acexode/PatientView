@@ -84,12 +84,20 @@ a:focus {
   
    
 }
-.sidebar-dropdown{
+.sidebar-dropdown, .submenu{
     margin-left: 1.5em;
     cursor: pointer;
 }
+.submenu-menu{
+    list-style: none;
+}
+.submenu-dropdown{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
 
-#sidebar ul.components {
+#sidebar ul.components, .submenu-menu {
     display: flex;
     justify-content: center;
     padding: 15px 0px;
@@ -99,11 +107,11 @@ a:focus {
     
 }
 
-#sidebar ul.components li{
+#sidebar ul.components li, .submenu-menu li{
     padding: 10px;
     font-size: 14px;
 }
-#sidebar ul.components li a i{
+#sidebar ul.components li a i, .submenu-menu li a i{
     margin-left:  20px;
     
 }
@@ -231,7 +239,12 @@ i {
     margin: 0 auto;
 }
 
-
+.sidebar-submenu {
+    display: none;
+    list-style: none;
+    padding-left: 5px;
+    margin: 0 1px;
+    background: #2c3b41; }
 .dropdown-toggle{
     width: 100%;
 }
@@ -548,6 +561,9 @@ tr.none {
 .pharmacies{
     padding-bottom: 8px !important;
     border-bottom: .5px solid #d9dbdd;
+}
+.pharmacies:hover{
+    background: #EFF9F5;
 }
 .sidebar-right{
     height: 100vh;
