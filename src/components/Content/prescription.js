@@ -71,7 +71,7 @@ const Prescription = ({location}) => {
                 <div class="row">
                     <div class="col-md-6">
                         <a class="h-id btn border" href="">
-                            <span>Hospital ID</span> <strong>{hospitalInfo().hospitalId}</strong>
+                            <span>Hospital ID</span> <strong>{hospitalInfo() && hospitalInfo().hospitalId}</strong>
                         </a>
                     </div>
                     <div class="col-md-6">
