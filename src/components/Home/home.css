@@ -174,146 +174,192 @@
     color: #fff;
       
   }
-  .carousel .item {
-      color: #999;
-      font-size: 14px;
-      text-align: center;
-      overflow: hidden;
-      min-height: 290px;
-  }
-  .carousel .item .img-box {
-      
-      margin: 0 auto;
-      padding: 5px;
-  
-  
-  }
-  .carousel .img-box img {
-      width: 100%;
-      height: 100%;
-      display: block;
-  
-  }
-  .carousel .testimonial {
-      padding: 30px 0 10px;
-  }
-  .carousel .overview {	
-      font-style: italic;
-  }
-  .carousel .overview b {
-      text-transform: uppercase;
-      color: #7AA641;
-  }
-  .carousel .carousel-control {
-      width: 40px;
-      height: 40px;
-      margin-top: -20px;
-      top: 50%;
-      z-index: 1000;
-      background: none;
-  }
-  .carousel-control i {
-      font-size: 68px;
-      line-height: 42px;
-      position: absolute;
-      display: inline-block;
-      color: rgba(0, 0, 0, 0.8);
-      text-shadow: 0 3px 3px #e6e6e6, 0 0 0 #000;
-  }
-  .carousel .carousel-indicators {
-    bottom: -30px;
+  .carousel-inner {
+    /* background: #008E7B; */
+	
+}
+.carousel .item {
+	color: #999;
+	font-size: 14px;
+    text-align: center;
+	overflow: hidden;
+    min-height: 290px;
+}
+.carousel .item .img-box {
+	
+	margin: 0 auto;
+	/* padding: 5px; */
+
+
+}
+.carousel .img-box  {
+	width: 100%;
+	height: 600px;
+	display: block;
+
+}
+.carousel .img-box img {
+	width: 100%;
+	height: 100%;
+	
+
+}
+.carousel .testimonial {
+	padding: 30px 0 10px;
+}
+.carousel .overview {	
+	font-style: italic;
+}
+.carousel .overview b {
+	text-transform: uppercase;
+	color: #7AA641;
+}
+.carousel .carousel-control {
+	width: 40px;
+    height: 40px;
+    margin-top: -20px;
+    top: 50%;
     z-index: 1000;
-  }
-  .carousel-indicators li, .carousel-indicators li.active {
-      width: 10px;
-      height: 10px;
-      margin: 1px 3px;
-      border-radius: 50% !important;
-  }
-  .carousel-indicators li {	
-      background: #999;
-      border-color: transparent;
-      box-shadow: inset 0 2px 1px rgba(0,0,0,0.2);
-  }
-  .carousel-indicators li.active {	
-      background: #555;		
-      box-shadow: inset 0 2px 1px rgba(0,0,0,0.2);
-  }
-  
-  .slant{
-    background: #008E7B;
-    display: flex;
-    flex-direction: column;
-    color: #fff;
+	background: none;
+}
+.carousel-control i {
+    font-size: 68px;
+	line-height: 42px;
+    position: absolute;
+    display: inline-block;
+	color: rgba(0, 0, 0, 0.8);
+    text-shadow: 0 3px 3px #e6e6e6, 0 0 0 #000;
+}
+.carousel .carousel-indicators {
+  bottom: -30px;
+  z-index: 1000;
+}
+.carousel-indicators li, .carousel-indicators li.active {
+	width: 10px;
+	height: 10px;
+	margin: 1px 3px;
+	border-radius: 50% !important;
+}
+.carousel-indicators li {	
+	background: #999;
+	border-color: transparent;
+	box-shadow: inset 0 2px 1px rgba(0,0,0,0.2);
+}
+.carousel-indicators li.active {	
+	background: #555;		
+	box-shadow: inset 0 2px 1px rgba(0,0,0,0.2);
+}
+
+.slant{
+  background: #008E7B;
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+  position: relative;
+   height: 400px;
+   width: 350px;
+   padding: 1em 3em 1em 3em;
+    font-size: 20px;
     position: relative;
-     height: 400px;
-     width: 350px;
-     padding: 1em 3em 1em 3em;
-      font-size: 20px;
-      position: relative;
-      
-  
-      z-index: 100;
-     
-  }
-  
-  .slant::after{
-    content: " ";
-    position: absolute;
-    display: block;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 25px;
-    z-index: -1;
-    background: #008E7B;
-    transform-origin: bottom left;
-    -ms-transform: skew(-30deg);
-    -webkit-transform: skew(-30deg);
-    transform: skew(-30deg);
-  }
-  .scontent{
-    /* background: #000; */
-    width: 400px;
-    margin: 10px;
-    position: absolute;
-    padding: 10px;
-    top: 10%;  
-    right: -30px;
-    bottom: -30px;
-    -webkit-transform: skew(0deg);
-    -moz-transform: skew(0deg);
-    -o-transform: skew(0deg);
-  }
-  
-  .skewLeft{ 
-    height: 400px; 
-    width: 600px;  
-    margin-top: -10px;
-    margin-right: -10px; 
-  
-   /* position: relative; */
     
-  }
+
+    z-index: 100;
+   
+}
+
+.slant::after{
+  content: " ";
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 25px;
+  z-index: -1;
+  background: #008E7B;
+  transform-origin: bottom left;
+  -ms-transform: skew(-30deg);
+  -webkit-transform: skew(-30deg);
+  transform: skew(-30deg);
+}
+.scontent{
+  /* background: #000; */
+  width: 400px;
+  margin: 10px;
+  position: absolute;
+  padding: 10px;
+  top: 10%;  
+  right: -30px;
+  bottom: -30px;
+  -webkit-transform: skew(0deg);
+  -moz-transform: skew(0deg);
+  -o-transform: skew(0deg);
+}
+
+.skewLeft{ 
+  height: 400px; 
+  width: 600px;  
+  margin-top: -10px;
+  margin-right: -10px; 
+
+ /* position: relative; */
   
-  .btn-outline-secondary{
-    border: 2px solid #fff !important;
-  }
-  .btn-outline-secondary:hover{
-    background: #fff;
-    color: #008E7B !important;
-  }
-  h2.line {
-    width: 100%; 
-    text-align: center; 
-    border-bottom: .5px solid #000; 
-    line-height: 0.1em;
-    margin: 10px 0 20px; 
-  } 
-  
-  .line span { 
-     background:#fff; 
-     padding:0 10px; 
+}
+
+.btn-outline-secondary{
+  border: 2px solid #fff !important;
+}
+.btn-outline-secondary:hover{
+  background: #fff;
+  color: #008E7B !important;
+}
+h2.line {
+  width: 100%; 
+  text-align: center; 
+  border-bottom: .5px solid #000; 
+  line-height: 0.1em;
+  margin: 10px 0 20px; 
+} 
+
+.line span { 
+   background:#fff; 
+   padding:0 10px; 
+}
+@media (max-width: 765px) {
+    .slant {
+     display: none;
+    }
+    .scontent{
+        display: block;
+        position: absolute;
+    }
+    .testimonials, blockquote{
+      margin-top: 0;
+      font-size: medium !important;
+    }
+    .b{
+      font-size: 12px !important;
+    }
+    p{
+      font-size: 17px;
+      margin-top: -20px;
+    }
+    .overlay-text{
+        background: rgba(0, 142, 123,0.8);
+        width: 100%;
+        margin: 10px;
+        word-wrap: break-word !important;
+        position: absolute;
+        height: 200px;
+
+        color: #001E13;
+       
+        left: 0;
+        bottom: -30px;
+        -webkit-transform: skew(0deg);
+        -moz-transform: skew(0deg);
+        -o-transform: skew(0deg);
+    }
   }
 
   .med{
