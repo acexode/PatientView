@@ -1,6 +1,8 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { useHistory, Link, Redirect } from 'react-router-dom'
 
+
+const $ = window.$
 const TopNav = ({title}) => {
     const [navigate, setnavigate] = useState(false)
     const Logout = () =>{
@@ -8,11 +10,22 @@ const TopNav = ({title}) => {
         setnavigate(true)
         
     }
+    useEffect(() => {
+      
+    }, [])
+    const handleCloseMenu = () =>{  
+        console.log($('#sidebarCollapse'))
+              $('#sidebar, #content').toggleClass('active');
+              $('.collapse.in').toggleClass('in');
+              $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+                 
+    }
+    
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container-fluid">
 
-            <a  id="sidebarCollapse" >
+            <a onClick={handleCloseMenu}  id="sidebarCollapse"   >
                 <i className="las la-bars"></i>
             </a>
             <ul className="nav navbar-nav">

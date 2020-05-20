@@ -1,10 +1,35 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import logo from '../assets/MEDICALL.svg'
 import {User} from '../components/helpers/helpers'
 import avater from '../assets/user.png'
+const $ = window.$
 const Sidebar = () => {
-    
+    useEffect(() => {
+        $(".submenu-dropdown").click(function(){
+            $("#sidebar").mCustomScrollbar({
+                theme: "minimal"
+            });
+            $('.ul').hide();
+            $(".submenu-dropdown").children("i").removeClass("la-angle-down")
+            $(".submenu-dropdown").children("i").addClass("la-angle-right")
+            $(this).next().slideToggle();
+            if($(this).children("i").hasClass("la-angle-right")){
+              $(this).children("i").removeClass("la-angle-right")
+              $(this).children("i").addClass("la-angle-down")
+            }else{
+              $(this).children("i").removeClass("la-angle-down")
+              $(this).children("i").addClass("la-angle-right")
+            }
+            $('.sidebar-link').on('click', function () {
+   
+                $('.sidebar-link').removeClass('sidebar-active');
+                $(this).toggleClass('sidebar-active');
+                
+            });
+      
+          });
+    }, [])
     return (
         <nav id="sidebar">
         <div className="sidebar-header">
@@ -83,6 +108,12 @@ const Sidebar = () => {
             </ul>
                    
             
+            </li> 
+            <li className="sidebar-link">
+                <Link to="/verify-code" >
+                <i className="las la-map-marked"></i>
+               verify
+            </Link>
             </li> 
             <li className="sidebar-link">
                 <Link to="/outlets" >

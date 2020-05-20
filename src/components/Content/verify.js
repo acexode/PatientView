@@ -22,7 +22,14 @@ const Verify = () => {
     const [loading,setLoading] = useState(false)
       // console.log(patientInfo)
       useEffect(() => {
-        $('#sidebar, #content').toggleClass('active');
+        $(".v-code input").keyup(function () {
+          console.log(this.value.length)
+          console.log(this.maxLength)
+            if (this.value.length == this.maxLength) {
+                console.log( $(this).next('.v-code input'))
+              $(this).next('.v-code input').focus();
+            }
+        });
         console.log(showError)
      }, [showError])
 
@@ -66,6 +73,7 @@ const Verify = () => {
                 "hospitalNumber": patientInfo.hospitalNumber || hdata.hospitalNumber
               }    
             console.log(obj)
+            history.push('/history')
            verifyOTP(obj).then(data =>{
              console.log(data)
              setLoading(false)

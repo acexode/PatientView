@@ -11,11 +11,8 @@ const EncounterHistory = () => {
     const [loading,setLoading] = useState(false)
     const allEncounters = encounter.length > 0 ? encounter : JSON.parse(localStorage.getItem('encounter'))
     useEffect(() => {
-        console.log($('#content').hasClass('active'))
-        if($('#content').hasClass('active') == false){
-            $('#sidebar, #content').toggleClass('active');
-
-        }
+        $('#sidebar, #content').addClass('active');
+       
        
     }, [encounter])
     // console.log(allEncounters)

@@ -19,8 +19,9 @@ import RadiologyResult from './components/Content/Radiology/RadiologyResult';
 import Outlets from './components/Content/outlets';
 import { AppProvider } from './components/AppContext/AppContext';
 
+
   const Main = withRouter(({ location }) => {
-    
+  
     return (
       <>  
        {(location.pathname != '/login' && location.pathname != '/signup' && location.pathname != '/' && location.pathname != '/reset-password') && (	
@@ -56,7 +57,7 @@ function App() {
   
   return (  
     <AppProvider>
-      <BrowserRouter>
+      <BrowserRouter >
       <Main />
     </BrowserRouter>
   </AppProvider>
