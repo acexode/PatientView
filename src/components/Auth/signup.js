@@ -267,7 +267,8 @@ const Signup  = () =>{
                             // autoLoad={true}
                             fields="name,email,picture"                            
                             callback={responseFacebook}
-                            icon="fa-facebook"/>
+                            icon="fa-facebook"
+                            reAuthenticate={true}/>
                           
                          
                           </div>

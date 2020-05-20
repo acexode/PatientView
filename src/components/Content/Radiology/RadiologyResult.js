@@ -22,7 +22,7 @@ const RadiologyResult = () => {
         e.preventDefault();        
         setLoading(true)
         const formData = new FormData();
-        formData.append('RadiologyImages',RadiologyImages[0])  
+        //formData.append('RadiologyImages',RadiologyImages)  
         formData.append('PatientDidRadTest',PatientDidRadTest)  
         formData.append('PatientRadTestComment',PatientRadTestComment)  
         formData.append('ActivityId',ActivityIdRef.current.value)       
@@ -31,6 +31,11 @@ const RadiologyResult = () => {
         console.log(formData.get('PatientRadTestComment'))
         console.log(formData.get('ActivityId'))
         
+        if(RadiologyImages!=null&&RadiologyImages.length>0){
+            RadiologyImages.forEach(function(file) {
+                formData.append('RadiologyImages',file);
+            });
+        }
        
         postFeedBack(formData).then(res =>{
             console.log(res)

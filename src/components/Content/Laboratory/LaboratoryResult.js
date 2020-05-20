@@ -26,14 +26,21 @@ const LaboratoryResult = () => {
         e.preventDefault();        
         setLoading(true)
         const formData = new FormData(); 
-        formData.append('LabImages',LabImages[0])  
+        //formData.append('LabImages',LabImages)  
         formData.append('PatientDidLabTest',PatientDidLabTest)  
         formData.append('PatientLabTestComment',PatientLabTestComment)  
         formData.append('ActivityId',ActivityIdRef.current.value)  
         console.log(formData.get('LabImages'))
         console.log(formData.get('PatientDidLabTest'))
         console.log(formData.get('PatientLabTestComment'))        
-        console.log(formData.get('ActivityId'))    
+        console.log(formData.get('ActivityId'))   
+        
+        if(LabImages!=null&&LabImages.length>0){
+            LabImages.forEach(function(file) {
+                formData.append('LabImages',file);
+            });
+        }
+        
         postFeedBack(formData).then(res =>{
             console.log(res.data)
             setLoading(false)
