@@ -1,6 +1,6 @@
 const $ = window.$
-$(document).ready(function () {
-    
+$(document).ready(function () { 
+ 
     $(".submenu-dropdown").click(function(){
       $('.ul').hide();
       $(".submenu-dropdown").children("i").removeClass("la-angle-down")
@@ -30,6 +30,7 @@ $(document).ready(function () {
     });
     $('.sidebar-link').on('click', function () {
       $('.sidebar-link').removeClass('sidebar-active');
+      
       $(this).toggleClass('sidebar-active');
       
   });

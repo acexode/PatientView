@@ -7,6 +7,9 @@ export const getOTPState= (date) =>{
 export const hospitalInfo = () =>{
     return JSON.parse(localStorage.getItem("hData"))
 }
+export const User = () =>{
+    return JSON.parse(localStorage.getItem("user"))
+}
 export const getTime = (date) =>{
     let time =  new Date(date).toLocaleTimeString().split(":")    
     if(parseInt(time[0]) <= 12){

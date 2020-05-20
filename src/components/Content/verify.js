@@ -19,8 +19,10 @@ const Verify = () => {
     const [showError, setshowError] = useState(false)
     const [showSuccessOTP, setshowSuccessOTP] = useState(false)
     const [state, setState] = useState(initialState)
-      console.log(patientInfo)
+    const [loading,setLoading] = useState(false)
+      // console.log(patientInfo)
       useEffect(() => {
+        $('#sidebar, #content').toggleClass('active');
         console.log(showError)
      }, [showError])
 
@@ -32,10 +34,15 @@ const Verify = () => {
         });
     }
     const handleResendOTP = () =>{
-        resendOTP().then(data =>{
+      setLoading(true)
+        resendOTP().then(res =>{
+          console.log(res.data)
+            setLoading(false)
             setshowSuccessOTP(true)
             
         }).catch(err => {
+            console.log(err.response)
+            setLoading(false)
             seterrMsg('Unable to send otp')
                setshowError(true)
                setTimeout(() =>{
@@ -46,7 +53,8 @@ const Verify = () => {
         })
     }
     const handleSubmit = (evt) =>{
-       evt.preventDefault();      
+       evt.preventDefault(); 
+       setLoading(true)     
        let  otp = Object.values(state).join('')
        let hdata = JSON.parse(localStorage.getItem('hData'))
        
@@ -60,6 +68,7 @@ const Verify = () => {
             console.log(obj)
            verifyOTP(obj).then(data =>{
              console.log(data)
+             setLoading(false)
                 localStorage.setItem('noOTP', true)
                $('.bd-example-modal-sm').modal('toggle')
                 setTimeout(() =>{
@@ -68,6 +77,7 @@ const Verify = () => {
     
                 },1500)
             }).catch(err =>{    
+              setLoading(false)
                 console.log(err.response)                
                seterrMsg(err.response.data)
                setshowError(true)
@@ -82,6 +92,7 @@ const Verify = () => {
        }else{
            seterrMsg('Insert all 6 OTP codes')
            setshowError(true)
+           setLoading(false)
            setTimeout(() =>{
             seterrMsg('')
             setState(initialState)
@@ -92,18 +103,18 @@ const Verify = () => {
     return (
         <div id="content">
         <TopNav />
-        <div class="container">
+        <div className="container">
               
-              <div class="row justify-content-center">
-               <div class="card ">
-                   <h3 class="text-center"><i class="las la-mobile-alt phone"></i></h3>
-                   <h3 class="text-center">Verification Code</h3>
-                   <small class="text-dark pt-2 text-center">The verfication code has been sent <br/> to the patient's phone  number</small>
-                   {showError ? <span className="text-danger text-center my-3">{errMsg}</span> : <strong class="text-dark pt-3 text-small text-center">Please enter the code below</strong> }
+              <div className="row justify-content-center">
+               <div className="card ">
+                   <h3 className="text-center"><i className="las la-mobile-alt phone"></i></h3>
+                   <h3 className="text-center">Verification Code</h3>
+                   <small className="text-dark pt-2 text-center">The verfication code has been sent <br/> to the patient's phone  number</small>
+                   {showError ? <span className="text-danger text-center my-3">{errMsg}</span> : <strong className="text-dark pt-3 text-small text-center">Please enter the code below</strong> }
                    
-                       <div class="container">                           
-                             <div class="row">
-                               <form onSubmit={handleSubmit} class="form-row justify-content-center mr-5 ml-5 mt-3 v-code">                                   
+                       <div className="container">                           
+                             <div className="row">
+                               <form onSubmit={handleSubmit} className="form-row justify-content-center mr-5 ml-5 mt-3 v-code">                                   
                                         <input name="vcode1" value={state.vcode1}  onChange={handleChange}  maxlength="1" type="text" className={showError && "error"}  placeholder="0" />
                                         <input name="vcode2" value={state.vcode2}  onChange={handleChange} maxlength="1" type="text" className={showError && "error"}  placeholder="0" />
                                         <input name="vcode3" value={state.vcode3}  onChange={handleChange} maxlength="1" type="text" className={showError && "error"}  placeholder="0" />
@@ -111,33 +122,38 @@ const Verify = () => {
                                        <input name="vcode5" value={state.vcode5}  onChange={handleChange} maxlength="1" type="text" className={showError && "error"}  placeholder="0" />
                                        <input name="vcode6" value={state.vcode6}  onChange={handleChange} maxlength="1" type="text" className={showError && "error"}  placeholder="0" />                                    
                                    
-                                <button class="mt-3 btn btn-block btn-primary verify">Retrieve </button>
+                               
+                                {loading ? <div className="spinner-border text-success" role="status">
+                                                                    <span className="sr-only mt-3">Loading...</span>
+                                                                </div>: 
+                                                                <button className="mt-3 btn btn-block btn-primary verify">Retrieve </button>
+                                                                }
                                </form>
                              </div>
-                             <div class="row mt-3 justify-content-end">
+                             <div className="row mt-3 justify-content-end">
                                {showSuccessOTP ? <strong className="mr-5 text-success">OTP resent</strong> : <a onClick={handleResendOTP} className="mr-5 text-info">Resend OTP</a>}      
 
                              </div>
 
                        </div>
                    </div>
-                   <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-sm" role="document">
-                      <div class="modal-content">
+                   <div className="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                    <div className="modal-dialog modal-sm" role="document">
+                      <div className="modal-content">
                         
-                        <div class="modal-body mb-5">
-                           <div class="row justify-content-center align-item-center">
-                               <p class="mt-4 "><i class="las la-check-circle big text-center"></i></p>                               
+                        <div className="modal-body mb-5">
+                           <div className="row justify-content-center align-item-center">
+                               <p className="mt-4 "><i className="las la-check-circle big text-center"></i></p>                               
                            </div>
-                           <div class="row justify-content-center align-item-center">
-                               <h2 class="mt-1 text-center">Success</h2> <br/>                                                   
+                           <div className="row justify-content-center align-item-center">
+                               <h2 className="mt-1 text-center">Success</h2> <br/>                                                   
                            </div>
-                           <div class="row justify-content-center align-item-center">
+                           <div className="row justify-content-center align-item-center">
 
-                               <small class="text-dark">Your phone has been verified!</small>                             
+                               <small className="text-dark">Your phone has been verified!</small>                             
                            </div>
-                           <div class="row justify-content-center align-item-center mt-5 mb-3">
-                               <button type="button" class="btn verify text-center text-light" data-dismiss="modal">Continue</button>
+                           <div className="row justify-content-center align-item-center mt-5 mb-3">
+                               <button type="button" className="btn verify text-center text-light" data-dismiss="modal">Continue</button>
                                                
                            </div>
                         </div>

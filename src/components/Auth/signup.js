@@ -49,8 +49,14 @@ const Signup  = () =>{
       phoneNumber: Yup.string() 
         .required("Phone number is required"),
       password: Yup.string()
-        .required("No password provided."),       
-      confirmPassword: Yup.string()
+        .required("No password provided.")
+        .min(6, "Password is too short - should be 6 chars minimum"),       
+      confirmPassword: Yup.string().when("password", {
+        is: val => (val && val.length > 0 ? true : false),
+        then: Yup.string().oneOf(
+          [Yup.ref("password")],
+          "Both password need to be the same")
+        })
         .required("Please confirm your password")        
     })}
   >
@@ -110,21 +116,21 @@ const Signup  = () =>{
         console.log('data', response);
       }
       return (
-        <div class="login-wrapper">
-        <div class="page-wrapper">
-              <div class="form-wrapper">
-                  <form onSubmit={handleSubmit} class="form">
-                      <div class="form-row ">
-                          <div class="col-md-12 logo-box">
-                              <img class="logo text-center" src={logo} alt="" />                              
+        <div className="login-wrapper">
+        <div className="page-wrapper">
+              <div className="form-wrapper">
+                  <form onSubmit={handleSubmit} className="form">
+                      <div className="form-row ">
+                          <div className="col-md-12 logo-box">
+                              <img className="logo text-center" src={logo} alt="" />                              
                           </div>                            
                       </div>
-                      <div class="form-row instruction mb-3">
-                          <h5 class="">Sign up</h5> 
+                      <div className="form-row instruction mb-3">
+                          <h5 className="">Sign up</h5> 
                           <span>Enter your details to create an account</span>
                                                  
                       </div>                                              
-            <div class="form-row">
+            <div className="form-row">
             <div className="form-group login-input col-md-6">
               <label>Firstname </label>
               <input 
@@ -158,7 +164,7 @@ const Signup  = () =>{
             </div>
             
             </div>  
-            <div class="form-row">                 
+            <div className="form-row">                 
             <div className="form-group login-input col-md-6">
               <label>Email </label>
               <input 
@@ -222,9 +228,9 @@ const Signup  = () =>{
               )}
             </div>
                       
-                      {isSubmitting ? <div class="spinner-border text-success" role="status">
-                        <span class="sr-only">Loading...</span>
-                      </div>: <button type="submit" class="mt-3 btn btn-primary submit">Sign Up</button>}
+                      {isSubmitting ? <div className="spinner-border text-success" role="status">
+                        <span className="sr-only">Loading...</span>
+                      </div>: <button type="submit" className="mt-3 btn btn-primary submit">Sign Up</button>}
                       <div>&nbsp;</div>
                       { show && ( 
                       <div className="alert alert-danger alert-dismissible fade show" role="alert">
@@ -234,13 +240,13 @@ const Signup  = () =>{
                       </button>
                       </div>)
                   }
-                      <div class="form-row mt-4">
+                      <div className="form-row mt-4">
                             <h2 className="line-text"><span>or</span></h2>
 
                           
                         </div>
-                      <div class="form-row justify-content-center">
-                          <div class="social-login">
+                      <div className="form-row justify-content-center">
+                          <div className="social-login">
                           <GoogleLogin
                             clientId={config.GOOGLE_CLIENT_ID}
                             buttonText=""
@@ -254,7 +260,7 @@ const Signup  = () =>{
                           
                           </div>
                         
-                         <div class="social-login">
+                         <div className="social-login">
                           
                           <FacebookLogin
                             appId={config.FACEBOOK_APP_ID}
@@ -269,11 +275,11 @@ const Signup  = () =>{
 
                           
                         </div>
-                        <div class="form-row mt-4 justify-content-center">
-                            <p>You dont have an account ? </p> <Link class="pl-2" to="/login">Login</Link>
+                        <div className="form-row mt-4 justify-content-center">
+                            <p>You dont have an account ? </p> <Link className="pl-2" to="/login">Login</Link>
                         </div>
                     </form>
-                  <div class="right-bg">
+                  <div className="right-bg">
 
                   </div>
                   

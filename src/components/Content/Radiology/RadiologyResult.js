@@ -7,7 +7,7 @@ import {getDate, getTime, getOTPState, hospitalInfo} from '../../helpers/helpers
 const $ = window.$
 const RadiologyResult = () => {
     let history = useHistory()
-    const {encounter, postFeedBack} = useContext(AppContext) 
+    const {encounter, postFeedBack, verifyPatient} = useContext(AppContext) 
     const allencounters = encounter.length > 0 ? encounter : JSON.parse(localStorage.getItem('encounter'))  
     const [PatientDidRadTest, setPatientDidRadTest] = useState(true) 
     const [PatientRadTestComment, setPatientRadTestComment] = useState('') 
@@ -41,6 +41,7 @@ const RadiologyResult = () => {
                 setRadiologyImages(null)
                 setPatientDidRadTest(true)
                 setPatientRadTestComment('')
+                $('.collapse').collapse('hide') 
             },1500)
 
         }).catch(err =>{
@@ -50,25 +51,50 @@ const RadiologyResult = () => {
             alert("unable to send fedback")
         })
     }
+    const retrieve = () =>{
+        setLoading(true)
+        let data = {
+            "hospitalId": hospitalInfo().hospitalId,
+            "hospitalNumber": hospitalInfo().hospitalNumber
+        }
+        history.push('/verify-code')
+        console.log(data)
+        verifyPatient(data).then(res =>{
+            console.log(res)
+             setLoading(false)
+            history.push('/verify-code')
+        }).catch(err =>{
+            console.log(err.response)
+            setLoading(false)
+            // seterrMsg(err.response.data)
+            // setshowError(true)
+        })
+    }
     return (
         <div id="content">
-        <TopNav title="Laboratory Result" />
-        <div class="container">
+        <TopNav title="Radiology Result" />
+        <div className="container">
 
-            <div class="row">
-                <div class="col-md-6">
-                    <a class="h-id btn border" href="">
-                        <span>Hospital ID</span> <strong>{hospitalInfo() && hospitalInfo().hospitalId}</strong>
+            <div className="row">
+                <div className="col-md-6">
+                    <a className="h-id btn border" href="">
+                        <span>Hospital ID</span> <strong>{hospitalInfo() && hospitalInfo().hospitalNumber}</strong>
                     </a>
                 </div>
-                <div class="col-md-6">
-                    <button class="btn text-light float-right verify">Retrieve</button>
+                <div className="col-md-6">
+                <button onClick={retrieve}  className="btn text-light float-right verify">
+                   {loading ? <div className="spinner-border text-light" role="status">
+                                                                    <span className="sr-only">Loading...</span>
+                                                                </div>: <div className="submit-section">
+                                                                Retrieve
+                                                                </div>}
+                   </button>
                 </div>
             </div>
 
 
-            <div class="row">
-                <table class="table table-condensed" style={{borderCollapse:'collapse'}}>
+            <div className="row">
+                <table className="table table-condensed" style={{borderCollapse:'collapse'}}>
                     <thead>
                         <tr>
                             <th scope="col">Encounter ID</th>
@@ -87,41 +113,41 @@ const RadiologyResult = () => {
                             <td>{getDate(data.encounterDate)}</td>
                             <td>{data.encounterNumber}</td>                            
                             <td><a data-toggle="collapse" data-target={`#demo${i}`}
-                                    class="view accordion-toggle">More</a></td>
+                                    className="view accordion-toggle">More</a></td>
 
                         </tr>
                         <tr>
-                            <td colspan="6" class="hiddenRow">
-                                <div class="accordian-body collapse" id={`demo${i}`}>
-                                    <div class="row">
-                                        <div class="card row-card">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <span class="text-center text-success"> {data._id}</span>
+                            <td colspan="6" className="hiddenRow">
+                                <div className="accordian-body collapse" id={`demo${i}`}>
+                                    <div className="row">
+                                        <div className="card row-card">
+                                            <div className="row">
+                                                <div className="col-md-12">
+                                                    <span className="text-center text-success"> {data._id}</span>
                                                     <button data-toggle="collapse" data-target={`#demo${i}`}
-                                                        class="view float-right"> Less <small><i class="las la-angle-up small-caret"></i></small></button>
+                                                        className="view float-right"> Less <small><i className="las la-angle-up small-caret"></i></small></button>
                                                 </div>
                                             </div>
                                             {data.activities.map(e =>(
                                                 <>
                                                     {e.activity === 'Radiology Request' ?
                                                      <>
-                                                          <div class="row mt-5">
-                                                <div class="col-md-6">
-                                                    <p class="text-dark pt-2"><strong>Radiology Request</strong></p>
+                                                          <div className="row mt-5">
+                                                <div className="col-md-6">
+                                                    <p className="text-dark pt-2"><strong>Radiology Request</strong></p>
                                                 </div>
-                                                <div class="col-md-6 align-items-end">
-                                                         <a class="border rounded p-2 float-right ml-3" href="">
-                                                             <i class="lar la-clock"></i> {getTime(e.activityDate)}
+                                                <div className="col-md-6 align-items-end">
+                                                         <a className="border rounded p-2 float-right ml-3" href="">
+                                                             <i className="lar la-clock"></i> {getTime(e.activityDate)}
                                                          </a>
-                                                         <a class="border rounded p-2 float-right ml-3" href="">
-                                                             <i class="las la-calendar-day"></i> {getDate(e.activityDate)}
+                                                         <a className="border rounded p-2 float-right ml-3" href="">
+                                                             <i className="las la-calendar-day"></i> {getDate(e.activityDate)}
                                                          </a>
                                                      </div>
      
 
-                                                <div class="row-card py-3">
-                                                    <table class="nested-table">
+                                                <div className="row-card py-3">
+                                                    <table className="nested-table">
                                                         <thead>
                                                             <tr>
                                                                 <th scope="col">Name</th>
@@ -148,27 +174,27 @@ const RadiologyResult = () => {
 
                                             </div>
                                             <form onSubmit={handleSubmit} id="feedback" enctype="multipart/form-data">
-                                                <div class="row mt-5">
-                                                    <div class="col-md-6">
-                                                        <p class="text-dark pt-2"><strong>Feedback</strong></p>
+                                                <div className="row mt-5">
+                                                    <div className="col-md-6">
+                                                        <p className="text-dark pt-2"><strong>Feedback</strong></p>
                                                     </div>                                              
-                                                    <div class="row invisible">
-                                                                <div class="form-group">                                                            
+                                                    <div className="row invisible">
+                                                                <div className="form-group">                                                            
                                                                         <label className="pres-label" for="">
                                                                         <input ref={ActivityIdRef}  defaultValue={e.activityId} type="text"   />
                                                                                 <span className="checkmark"></span> 
                                                                         </label>
                                                                         </div>
                                                                 </div>
-                                                    <div class="row-card feedback-card py-3">                                                        
+                                                    <div className="row-card feedback-card py-3">                                                        
                                                             <p className="pl-3 text-dark">Did you carry out the test</p>
-                                                            <div class="form-group">
+                                                            <div className="form-group">
                                                                     
                                                                     <label className="pres-label" for="">
                                                                         <input value={PatientDidRadTest} checked={PatientDidRadTest} type="radio" onChange={() =>setPatientDidRadTest(true)} name="PatientDidRadTest"  />Yes
                                                                         <span className="checkmark"></span> </label>
                                                                 </div>
-                                                                <div class="form-group">
+                                                                <div className="form-group">
                                                                     
                                                                     <label className="pres-label" for="">
                                                                         <input type="radio" value ={PatientDidRadTest}  onChange={() =>setPatientDidRadTest(false)} name="PatientDidRadTest"  />No
@@ -185,12 +211,12 @@ const RadiologyResult = () => {
                                                             <div className="row pt-3">
                                                             
                                                             <textarea placeholder="comment"
-                                                                class="row-card card bg-gray comment" onChange={() => setPatientRadTestComment} name="PatientRadTestComment"
+                                                                className="row-card card bg-gray comment" onChange={() => setPatientRadTestComment} name="PatientRadTestComment"
                                                                 id=""></textarea>
                                                         </div>
                                                         }
-                                                        {loading ? <div class="spinner-border text-success" role="status">
-                                                                    <span class="sr-only">Loading...</span>
+                                                        {loading ? <div className="spinner-border text-success" role="status">
+                                                                    <span className="sr-only">Loading...</span>
                                                                 </div>: <div className="submit-section">
                                                                 <button type="submit" className="btn verify text-light float-right">Submit Feedback</button>
                                                                 </div>}
@@ -225,20 +251,20 @@ const RadiologyResult = () => {
                     </tbody>
                 </table>
             </div>
-            <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-sm" role="document">
-                      <div class="modal-content">
+            <div className="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                    <div className="modal-dialog modal-sm" role="document">
+                      <div className="modal-content">
                         
-                        <div class="modal-body mb-5">
-                           <div class="row justify-content-center align-item-center">
-                               <p class="mt-4 "><i class="las la-check-circle big text-center"></i></p>                               
+                        <div className="modal-body mb-5">
+                           <div className="row justify-content-center align-item-center">
+                               <p className="mt-4 "><i className="las la-check-circle big text-center"></i></p>                               
                            </div>
-                           <div class="row justify-content-center align-item-center">
-                               <h2 class="mt-1 text-center">Success</h2> <br/>                                                   
+                           <div className="row justify-content-center align-item-center">
+                               <h2 className="mt-1 text-center">Success</h2> <br/>                                                   
                            </div>
-                           <div class="row justify-content-center align-item-center">
+                           <div className="row justify-content-center align-item-center">
 
-                               <small class="text-dark">Feedback has been sent</small>                             
+                               <small className="text-dark">Feedback has been sent</small>                             
                            </div>
                            
                         </div>

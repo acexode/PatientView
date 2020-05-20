@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import './login.css'
 import axios from "axios";
 import { Formik } from "formik";
@@ -9,10 +9,12 @@ import {useHistory} from 'react-router-dom';
 import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
 import config from '../../config.json';
+import { AppContext } from '../AppContext/AppContext';
 
 
 const Login  = () =>{
   let history = useHistory()
+  const {fetchHospitals} = useContext(AppContext)
   const [message,setMessage] = useState('')
   const [show,setShow] = useState(false)
   const [recoverMessage,setRecoverMessage] = useState('')
@@ -21,6 +23,7 @@ const Login  = () =>{
   const [loading,setLoading] = useState(false)
   const [email, setEmail] = useState('')
   const [accessToken, setAccessToken] = useState('')
+  
   return (
   <Formik
     initialValues={{ email: "", password: "" }}
@@ -30,15 +33,17 @@ const Login  = () =>{
         axios.post(`${config.BASE_URL}Auth/login`,  values )
         .then(res => {
           console.log(res.data);
-          let user = {email : res.data.email , id: res.data.id }
+          let user = {email : res.data.email , id: res.data.id,name: res.data.name,
+          phoneNumber: res.data.phoneNumber }
           localStorage.setItem("token", res.data.authToken)
           localStorage.setItem('user', JSON.stringify(user))          
+          fetchHospitals()
           history.push('/encounter',{user: res.data.user})
         })
         .catch(err =>{         
-          console.log(err);
+          console.log(err.response);
           setShow(true)
-          setMessage(err.response)
+          setMessage(err.response.data)
         })	
         setSubmitting(false);
       }, 500);
@@ -94,6 +99,7 @@ const Login  = () =>{
           let user = {email : res.data.email , id: res.data.id }
           localStorage.setItem("token", res.data.authToken)
           localStorage.setItem('user', JSON.stringify(user))
+          fetchHospitals()
           
           history.push('/encounter',{user: res.data.user})
         })
@@ -117,6 +123,7 @@ const Login  = () =>{
           let user = {email : res.data.email , id: res.data.id }
           localStorage.setItem("token", res.data.authToken)
           localStorage.setItem('user', JSON.stringify(user))          
+          fetchHospitals()
           history.push('/encounter',{user: res.data.user})
         })
         .catch(err =>{         
@@ -134,18 +141,18 @@ const Login  = () =>{
         console.log('data', response);
       }
       return (
-        <div class="login-wrapper">
-        <div class="page-wrapper">
-              <div class="form-wrapper">
-                  <form onSubmit={handleSubmit} class="form">
-                      <div class="form-row ">
-                          <div class="col-md-12 logo-box">
-                              <img class="logo text-center" src={logo} alt="" />
+        <div className="login-wrapper">
+        <div className="page-wrapper">
+              <div className="form-wrapper">
+                  <form onSubmit={handleSubmit} className="form">
+                      <div className="form-row ">
+                          <div className="col-md-12 logo-box">
+                              <img className="logo text-center" src={logo} alt="" />
                              
                           </div>                            
                       </div>
-                      <div class="form-row instruction mb-2">
-                          <h5 class="">Log in</h5> 
+                      <div className="form-row instruction mb-2">
+                          <h5 className="">Log in</h5> 
                           <span>Enter your details below</span>
                                                  
                       </div>                                              
@@ -189,9 +196,9 @@ const Login  = () =>{
                 <div className="input-feedback float-left">{errors.password}</div>
               )}
             </div>
-                  {isSubmitting ? <div class="spinner-border text-success" role="status">
-                        <span class="sr-only">Loading...</span>
-                      </div>: <button type="submit" class="mt-3 btn btn-primary submit">Sign In</button>}
+                  {isSubmitting ? <div className="spinner-border text-success" role="status">
+                        <span className="sr-only">Loading...</span>
+                      </div>: <button type="submit" className="mt-3 btn btn-primary submit">Sign In</button>}
                       <div>&nbsp;</div>
                       { show && ( 
                       <div className="alert alert-danger alert-dismissible fade show p-1"  role="alert">
@@ -202,13 +209,13 @@ const Login  = () =>{
                       </div>)
                   }
 
-                      <div class="form-row mt-4">
+                      <div className="form-row mt-4">
                           <h2 className="line-text"><span>or</span></h2>
 
                           
                         </div>
-                      <div class="form-row justify-content-md-center">
-                      <div class="social-login">
+                      <div className="form-row justify-content-md-center">
+                      <div className="social-login">
                           <GoogleLogin
                             clientId={config.GOOGLE_CLIENT_ID}
                             buttonText=""
@@ -221,7 +228,7 @@ const Login  = () =>{
                           />
                         </div>
                         
-                         <div class="social-login">
+                         <div className="social-login">
                          <FacebookLogin
                             appId={config.FACEBOOK_APP_ID}
                             // autoLoad={true}
@@ -234,19 +241,18 @@ const Login  = () =>{
 
                           
                         </div>
-                        <div class="form-row mt-4 justify-content-md-center">
-                            <p>You dont have an account ? </p> <Link class="pl-2" to="/signup">Sign Up</Link>
+                        <div className="form-row mt-4 justify-content-md-center">
+                            <p>You dont have an account ? </p> <Link className="pl-2" to="/signup">Sign Up</Link>
                         </div>
                     </form>
-                    <div class="right-bg">
+                    <div className="right-bg">
 
                   </div>
                   
             <div className="row">                
             <div className="modal fade" id="passowrdRecover" tabindex="-1" role="dialog" aria-labelledby="AssignDeviceLabel" aria-hidden="true">
             <div className="modal-dialog" role="document">
-            {/* {success && <div className="alert  alert-success" style={{width:'100%'}}>Device Successfully assigned</div> }
-				{error &&  <div className="alert  alert-danger" style={{width:'100%'}}>Unable to assign device</div> } */}
+        
                 <div className="modal-content">               
                 <div className="modal-body">
                     <button type="button" className="close" data-dismiss="modal" aria-label="Close">
@@ -271,8 +277,8 @@ const Login  = () =>{
 										</div>
 									</div>
 
-                  {loading ? <div class="spinner-border text-success" role="status">
-                        <span class="sr-only">Loading...</span>
+                  {loading ? <div className="spinner-border text-success" role="status">
+                        <span className="sr-only">Loading...</span>
                       </div>: <div className="submit-section">
 										<button className="btn btn-success submit-btn">Submit</button>
 									</div>}

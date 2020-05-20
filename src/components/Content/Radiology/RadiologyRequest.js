@@ -1,37 +1,63 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import TopNav from '../../../Sidebar/TopNav'
 import { AppContext } from '../../AppContext/AppContext'
 import {getDate, getTime, getOTPState, hospitalInfo} from '../../helpers/helpers'
 import { useHistory } from 'react-router-dom'
 
 const RadiologyRequest = () => {
-    const {encounter} = useContext(AppContext)  
+    const {encounter,verifyPatient} = useContext(AppContext)  
+    const [loading, setLoading] = useState(false)
     console.log(encounter.length) 
     let history = useHistory()  
     let otpState = getOTPState() 
     if(otpState == null){      
         history.push("/encounter",  { info: "To view your Radiology request, you must select your hospital and input hospital ID" })
     }
+    const retrieve = () =>{
+        setLoading(true)
+        let data = {
+            "hospitalId": hospitalInfo().hospitalId,
+            "hospitalNumber": hospitalInfo().hospitalNumber
+        }
+        history.push('/verify-code')
+        console.log(data)
+        verifyPatient(data).then(res =>{
+            console.log(res)
+             setLoading(false)
+            history.push('/verify-code')
+        }).catch(err =>{
+            console.log(err.response)
+            setLoading(false)
+            // seterrMsg(err.response.data)
+            // setshowError(true)
+        })
+    }
     const allencounters = encounter.length > 0 ? encounter : JSON.parse(localStorage.getItem('encounter'))  
     return (
         <div id="content">
         <TopNav title="Radiology Request" />
-        <div class="container">
+        <div className="container">
 
-            <div class="row">
-                <div class="col-md-6">
-                    <a class="h-id btn border" href="">
-                        <span>Hospital ID</span> <strong>{hospitalInfo() && hospitalInfo().hospitalId}</strong>
+            <div className="row">
+                <div className="col-md-6">
+                    <a className="h-id btn border" href="">
+                        <span>Hospital ID</span> <strong>{hospitalInfo() && hospitalInfo().hospitalNumber}</strong>
                     </a>
                 </div>
-                <div class="col-md-6">
-                    <button class="btn text-light float-right verify">Retrieve</button>
+                <div className="col-md-6">
+                <button onClick={retrieve}  className="btn text-light float-right verify">
+                   {loading ? <div className="spinner-border text-light" role="status">
+                                                                    <span className="sr-only">Loading...</span>
+                                                                </div>: <div className="submit-section">
+                                                                Retrieve
+                                                                </div>}
+                   </button>
                 </div>
             </div>
 
 
-            <div class="row">
-                <table class="table table-condensed" style={{borderCollapse:'collapse'}}>
+            <div className="row">
+                <table className="table table-condensed" style={{borderCollapse:'collapse'}}>
                     <thead>
                         <tr>
                             <th scope="col">Encounter ID</th>
@@ -50,39 +76,39 @@ const RadiologyRequest = () => {
                             <td>{getDate(data.encounterDate)}</td>
                             <td>{data.encounterNumber}</td>   
                             <td><a data-toggle="collapse" data-target={`#demo${i}`}
-                                    class="view accordion-toggle">More</a></td>
+                                    className="view accordion-toggle">More</a></td>
 
                         </tr>
                         <tr>
-                            <td colspan="6" class="hiddenRow">
-                                <div class="accordian-body collapse" id={`demo${i}`}>
-                                    <div class="row">
-                                        <div class="card row-card">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <span class="text-center text-success"> {data._id}</span>
+                            <td colspan="6" className="hiddenRow">
+                                <div className="accordian-body collapse" id={`demo${i}`}>
+                                    <div className="row">
+                                        <div className="card row-card">
+                                            <div className="row">
+                                                <div className="col-md-12">
+                                                    <span className="text-center text-success"> {data._id}</span>
                                                     <button data-toggle="collapse" data-target={`#demo${i}`}
-                                                        class="view float-right"> Less <small><i class="las la-angle-up small-caret"></i></small></button>
+                                                        className="view float-right"> Less <small><i className="las la-angle-up small-caret"></i></small></button>
                                                 </div>
                                             </div>
                                             {data.activities.map(e =>(
                                                 <>
                                                     {e.activity === 'Radiology Request' ?
-                                                     <div class="row mt-5">
-                                                     <div class="col-md-6">
-                                                         <p class="text-dark pt-2"><strong>{e.activity}</strong></p>
+                                                     <div className="row mt-5">
+                                                     <div className="col-md-6">
+                                                         <p className="text-dark pt-2"><strong>{e.activity}</strong></p>
                                                      </div>
-                                                     <div class="col-md-6 align-items-end">
-                                                         <a class="border rounded p-2 float-right ml-3" href="">
-                                                             <i class="lar la-clock"></i> {getTime(e.activityDate)}
+                                                     <div className="col-md-6 align-items-end">
+                                                         <a className="border rounded p-2 float-right ml-3" href="">
+                                                             <i className="lar la-clock"></i> {getTime(e.activityDate)}
                                                          </a>
-                                                         <a class="border rounded p-2 float-right ml-3" href="">
-                                                             <i class="las la-calendar-day"></i> {getDate(e.activityDate)}
+                                                         <a className="border rounded p-2 float-right ml-3" href="">
+                                                             <i className="las la-calendar-day"></i> {getDate(e.activityDate)}
                                                          </a>
                                                      </div>
      
-                                                     <div class="row-card py-3">
-                                                         <table class="nested-table">
+                                                     <div className="row-card py-3">
+                                                         <table className="nested-table">
                                                             <thead>
                                                                 <tr>
                                                                     <th scope="col">Name</th>                                                              
