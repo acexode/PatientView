@@ -1,5 +1,5 @@
 {
-    "BASE_URL":"https://localhost:44331/api/",
+    "BASE_URL":"https://stagingapi.healthinabox.ng/api/",
     "GOOGLE_CLIENT_ID": "113873161933-1j99gn4fvnm1832i61m3lg8d6gfleb0l.apps.googleusercontent.com",
     "GOOGLE_AUTH_CALLBACK_URL": "https://patient.healthstation.ng",
     "FACEBOOK_APP_ID":"1063855254113074"
