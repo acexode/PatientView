@@ -48,7 +48,7 @@ export const AppProvider = (props) => {
     }
     const resendOTP = ()=>{
         const token = localStorage.getItem('token')
-        return axios.post(`$${config.BASE_URL}Hospitals/verify/resendotp`,  {headers: {'Authorization': `Bearer ${token}`}})
+        return axios.post(`${config.BASE_URL}Hospitals/verify/resendotp`,{},  {headers: {'Authorization': `Bearer ${token}`}})
         
     }
     const resetPassword = (data)=>{
