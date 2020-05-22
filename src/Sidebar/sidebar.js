@@ -5,6 +5,24 @@ import {User} from '../components/helpers/helpers'
 import avater from '../assets/user.png'
 const $ = window.$
 const Sidebar = () => {
+    const handleActiveMenu = (e) =>{  
+        console.log(e);
+        console.log($('#sidebarCollapse'))
+        $('.sidebar-link').removeClass('sidebar-active');
+        console.log(e.target.tagName)
+        if(e.target.tagName === "LI"){
+            e.target.classList.toggle('sidebar-active');
+
+        }else if(e.target.tagName === "A"){
+            // e.target.parentNode.toggle('sidebar-active')
+            // $(this).parent().toggleClass('sidebar-active')
+            console.log($(this))
+             e.currentTarget.classList.toggle("sidebar-active")
+            console.log()
+            console.log(e.currentTarget)
+        }
+                 
+    }
     useEffect(() => {
         $(".submenu-dropdown").click(function(){
             $("#sidebar").mCustomScrollbar({
@@ -21,8 +39,13 @@ const Sidebar = () => {
               $(this).children("i").removeClass("la-angle-down")
               $(this).children("i").addClass("la-angle-right")
             }
-            $('.sidebar-link').on('click', function () {
-   
+            $('.sidebar-link, .sidebar-link a').on('click', function () {
+                
+                $('.sidebar-link').removeClass('sidebar-active');
+                $(this).toggleClass('sidebar-active');
+                
+            });
+            $('.sidebar-link a').on('click', function () {               
                 $('.sidebar-link').removeClass('sidebar-active');
                 $(this).toggleClass('sidebar-active');
                 
@@ -53,13 +76,13 @@ const Sidebar = () => {
                     </div>
                 </div>
             </li>            
-           <li  className="sidebar-link sidebar-active">
+           <li onClick={handleActiveMenu} className="sidebar-link sidebar-active">
             <Link to="/encounter" >
                 <i className="las la-history"></i>
                Encounter History
             </Link>
            </li>
-            <li className="sidebar-link">
+            <li onClick={handleActiveMenu} className="sidebar-link">
                 <Link to="/prescription" >
                 <i className="las la-file-medical-alt"></i>
                Prescription
@@ -109,13 +132,8 @@ const Sidebar = () => {
                    
             
             </li> 
-            <li className="sidebar-link">
-                <Link to="/verify-code" >
-                <i className="las la-map-marked"></i>
-               verify
-            </Link>
-            </li> 
-            <li className="sidebar-link">
+           
+            <li onClick={handleActiveMenu} className="sidebar-link">
                 <Link to="/outlets" >
                 <i className="las la-map-marked"></i>
                Outlets

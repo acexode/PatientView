@@ -23,7 +23,7 @@ const Login  = () =>{
   const [loading,setLoading] = useState(false)
   const [email, setEmail] = useState('')
   const [accessToken, setAccessToken] = useState('')
-  
+  const API = 'https://stagingapi.healthinabox.ng/api/'
   return (
   <Formik
     initialValues={{ email: "", password: "" }}
@@ -235,7 +235,6 @@ const Login  = () =>{
                             fields="name,email,picture"
                             callback={responseFacebook}
                             icon="fa-facebook"
-                            reAuthenticate={true}
                           />
                           </div>
                         
