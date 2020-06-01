@@ -52,7 +52,7 @@ const Map = () => {
        
     }, [state.currentLocation])
     const {lat, lng} = state.currentLocation
-    console.log(outlets)
+   
     return (
         <div>
             <GoogleMap

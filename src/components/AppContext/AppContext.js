@@ -108,7 +108,7 @@ export const AppProvider = (props) => {
         axios.get(`${config.BASE_URL}Outlet`,{headers: {'Authorization': `Bearer ${token}`}, body:{outletType: 'radiology'}})
         .then(res =>{
             setoutlets(res.data)
-            // console.log(res)           
+             console.log(res)           
         }).catch(err =>{
             console.log(err.response)
         })

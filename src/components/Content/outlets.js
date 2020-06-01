@@ -1,7 +1,8 @@
 import React, { useContext,useState } from 'react'
 import TopNav from '../../Sidebar/TopNav'
 import WrappedMap from '../OutletMap/GoogleMap'
-import { key } from '../../key'
+import  config from '../../config.json'
+
 import { AppContext } from '../AppContext/AppContext'
 // const pharmacies = [
 //     {
@@ -57,7 +58,7 @@ const Outlets = () => {
                <div className="col-md-9 outlet-map">
                     {/* <OutletMap /> */}
                     <WrappedMap 
-                    googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${key.GoogleMap}&v=3.exp&libraries=geometry,drawing,places`}
+                    googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${config.GoogleMap}&v=3.exp&libraries=geometry,drawing,places`}
                     loadingElement={<div style={{height: '100%'}}></div>}
                     containerElement={<div style={{height: '100%'}}></div>}
                     mapElement={<div style={{height: '100%'}}></div>}
