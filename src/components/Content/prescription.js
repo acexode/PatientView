@@ -3,12 +3,14 @@ import TopNav from '../../Sidebar/TopNav'
 import {getDate, getTime, getOTPState, hospitalInfo} from '../helpers/helpers'
 import { AppContext } from '../AppContext/AppContext'
 import { useHistory } from 'react-router-dom'
+import PrescriptionDetails from './encounter-details/prescription-details'
+import PrintDownload from './reusables/print-download'
 const $ = window.$
 
 const Prescription = ({location}) => {
     let history = useHistory()
    
-    const {encounter,postFeedBack, verifyPatient} = useContext(AppContext)  
+    const {encounter,postFeedBack, verifyPatient, getEncounters} = useContext(AppContext)  
     const ActivityIdRef  = createRef();
     const allencounters = encounter.length > 0 ? encounter : JSON.parse(localStorage.getItem('encounter')) 
     const [PatientUsedPrescription, setPatientUsedPrescription] = useState()
@@ -69,24 +71,18 @@ const Prescription = ({location}) => {
         })
     }
     const retrieve = () =>{
-        setLoading(true)
-        let data = {
-            "hospitalId": hospitalInfo().hospitalId,
-            "hospitalNumber": hospitalInfo().hospitalNumber
-        }
-        history.push('/verify-code')
-        console.log(data)
-        verifyPatient(data).then(res =>{
-            console.log(res)
+        setLoading(true)   
+     
+        getEncounters().then(res =>{
+            allencounters = res           
              setLoading(false)
-            history.push('/verify-code')
+           
         }).catch(err =>{
             console.log(err.response)
-            setLoading(false)
-            // seterrMsg(err.response.data)
-            // setshowError(true)
+            setLoading(false)            
         })
     }
+
     return (
         <div id="content">
             <TopNav title="Prescription" />
@@ -137,59 +133,12 @@ const Prescription = ({location}) => {
                                     <div className="accordian-body collapse" id={`demo${i}`}>
                                         <div className="row">
                                             <div className="card row-card">
-                                                <div className="row">
-                                                    <div className="col-md-12">
-                                                        <span className="text-center text-success"> EN01</span>
-                                                        <button data-toggle="collapse" data-target={`#demo${i}`}
-                                                            className="view float-right"> Less <small><i className="las la-angle-up small-caret"></i></small></button>
-                                                    </div>
-                                                </div>
+                                                <PrintDownload index={i} />
                                                 {data.activities.map(e =>(
                                                     <>
                                                          {e.activity === 'Drug Prescription' ?  
                                                             <>
-                                                            <div className="row mt-5">
-                                                            <div className="col-md-6">
-                                                                <p className="text-dark pt-2"><strong>{e.activity}</strong></p>
-                                                            </div>
-                                                            <div className="col-md-6 align-items-end">
-                                                                    <a className="border rounded p-2 float-right ml-3" href="">
-                                                                    <i className="lar la-clock"></i> {getTime(e.activityDate)}
-                                                                </a>
-                                                                <a className="border rounded p-2 float-right ml-3" href="">
-                                                                    <i className="las la-calendar-day"></i> {getDate(e.activityDate)}
-                                                                </a>
-                                                            </div>
-        
-                                                            <div className="row-card ">
-                                                                <table className="nested-table">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th scope="col">Name</th>
-                                                                            <th scope="col">Dosage</th>
-                                                                            <th scope="col">Day</th>
-                                                                            <th scope="col">Frequency</th>
-                                                                            <th scope="col">Aministration Route</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                    {JSON.parse(e.activityDetails).map(detail=>(
-                                                                    <tr key={detail.ActivityEntryId}>
-                                                                        <td>{detail.Name}</td>
-                                                                        <td className="text-center">{detail.Dosage}</td>
-                                                                        <td className="text-center">{detail.Day}</td>
-                                                                        <td className="text-center">{detail.Frequency}</td>
-                                                                        <td>{detail.AdministrationRoute}</td>
-                                                                        
-                                                                    </tr>
-
-                                                                 ))}       
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-        
-                                                        </div>
-                                                         
+                                                            <PrescriptionDetails activity={e} />
                                                             <form onSubmit={handleSubmit} id="feedback" encType="multipart/form-data">
                                                                 <div className="row mt-5">
                                                                     <div className="col-md-12">

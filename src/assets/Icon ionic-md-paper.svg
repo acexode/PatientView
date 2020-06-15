@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="18.749" height="16.071" viewBox="0 0 18.749 16.071">
+  <g id="Icon_ionic-md-paper" data-name="Icon ionic-md-paper" transform="translate(-2.25 -4.5)">
+    <path id="Path_13" data-name="Path 13" d="M20.33,4.5H8.946a.69.69,0,0,0-.67.691V6.509H4.008A1.763,1.763,0,0,0,2.25,8.267v8.684a3.628,3.628,0,0,0,3.6,3.62H17.555A3.453,3.453,0,0,0,21,17.139V5.17A.672.672,0,0,0,20.33,4.5ZM8.277,7.848v8.035H6.519V8.652a2.044,2.044,0,0,0-.138-.8ZM7.565,18.537a2.472,2.472,0,0,1-1.695.695,2.286,2.286,0,0,1-2.281-2.281v-8.3a.8.8,0,1,1,1.59,0v7.9a.672.672,0,0,0,.67.67H8.256A2.2,2.2,0,0,1,7.565,18.537Zm12.1-1.4a2.115,2.115,0,0,1-2.105,2.093H8.75a3.5,3.5,0,0,0,.866-2.281V5.881H19.66Z" transform="translate(0 0)" fill="#b1b1b1"/>
+    <path id="Path_14" data-name="Path 14" d="M17.438,9.563h6.7v2.344h-6.7Z" transform="translate(-6.148 -2.049)" fill="#b1b1b1"/>
+    <path id="Path_15" data-name="Path 15" d="M17.438,15.75h6.7v1.339h-6.7Z" transform="translate(-6.148 -4.554)" fill="#b1b1b1"/>
+    <path id="Path_16" data-name="Path 16" d="M17.438,20.25h6.7v1.339h-6.7Z" transform="translate(-6.148 -6.375)" fill="#b1b1b1"/>
+    <path id="Path_17" data-name="Path 17" d="M23.906,24.75h-6.7s0,1.339-.335,1.339H23.1C23.906,26.089,23.906,25.21,23.906,24.75Z" transform="translate(-5.92 -8.197)" fill="#b1b1b1"/>
+  </g>
+</svg>

@@ -1,6 +1,8 @@
 import React, {useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import logo from '../assets/MEDICALL.svg'
+import prescription from '../assets/drugs.svg'
+import time from '../assets/time.svg'
 import {User} from '../components/helpers/helpers'
 import avater from '../assets/user.png'
 const $ = window.$
@@ -56,8 +58,8 @@ const Sidebar = () => {
     return (
         <nav id="sidebar">
         <div className="sidebar-header">
-           <Link to="/" className="text-center">
-            <img className=" text-center" src={logo} style={{width:"80px", marginLeft:"%"}} alt=""/>
+           <Link to="/"  className="text-center">
+            <img className=" text-center" src={logo}  alt=""/>
 
            </Link>
         </div>           
@@ -84,7 +86,7 @@ const Sidebar = () => {
            </li>
             <li onClick={handleActiveMenu} className="sidebar-link">
                 <Link to="/prescription" >
-                <i className="las la-file-medical-alt"></i>
+                <i className="las la-pills"></i>
                Prescription
             </Link>
             </li>      
@@ -104,6 +106,12 @@ const Sidebar = () => {
                         <Link to="/lab-results" >
                             <i className="lar la-newspaper"></i>
                             Results
+                        </Link>
+                    </li>
+                    <li className="sidebar-link">
+                        <Link to="/lab-result-feedback" >
+                            <i className="lar la-thumbs-up"></i>
+                            View results feedback
                         </Link>
                     </li>
             </ul>
@@ -126,6 +134,12 @@ const Sidebar = () => {
                         <Link to="/radiology-results" >
                             <i className="lar la-newspaper"></i>
                             Results
+                        </Link>
+                    </li>
+                    <li className="sidebar-link">
+                        <Link to="/radiology-result-feedback" >
+                            <i className="lar la-thumbs-up"></i>
+                            View results feedback
                         </Link>
                     </li>
             </ul>

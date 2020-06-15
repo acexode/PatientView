@@ -3,9 +3,10 @@ import TopNav from '../../../Sidebar/TopNav'
 import { AppContext } from '../../AppContext/AppContext'
 import {getDate, getTime, getOTPState, hospitalInfo} from '../../helpers/helpers'
 import { useHistory } from 'react-router-dom'
+import PrintDownload from '../reusables/print-download'
 
 const LaboratoryRequest = () => {
-    const {encounter,verifyPatient} = useContext(AppContext)  
+    const {encounter,verifyPatient, getEncounters} = useContext(AppContext)  
     const [loading, setLoading] = useState(false)
     let history = useHistory()  
     let otpState = getOTPState() 
@@ -13,24 +14,18 @@ const LaboratoryRequest = () => {
         history.push("/encounter",  { info: "To view your Laboratory request, you must select your hospital and input hospital ID" })
     }
     const retrieve = () =>{
-        setLoading(true)
-        let data = {
-            "hospitalId": hospitalInfo().hospitalId,
-            "hospitalNumber": hospitalInfo().hospitalNumber
-        }
-        history.push('/verify-code')
-        console.log(data)
-        verifyPatient(data).then(res =>{
-            console.log(res)
+        setLoading(true)      
+     
+        getEncounters().then(res =>{
+            allencounters = res           
              setLoading(false)
-            history.push('/verify-code')
+           
         }).catch(err =>{
             console.log(err.response)
-            setLoading(false)
-            // seterrMsg(err.response.data)
-            // setshowError(true)
+            setLoading(false)           
         })
     }
+
     const allencounters = encounter.length > 0 ? encounter : JSON.parse(localStorage.getItem('encounter'))  
     return (
         <div id="content">
@@ -83,13 +78,7 @@ const LaboratoryRequest = () => {
                                 <div className="accordian-body collapse" id={`demo${i}`}>
                                     <div className="row">
                                         <div className="card row-card">
-                                            <div className="row">
-                                                <div className="col-md-12">
-                                                    <span className="text-center text-success"> {data._id}</span>
-                                                    <button data-toggle="collapse" data-target={`#demo${i}`}
-                                                        className="view float-right"> Less <small><i className="las la-angle-up small-caret"></i></small></button>
-                                                </div>
-                                            </div>
+                                        <PrintDownload index={i} />
                                             {data.activities.map(e =>(
                                                 <>
                                                     {e.activity === 'Lab Request' ?

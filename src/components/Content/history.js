@@ -1,44 +1,57 @@
 import React, { useContext,useEffect,useState } from 'react'
 import TopNav from '../../Sidebar/TopNav'
+import download from '../../assets/Icon feather-download.svg'
+import printer from '../../assets/Icon feather-printer.svg'
 import { AppContext } from '../AppContext/AppContext'
 import { getDate, getTime, getOTPState,hospitalInfo } from '../helpers/helpers'
 import { useHistory, Link } from 'react-router-dom'
+import PrescriptionDetails from './encounter-details/prescription-details'
+import LaboratoryRequestDetails from './encounter-details/laboratory-request-details'
+import RadiologyRequestDetails from './encounter-details/radiology-request-details'
+import DiagnosisDetails from './encounter-details/diagnosis'
+import PrintDownload from './reusables/print-download'
+import PrintModal from './reusables/print-modal'
 const $ = window.$
 
 const EncounterHistory = () => {
     let history = useHistory()
-    const {hospitals, verifyPatient,encounter} = useContext(AppContext)
+    const {hospitals, verifyPatient,encounter, getEncounters} = useContext(AppContext)
     const [loading,setLoading] = useState(false)
     const allEncounters = encounter.length > 0 ? encounter : JSON.parse(localStorage.getItem('encounter'))
+    console.log(allEncounters)
     useEffect(() => {
-       
-    }, [encounter])
+        getEncounters()
+    }, [])
+    let otpState = getOTPState()    
+    useEffect(() => {
+        
+        
+    }, [otpState])
+  
+    if(otpState == null){           
+        history.push("/encounter")
+    }
     // console.log(allEncounters)
     const retrieve = () =>{
-        setLoading(true)
-        let data = {
-            "hospitalId": hospitalInfo().hospitalId,
-            "hospitalNumber": hospitalInfo().hospitalNumber
-        }
-        history.push('/verify-code')
-        console.log(data)
-        verifyPatient(data).then(res =>{
-            console.log(res)
+        setLoading(true)      
+     
+        getEncounters().then(res =>{
+            allEncounters = res           
              setLoading(false)
-            history.push('/verify-code')
+           
         }).catch(err =>{
             console.log(err.response)
-            setLoading(false)
-            // seterrMsg(err.response.data)
-            // setshowError(true)
+            setLoading(false)          
         })
     }
+
    
     return (
         <div id="content" >
         <TopNav title="Encounter History" />
-       
-        <div className="container"> 
+        
+               
+        <div className="container">              
                
                <div className="row">
                    <div className="col-md-6">
@@ -50,15 +63,11 @@ const EncounterHistory = () => {
                        
                    <button onClick={retrieve}  className="btn text-light float-right verify">
                    {loading ? <div className="spinner-border text-light" role="status">
-                                                                    <span className="sr-only">Loading...</span>
-                                                                </div>: <div className="submit-section">
-                                                                Retrieve
-                                                                </div>}
+                        <span className="sr-only">Loading...</span>
+                        </div>: <div className="submit-section">Retrieve</div>}
                    </button>
                    </div>
-               </div>                  
-                        
-                 
+               </div>   
              <div className="row">
                <table className="table table-condensed mb-5 pb-5" style={{borderCollapse:'collapse'}}>
                    <thead>
@@ -85,140 +94,26 @@ const EncounterHistory = () => {
                            <td colSpan="6" className="hiddenRow"><div className="accordian-body collapse" id={`demo${i}`}> 
                                <div className="row">
                                    <div className="card row-card">
+                                       
+                                       <PrintDownload index={i} />
                                        <div className="row">
-                                          <div className="col-md-12">
-                                           <span className="text-center text-success"> EN01</span>
-                                           <button data-toggle="collapse" data-target={`#demo${i}`} className="view float-right" > Less</button>
-                                          </div>
-                                       </div>
-                                       <div className="row">
-                                           <p className="text-dark">Medical Summary</p>
-                                           <div className="row-card bg-gray p-4">
+                                           <p className="text-dark">Provisional Diagnosis</p>
+                                           <textarea className="row-card bg-gray comment " placeholder="Doctor Comment">
                                                
-                                           </div>
+                                           </textarea>
                                        </div>
                                        {data.activities.map(activity => (
                                            <>
-                                            {activity.activity === 'Drug Prescription' ? 
-                                                 <div className="row mt-5">
-                                                 <div className="col-md-6">
-                                                     <p className="text-dark pt-2"><strong>{activity.activity}</strong></p>
-                                                 </div>
-                                                 <div className="col-md-6 align-items-end">
-                                                     <a className="border rounded p-2 float-right ml-3" href="">
-                                                         <i className="las la-calendar-day"></i>  {getDate(activity.activityDate)}
-                                                     </a>
-                                                     <a className="border rounded p-2 float-right ml-3" href="">
-                                                         <i className="lar la-clock"></i> {getTime(activity.activityDate)}
-                                                     </a>
-                                                 </div>
-                                                                                                
-                                                     <div className="row-card ">
-                                                         <table className="nested-table">
-                                                             <thead>
-                                                                 <tr>
-                                                                     <th scope="col">Name</th>
-                                                                     <th scope="col">Dosage</th>
-                                                                     <th scope="col">Day</th>
-                                                                     <th scope="col">Frequency</th>
-                                                                     <th scope="col">Aministration Route</th> 
-                                                                 </tr>
-                                                             </thead>
-                                                             <tbody>
-                                                                 {JSON.parse(activity.activityDetails).map(detail=>(
-                                                                    <tr>
-                                                                        <td>{detail.Name}</td>
-                                                                        <td>{detail.Dosage}</td>
-                                                                        <td>{detail.Day}</td>
-                                                                        <td>{detail.Frequency}</td>
-                                                                        <td>{detail.AdministrationRoute}</td>
-                                                                        
-                                                                    </tr>
-
-                                                                 ))}                                                                
-                                                             </tbody>
-                                                         </table>
-                                                     </div>
-                                                 
-                                             </div>
+                                            {activity.activity === 'Diagnosis' ? 
+                                                 <DiagnosisDetails activity={activity} /> :
+                                            activity.activity === 'Drug Prescription' ? 
+                                                 <PrescriptionDetails activity={activity} />
                                        : activity.activity === 'Lab Request' ?      
-                                       <div className="row mt-5">
-                                       <div className="col-md-6">
-                                           <p className="text-dark pt-2"><strong>{activity.activity}</strong></p>
-                                       </div>
-                                       <div className="col-md-6 align-items-end">
-                                           <a className="border rounded p-2 float-right ml-3" href="">
-                                               <i className="las la-calendar-day"></i>  {getDate(activity.activityDate)}
-                                           </a>
-                                           <a className="border rounded p-2 float-right ml-3" href="">
-                                               <i className="lar la-clock"></i> {getTime(activity.activityDate)}
-                                           </a>
-                                       </div>                                                                                               
-                                           <div className="row-card ">
-                                               <table className="nested-table">
-                                                   <thead>
-                                                       <tr>
-                                                           <th scope="col">Name</th>
-                                                           <th scope="col">Specimen</th>
-                                                           <th scope="col">Comment</th>
-                                                           <th scope="col">Raise By</th>                                                                    
-                                                       </tr>
-                                                   </thead>
-                                                   <tbody>
-                                                   {JSON.parse(activity.activityDetails).map(detail=>(
-                                                        <tr>
-                                                            <td>{detail.Name}</td>
-                                                            <td>{detail.Specimen}</td>
-                                                            <td>{detail.Comment}</td>
-                                                            <td>{activity.activityBy}</td>                                                                                                                                   
-                                                        </tr>
-
-                                                                 ))}
-                                                                                                                 
-                                                   </tbody>
-                                               </table>
-                                           </div>
-                                       
-                                   </div>
-                                   : activity.activity === 'Radiology Request' ?
-                                   <div className="row mt-5">
-                                   <div className="col-md-6">
-                                       <p className="text-dark pt-2"><strong>{activity.activity}</strong></p>
-                                   </div>
-                                   <div className="col-md-6 align-items-end">
-                                       <a className="border rounded p-2 float-right ml-3" href="">
-                                           <i className="las la-calendar-day"></i>  {getDate(activity.activityDate)}
-                                       </a>
-                                       <a className="border rounded p-2 float-right ml-3" href="">
-                                           <i className="lar la-clock"></i> {getTime(activity.activityDate)}
-                                       </a>
-                                   </div>                                                                                               
-                                       <div className="row-card mb-3">
-                                           <table className="nested-table">
-                                               <thead>
-                                                   <tr>
-                                                       <th scope="col">Name</th>
-                                                       <th scope="col">Examination Required</th>
-                                                       <th scope="col">Comment</th>
-                                                       <th scope="col">Raise By</th>                                                                    
-                                                   </tr>
-                                               </thead>
-                                               <tbody>
-                                               {JSON.parse(activity.activityDetails).map(detail=>(
-                                                    <tr>
-                                                        <td>{detail.Name}</td>
-                                                        <td>{detail.ExaminationRequired}</td>
-                                                        <td>{detail.Comment}</td>
-                                                        <td>{activity.activityBy}</td>                                                        
-                                                                        
-                                                    </tr>
-
-                                                                 ))}                                                              
-                                               </tbody>
-                                           </table>
-                                       </div>
-                                   
-                               </div> : null
+                                        <LaboratoryRequestDetails activity={activity} />
+                                       : activity.activity === 'Radiology Request' ?
+                                  <RadiologyRequestDetails activity={activity} />         
+                               : null
+                                        
                                         }
                                            </>
                                        ))}
@@ -238,7 +133,7 @@ const EncounterHistory = () => {
                    </tbody>
                </table>   
              </div>
-
+            
            </div>
         </div>
     )

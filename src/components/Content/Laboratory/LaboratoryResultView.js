@@ -3,10 +3,12 @@ import TopNav from '../../../Sidebar/TopNav'
 import UploadResult from '../uploadResult'
 import { AppContext } from '../../AppContext/AppContext'
 import {getDate, getTime, getOTPState,hospitalInfo} from '../../helpers/helpers'
+import pdfIcon from '../../../assets/Icon awesome-file-pdf.svg'
+import printer from '../../../assets/Icon feather-printer.svg'
+import download from '../../../assets/Icon feather-download.svg'
 import { useHistory } from 'react-router-dom'
-import PrintDownload from '../reusables/print-download'
 const $ = window.$
-const LaboratoryResult = () => {
+const LaboratoryResultView = () => {
     let history = useHistory()
     const {encounter, postFeedBack, verifyPatient, getEncounters} = useContext(AppContext)  
     let allencounters = encounter.length > 0 ? encounter : JSON.parse(localStorage.getItem('encounter')) 
@@ -125,14 +127,20 @@ const LaboratoryResult = () => {
                                 <div className="accordian-body collapse" id={`demo${i}`}>
                                     <div className="row">
                                         <div className="card row-card">
-                                            <PrintDownload index={i} path="lab-results" />
+                                            <div className="row">
+                                                <div className="col-md-12">
+                                                    <span className="text-center text-success"> {data._id}</span>
+                                                    <button data-toggle="collapse" data-target={`#demo${i}`}
+                                                        className="view float-right"> Less <small><i className="las la-angle-up small-caret"></i></small></button>
+                                                </div>
+                                            </div>
                                             {data.activities.map(e =>(
                                                 <>
                                                     {e.activity === 'Lab Request' ?
                                                      <>
                                                           <div className="row mt-5">
                                                 <div className="col-md-6">
-                                                    <p className="text-dark pt-2"><strong>Laboratory Request</strong></p>
+                                                    <p className="text-dark pt-2"><th>Laboratory Results</th></p>
                                                 </div>
                                                 <div className="col-md-6 align-items-end">
                                                          <a className="border rounded p-2 float-right ml-3" href="">
@@ -170,62 +178,38 @@ const LaboratoryResult = () => {
                                                     </table>
                                                 </div>
 
-                                            </div>
-                                            <form onSubmit={handleSubmit} id="feedback" enctype="multipart/form-data">
-                                                <div className="row mt-5">
-                                                    <div className="col-md-6">
-                                                        <p className="text-dark pt-2"><strong>Feedback</strong></p>
-                                                    </div>                                              
-                                                    <div className="row invisible">
-                                                                <div className="form-group">                                                            
-                                                                        <label className="pres-label" for="">
-                                                                        <input ref={ActivityIdRef} defaultValue={e.activityId} type="text"   />
-                                                                                <span className="checkmark"></span> 
-                                                                        </label>
-                                                                        </div>
-                                                                </div>
-                                                    <div className="row-card feedback-card py-3">                                                        
-                                                            <p className="pl-3 text-dark">Did you carry out the lab test</p>
-                                                            <div className="form-group">
-                                                                    
-                                                                    <label className="pres-label" for="">
-                                                                        <input value={PatientDidLabTest} checked={PatientDidLabTest} type="radio" onChange={() =>setPatientDidLabTest(true)} name="PatientDidLabTest"  />Yes
-                                                                        <span className="checkmark"></span> </label>
-                                                                </div>
-                                                                <div className="form-group">
-                                                                    
-                                                                    <label className="pres-label" for="">
-                                                                        <input type="radio" value ={PatientDidLabTest}  onChange={() =>setPatientDidLabTest(false)} name="PatientDidLabTest"  />No
-                                                                        <span className="checkmark"></span> </label>
-                                                                </div>
-                                                       
-                                                        {PatientDidLabTest ? 
-                                                            <div className="row pl-5">
-                                                                <p className="text-dark">Attach documents</p>
-                                                                <UploadResult setImages={setLabImages} images={LabImages} />
-
-                                                            </div>
-                                                            : 
-                                                            <div className="row pt-3">
-                                                            
-                                                            <textarea placeholder="comment"
-                                                                className="row-card card bg-gray comment" onChange={() => setPatientLabTestComment} name="PatientLabTestComment"
-                                                                id=""></textarea>
-                                                        </div>
-                                                        }
-                                                      {loading ? <div className="spinner-border text-success" role="status">
-                                                                    <span className="sr-only">Loading...</span>
-                                                                </div>: <div className="submit-section">
-                                                                <button type="submit" className="btn verify text-light float-right">Submit Feedback</button>
-                                                                </div>}
-                                                        
-                                                    </div>
-
+                                                <div className="row-card py-3 my-3">
+                                                <div className="col-md-6">
+                                                    <p className="text-dark pt-2"><th>Laboratory results view</th></p>
                                                 </div>
-                                                    
+                                                    <table className="nested-table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">S/N</th>
+                                                                <th scope="col">Description</th>
+                                                                <th scope="col">Action</th>                                                                
+                                                                
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody className="pb-5 mb-5">
+                                                            {JSON.parse(e.activityDetails).map((detail, i)=>(
+                                                                <tr>
+                                                                    {console.log(JSON.parse(e.activityDetails))}
+                                                                    {console.log(e)}
+                                                                    <td>{i +  1}</td>
+                                                                    <td>{detail.Name}</td>
+                                                                    <td><a className="view accordion-toggle"  data-toggle="modal" data-target="#feedback">View</a></td>                                                                                                                                                                                               
+                                                                </tr>
 
-                                            </form>
-                                                 
+                                                                 ))}
+                                                            
+                                                           
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+                                            </div>
+                                            
                                                  </>
                                                  
                                                     : null
@@ -249,21 +233,22 @@ const LaboratoryResult = () => {
                     </tbody>
                 </table>
             </div>
-            <div className="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-                    <div className="modal-dialog modal-sm" role="document">
+            <div className="modal fade pb-3" id="feedback" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"style={{left:'25vw'}} aria-hidden="true">
+                    <div className="modal-dialog" role="document">
+                    
                       <div className="modal-content">
-                        
-                        <div className="modal-body mb-5">
-                           <div className="row justify-content-center align-item-center">
-                               <p className="mt-4 "><i className="las la-check-circle big text-center"></i></p>                               
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Laboratory result</h5>
+                        <div  class="close d-flex justify-content-end">                       
+                        <span className="feedback-control" aria-hidden="true"><img src={printer} /></span>                        
+                        <span className="feedback-control" aria-hidden="true"><img src={download} /></span>                        
+                        </div>                       
+                    </div>
+                        <div className="modal-body  py-3">
+                           <div className="row justify-content-center align-item-center">                                
+                               <img className="my-3" style={{width:'40%', height:'40%'}} src={pdfIcon} />                             
                            </div>
-                           <div className="row justify-content-center align-item-center">
-                               <h2 className="mt-1 text-center">Success</h2> <br/>                                                   
-                           </div>
-                           <div className="row justify-content-center align-item-center">
-
-                               <small className="text-dark">Feedback has been sent</small>                             
-                           </div>
+                         
                            
                         </div>
                         
@@ -277,4 +262,4 @@ const LaboratoryResult = () => {
     )
 }
 
-export default LaboratoryResult
+export default LaboratoryResultView

@@ -1,13 +1,19 @@
 import React from 'react'
 import css from './home.css'
 import logo from '../../assets/MEDICALL.svg'
+import img1 from '../../assets/3283.png'
+import img2 from '../../assets/2574497.png'
+import img3 from '../../assets/12345.png'
+import img4 from '../../assets/67890.png'
 import { Link } from 'react-router-dom'
 const Home = () => {
     return (
         <div>
             <nav className="navbar navbar-expand-lg  static-top" style={{marginBottom:"0px", background:'#fff'}}>
     <div className="container">
-        <a className="navbar-brand" href="#"><img style={{width:'100px'}} src={logo} /></a>
+        <a className="navbar-brand"   href="/">
+          <img style={{width:'80px'}} src={logo} />
+        </a>
       <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon"></span>
       </button>
@@ -50,12 +56,12 @@ const Home = () => {
     <div className="container ">
       <div className="row">
         <div className="col-md-12">
-            <p className="med">With MEDICALL you can</p>
+            <p className="med">With MEDICALL you can...</p>
         </div>
         <div className="col-lg-6">          
             <div className="card bradius">
-                <img className="img-card" style={{height:"200px"}} src="https://images.pexels.com/photos/3762940/pexels-photo-3762940.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt=""  />
-                <div className="card-body pb-5">
+                <img className="img-card" style={{height:"200px"}} src={img1} alt=""  />
+                <div className="card-body cbody pb-5">
                   <p className="card-text">Get answers to your medical questions from the comfort of your home</p>
                 </div>
               </div>
@@ -63,9 +69,9 @@ const Home = () => {
         </div>
         <div className="col-lg-6">          
             <div className="card bradius">
-                <img className="img-card" style={{height:"200px"}} src="https://images.pexels.com/photos/48604/pexels-photo-48604.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" alt=""  />
-                <div className="card-body pb-5">
-                  <p className="card-text">View your health summary <br/> and needed test</p>
+                <img className="img-card" style={{height:"200px"}} src={img2} alt=""  />
+                <div className="card-body cbody pb-5">
+                  <p className="card-text">View your health summary, medical prescription and needed test</p>
                 </div>
             
           </div>
@@ -73,16 +79,16 @@ const Home = () => {
         <div className="col-lg-6">
           
             <div className="card bradius">
-                <img className="img-card" style={{height:"200px"}} src="https://images.pexels.com/photos/162583/work-workplace-office-computer-162583.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt=""  />
-                <div className="card-body pb-5">
+                <img className="img-card" style={{height:"200px"}} src={img3} alt=""  />
+                <div className="card-body cbody pb-5">
                   <p className="card-text">See upcoming appointments</p>
                 </div>
               </div>         
         </div>
         <div className="col-lg-6">          
             <div className="card bradius">
-                <img className="img-card" style={{height:"200px"}} src="https://images.pexels.com/photos/954583/pexels-photo-954583.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt=""  />
-                <div className="card-body pb-5">
+                <img className="img-card" style={{height:"200px"}} src={img4} alt=""  />
+                <div className="card-body cbody pb-5">
                   <p className="card-text">View lab and imaging test results</p>
                 </div>
               </div>         

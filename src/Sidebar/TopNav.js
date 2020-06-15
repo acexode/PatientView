@@ -25,9 +25,9 @@ const TopNav = ({title}) => {
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container-fluid">
 
-            <a onClick={handleCloseMenu}  id="sidebarCollapse"   >
+            {/* <a onClick={handleCloseMenu}  id="sidebarCollapse"   >
                 <i className="las la-bars"></i>
-            </a>
+            </a> */}
             <ul className="nav navbar-nav">
                     
                     <li className="nav-item dropdown">

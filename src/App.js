@@ -18,6 +18,8 @@ import RadiologyRequest from './components/Content/Radiology/RadiologyRequest';
 import RadiologyResult from './components/Content/Radiology/RadiologyResult';
 import Outlets from './components/Content/outlets';
 import { AppProvider } from './components/AppContext/AppContext';
+import LaboratoryResultView from './components/Content/Laboratory/LaboratoryResultView';
+import PrintModal from './components/Content/reusables/print-modal';
 
 
   const Main = withRouter(({ location }) => {
@@ -30,13 +32,14 @@ import { AppProvider } from './components/AppContext/AppContext';
         </>	
       )}
       <Switch>       
-          <AuthGuard path="/" exact component={Home} />    
+          <Route path="/" exact component={Home} />    
           <AuthGuard path="/encounter"  component={Encounter} />    
           <AuthGuard exact path="/history"  component={EncounterHistory} /> 
          
           <AuthGuard exact path="/prescription"  component={Prescription} />    
           <AuthGuard exact path="/lab-requests"  component={LaboratoryRequest} />    
           <AuthGuard exact path="/lab-results"  component={LaboratoryResult} />    
+          <AuthGuard exact path="/lab-result-feedback"  component={LaboratoryResultView} />    
           <AuthGuard exact path="/radiology-results"  component={RadiologyResult} />    
           <AuthGuard exact path="/radiology-requests"  component={RadiologyRequest} />    
           <AuthGuard exact path="/outlets"  component={Outlets} />    
@@ -47,6 +50,7 @@ import { AppProvider } from './components/AppContext/AppContext';
          
        
       </Switch>
+      <PrintModal />
       </>
     )
       

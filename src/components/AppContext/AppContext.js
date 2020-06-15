@@ -14,8 +14,8 @@ export const AppProvider = (props) => {
     const [outlets, setoutlets] = useState()
     useEffect(() => {
         fetchHospitals()
-        // getFeedBack()
-        // postFeedBack()
+         getEncounters()
+        
         
         getOutlets()
     }, [])
@@ -46,6 +46,20 @@ export const AppProvider = (props) => {
         })
         
     }
+    const getEncounters = ()=>{
+        const token = localStorage.getItem('token')
+        return axios.get(`${config.BASE_URL}Hospitals/encounters`,{headers: {'Authorization': `Bearer ${token}`}})
+        .then(res =>{
+           localStorage.setItem('encounter', JSON.stringify(res.data))
+           console.log(res.data)
+           if(res.data.length > 0){
+            localStorage.setItem('noOTP', true)
+           }
+            setencounter(res.data)
+            return res.data
+        })
+        
+    }
     const resendOTP = ()=>{
         const token = localStorage.getItem('token')
         return axios.post(`${config.BASE_URL}Hospitals/verify/resendotp`,{},  {headers: {'Authorization': `Bearer ${token}`}})
@@ -56,16 +70,12 @@ export const AppProvider = (props) => {
         return axios.post(`${config.BASE_URL}Auth/password/reset`, data, {headers: {'Authorization': `Bearer ${token}`}})
         
     }
-    const getFeedBack = ()=>{
-        const token = localStorage.getItem('token')
-        // let obj = {
-        //     // encounterId: '294a45b5-cdbe-4291-b25a-1781135bc5e3',
-        //     activityEntryId: 'be192955-1012-4a10-b298-0915301982b7'
-        // }
+    const getFeedBack = (activityId)=>{
+        const token = localStorage.getItem('token')        
         
-        // axios.get(`${config.BASE_URL}feedback?activityEntryId=${obj.activityEntryId}`, {headers: {'Authorization': `Bearer ${token}`}})
-        // .then(res =>{
-        //     console.log(res)
+        axios.get(`${config.BASE_URL}Feedback?activityId=${activityId}`, {headers: {'Authorization': `Bearer ${token}`}})
+        .then(res =>{
+            console.log(res)
             // const fileData = JSON.stringify(res.data);
             // const blob = new Blob([fileData], {type: "text/plain"});
             // const url = URL.createObjectURL(blob);
@@ -73,12 +83,12 @@ export const AppProvider = (props) => {
             // link.download = 'filename.json';
             // link.href = url;
             // link.click();
-       // }).catch(err =>{
-         //   console.log(err.response)
-        //})
+       }).catch(err =>{
+           console.log(err.response)
+        })
         
-    // })
-}
+    }
+
     const postFeedBack = (userFeedback)=>{  
         const token = localStorage.getItem('token')     
         const headerConfig = {
@@ -115,6 +125,6 @@ export const AppProvider = (props) => {
         
     }
     return <AppContext.Provider
-        value= {{fetchHospitals, hospitals, verifyPatient, verifyOTP, resendOTP, resetPassword,patientInfo, encounter, postFeedBack, outlets}}
+        value= {{fetchHospitals, getEncounters, hospitals, verifyPatient, verifyOTP, resendOTP, resetPassword,patientInfo, encounter, postFeedBack,getFeedBack, outlets}}
 >{props.children}</AppContext.Provider>
 }

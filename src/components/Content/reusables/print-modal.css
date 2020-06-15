@@ -1,0 +1,26 @@
+.print-modal .modal-header{
+    background: #E4E4E4;
+    padding: .4rem;
+    border-radius: none;
+}
+.print-modal .modal-content{   
+    border-radius: 0px !important;
+    height: 80vh;
+}
+.print-modal{
+    top: 0 !important;
+   
+}
+.btn-select{
+    border: 1px solid #cfcfcf;
+    background: white;
+    color: #000;
+}
+.btn-select.dropdown-toggle{
+    position: relative;
+    
+}
+#container{
+    background: #fff;
+    color: black !important
+}

@@ -8,7 +8,7 @@ html::-webkit-scrollbar{
 }
 body{
     background: #f9fbfd;
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
     font-family: 'Montserrat', sans-serif;
 }
 
@@ -68,7 +68,7 @@ a:focus {
     box-shadow: 0 3px 9px 0 rgba(169,184,200,.15);
     -webkit-box-shadow: 0 3px 9px 0 rgba(169,184,200,.15);
     -moz-box-shadow: 0 3px 9px 0 rgba(169,184,200,.15);
-    
+    zoom: 99%;
     transition: all 0.3s;
 }
 
@@ -78,11 +78,22 @@ a:focus {
 
 #sidebar .sidebar-header {
     display: flex;
+    width: 100%;
+    height: 80px;
    justify-content: center;
     flex-direction: column;
-    padding: 14px 10px;
+    overflow: hidden;
+    /* padding: 10px 10px; */
+    /* background: #000; */
   
    
+}
+#sidebar .sidebar-header a {
+    /* position: absolute; */
+}
+#sidebar .sidebar-header a img{
+    width: 80px;
+    height: 100%;
 }
 .sidebar-dropdown, .submenu{
     margin-left: 1.5em;
@@ -100,10 +111,10 @@ a:focus {
 #sidebar ul.components, .submenu-menu {
     display: flex;
     justify-content: center;
-    padding: 15px 0px;
+    padding: 0px 0px;
     padding-left: 0;
     padding-right: 8px;
-    flex-direction: column;
+    flex-direction: column; 
     
 }
 
@@ -115,10 +126,17 @@ a:focus {
     margin-left:  20px;
     
 }
+.submenu-menu {
+    background: white !important;
+    margin-left: -2.2em;
+}
+.submenu-menu li {   
+    width: 244px;
+}
 
 
 
-i {
+i, .icon-img {
     display: inline-block;
     font-size: 20px;
     line-height: 24px;
@@ -128,7 +146,18 @@ i {
     transition: all 0.2s ease-in-out 0s;
     margin-right: 20px;
   }
-
+.icon-img{
+    width: 18px;
+    margin-left: 23px;
+}
+.download, .printer{
+    border-color: #cfcfcf !important;
+    margin: 0px 5px;
+    background: none;
+}
+.download img, .printer img{
+    width: 12px;
+}
 /* ---------------------------------------------------
     CONTENT STYLE
 ----------------------------------------------------- */
@@ -141,6 +170,7 @@ i {
     position: absolute;
     top: 0;
     right: 0;
+    zoom: 95%;
 }
 
 #content.active {
@@ -164,7 +194,22 @@ i {
 .progress{
     height: 0.2rem;
 }
-
+ textarea::-webkit-input-placeholder {
+    padding-left: 15px !important;
+    vertical-align: middle;
+}
+textarea::-webkit-input-placeholder { /* WebKit browsers */
+    line-height: 1.5em;
+  }
+  textarea::-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    line-height: 1.5em;
+  }
+  textarea::-moz-placeholder { /* Mozilla Firefox 19+ */
+    line-height: 1.5em;
+  }
+  textarea:-ms-input-placeholder { /* Internet Explorer 10+ */
+    line-height: 1.5em;
+  }
 
 .profile{
     position: relative;
@@ -197,8 +242,8 @@ i {
 
 .components .sidebar-link:hover, .sidebar-active{
     background: rgba(23, 218, 121, 0.288);
-    border-right: 2px solid rgb(6, 104, 55);
-    padding: 10px;
+    border-right: 4px solid rgb(6, 104, 55);
+    /* padding: 10px; */
     
 }
 /* ---------------------------------------------------
@@ -425,7 +470,7 @@ tr.none {
 }
 
 .accordian-body{
-    border-left: 3px solid green;
+    border-left: 5px solid #18D17B;
     background: #F3F3F3;
     padding: 10px;
 }
@@ -583,4 +628,11 @@ tr.none {
     background-color: #BDF4D9;
     width: 8px;
     border-radius: 5px;
+}
+.feedback-control img{
+    cursor: pointer;
+    width: 60% !important;
+    height: 30px !important;
+   
+    
 }
